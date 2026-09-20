@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Head from 'next/head';
 
 export interface PlayerContract {
   ticker: string;
-  eventTicker: string;
+  marketSlug: string;
   player: string;
   pos: string;
   team: string;
@@ -19,11 +20,11 @@ export interface PlayerContract {
   url: string;
 }
 
-// Dedicated Touchdown Series Route (KXNFLTD) - Guarantees both Home and Away player resolution
+// Direct contract routes: loads the target player contract directly on first paint
 const ACTIVE_OPEN_SLATE: PlayerContract[] = [
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-larkwilliams23-1',
     player: 'Kyren Williams',
     pos: 'RB',
     team: 'LAR',
@@ -35,11 +36,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.61,
     edgeVal: 9,
     edge: '+9.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-larkwilliams23-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-larpnacua17-1',
     player: 'Puka Nacua',
     pos: 'WR',
     team: 'LAR',
@@ -51,11 +52,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.56,
     edgeVal: 8,
     edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-larpnacua17-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-nygdsingletary26-1',
     player: 'Devin Singletary',
     pos: 'RB',
     team: 'NYG',
@@ -67,11 +68,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.28,
     edgeVal: 11,
     edge: '+11.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-nygdsingletary26-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-nygmnabers1-1',
     player: 'Malik Nabers',
     pos: 'WR',
     team: 'NYG',
@@ -83,11 +84,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.39,
     edgeVal: 7,
     edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-nygmnabers1-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-lardadams17-1',
     player: 'Davante Adams',
     pos: 'WR',
     team: 'LAR',
@@ -99,11 +100,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.49,
     edgeVal: 7,
     edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-lardadams17-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-nygtjohnson84-1',
     player: 'Theo Johnson',
     pos: 'TE',
     team: 'NYG',
@@ -115,11 +116,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.17,
     edgeVal: 6,
     edge: '+6.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-nygtjohnson84-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-LARCKUPP10-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-larckupp10-1',
     player: 'Cooper Kupp',
     pos: 'WR',
     team: 'LAR',
@@ -131,11 +132,11 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.41,
     edgeVal: 6,
     edge: '+6.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARCKUPP10-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-larckupp10-1'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGWROBINSON17-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
+    marketSlug: 'kxnfltd-26sep21nyglar-nygwrobinson17-1',
     player: "Wan'Dale Robinson",
     pos: 'WR',
     team: 'NYG',
@@ -147,7 +148,7 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     fair: 0.20,
     edgeVal: 5,
     edge: '+5.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGWROBINSON17-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar-nygwrobinson17-1'
   }
 ];
 
@@ -180,269 +181,275 @@ export default function Page() {
   }, [contracts, topTen, searchQuery, filterPos]);
 
   return (
-    <div className="min-h-screen bg-black text-zinc-200 font-mono p-4 md:p-8 selection:bg-emerald-500 selection:text-black">
-      <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Header */}
-        <header className="border-b border-zinc-800 pb-4 flex flex-wrap justify-between items-center gap-4">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
-              <h1 className="text-2xl font-black tracking-tight text-white">
-                MONEYFOOTBALL<span className="text-emerald-500">.AI</span>
-              </h1>
-            </div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Quantitative Touchdown Execution Terminal & Direct Kalshi Deep-Links
-            </p>
-          </div>
-          <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
-            FEED: <span className="text-emerald-400 font-bold">KALSHI CFTC</span> | ROUTE: <span className="text-white">KXNFLTD (TOUCHDOWNS)</span>
-          </div>
-        </header>
+    <>
+      {/* Preconnect to Kalshi to eliminate DNS/TLS latency */}
+      <link rel="preconnect" href="https://kalshi.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://kalshi.com" />
 
-        {/* Global Search Bar */}
-        <div className="bg-zinc-950 border border-zinc-800 p-4 rounded space-y-3">
-          <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Search active players (e.g. Williams, Nacua, Singletary, Nabers)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-700 text-xs px-3.5 py-2.5 rounded text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-2.5 text-xs text-zinc-400 hover:text-white"
-                >
-                  ✕
-                </button>
-              )}
+      <div className="min-h-screen bg-black text-zinc-200 font-mono p-4 md:p-8 selection:bg-emerald-500 selection:text-black">
+        <div className="max-w-6xl mx-auto space-y-8">
+          
+          {/* Header */}
+          <header className="border-b border-zinc-800 pb-4 flex flex-wrap justify-between items-center gap-4">
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
+                <h1 className="text-2xl font-black tracking-tight text-white">
+                  MONEYFOOTBALL<span className="text-emerald-500">.AI</span>
+                </h1>
+              </div>
+              <p className="text-xs text-zinc-500 mt-1">
+                Quantitative Touchdown Arbitrage Terminal & Direct Contract Execution
+              </p>
             </div>
+            <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
+              FEED: <span className="text-emerald-400 font-bold">KALSHI CFTC</span> | ROUTE: <span className="text-white">DIRECT CONTRACT (LOW-LATENCY)</span>
+            </div>
+          </header>
 
-            <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-xs">
-              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
-                <button
-                  key={pos}
-                  onClick={() => setFilterPos(pos)}
-                  className={`px-3 py-1.5 rounded font-bold transition-colors ${
-                    filterPos === pos
-                      ? 'bg-emerald-500 text-black'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  {pos}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Global Search Bar */}
+          <div className="bg-zinc-950 border border-zinc-800 p-4 rounded space-y-3">
+            <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  placeholder="Search active players (e.g. Williams, Nacua, Singletary, Nabers)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-zinc-900 border border-zinc-700 text-xs px-3.5 py-2.5 rounded text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-2.5 text-xs text-zinc-400 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs border-t border-zinc-900">
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Active Board</span>
-              <span className="font-bold text-white text-sm">
-                {searchQuery ? `Search Results (${displayedPlayers.length})` : 'Top Rated Purchases'}
-              </span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Top 10 Avg GLC%</span>
-              <span className="font-bold text-emerald-400 text-sm">{avgLeaderGLC}%</span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Routing Target</span>
-              <span className="font-bold text-emerald-400 text-sm">KXNFLTD Slip</span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Order Execution</span>
-              <span className="font-bold text-zinc-300 text-sm">Pre-Staged Dollars</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Matrix Table */}
-        <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
-          <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center text-xs">
-            <span className="font-bold text-white uppercase tracking-wider">
-              {searchQuery ? `Search Results for "${searchQuery}"` : 'Top Touchdown Contracts to Trade'}
-            </span>
-            <span className="text-zinc-500">{displayedPlayers.length} Active Lines</span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
-                <tr>
-                  <th className="px-4 py-3">Rank / Player</th>
-                  <th className="px-4 py-3">Vegas ITT</th>
-                  <th className="px-4 py-3">GLC%</th>
-                  <th className="px-4 py-3">RZ Snap%</th>
-                  <th className="px-4 py-3">Kalshi Ask</th>
-                  <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
-                  <th className="px-4 py-3 text-right">Edge (Δ)</th>
-                  <th className="px-4 py-3 text-center">Analyze</th>
-                  <th className="px-4 py-3 text-center">Execution</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800">
-                {displayedPlayers.map((row, idx) => (
-                  <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center space-x-2">
-                        {!searchQuery && (
-                          <span className="text-[10px] font-bold text-zinc-500">#{idx + 1}</span>
-                        )}
-                        <span className="font-bold text-white">{row.player}</span>
-                        <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
-                          Touchdown
-                        </span>
-                      </div>
-                      <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} ({row.opp})</div>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
-                    <td className="px-4 py-3 font-semibold text-zinc-200">{row.glc}%</td>
-                    <td className="px-4 py-3 text-zinc-400">{row.rzSnap}%</td>
-                    <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
-                    <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
-                    <td className="px-4 py-3 text-right font-bold text-emerald-400">{row.edge}</td>
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => setSelectedPlayer(row)}
-                        className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-[10px] font-semibold transition-colors"
-                      >
-                        Compare 📊
-                      </button>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <a
-                        href={row.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors shadow-sm"
-                      >
-                        Trade ↗
-                      </a>
-                    </td>
-                  </tr>
+              <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-xs">
+                {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
+                  <button
+                    key={pos}
+                    onClick={() => setFilterPos(pos)}
+                    className={`px-3 py-1.5 rounded font-bold transition-colors ${
+                      filterPos === pos
+                        ? 'bg-emerald-500 text-black'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    {pos}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Modal */}
-        {selectedPlayer && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-zinc-950 border border-zinc-700 rounded-lg max-w-lg w-full p-6 space-y-5 shadow-2xl">
-              <div className="flex justify-between items-start border-b border-zinc-800 pb-3">
-                <div>
-                  <h3 className="text-lg font-black text-white">{selectedPlayer.player}</h3>
-                  <p className="text-xs text-zinc-400">
-                    {selectedPlayer.pos} • {selectedPlayer.team} ({selectedPlayer.opp})
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedPlayer(null)}
-                  className="text-zinc-500 hover:text-white text-base font-bold"
-                >
-                  ✕
-                </button>
               </div>
+            </div>
 
-              <div className="space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Volume Profile vs. Top 10 Slate Leaders
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Goal-Line Carry Share (GLC%)</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.glc}% <span className="text-zinc-500 font-normal">vs {avgLeaderGLC}% Top 10 avg</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-emerald-500 h-2 rounded-full"
-                      style={{ width: `${Math.min(selectedPlayer.glc, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Red Zone Snap Dominance</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.rzSnap}% <span className="text-zinc-500 font-normal">vs 82% Top 10 avg</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-cyan-500 h-2 rounded-full"
-                      style={{ width: `${Math.min(selectedPlayer.rzSnap, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Vegas Implied Team Total (ITT)</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 26.0 pts</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-amber-500 h-2 rounded-full"
-                      style={{ width: `${(selectedPlayer.itt / 32) * 100}%` }}
-                    />
-                  </div>
-                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs border-t border-zinc-900">
+              <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
+                <span className="text-zinc-500 block text-[10px] uppercase">Active Board</span>
+                <span className="font-bold text-white text-sm">
+                  {searchQuery ? `Search Results (${displayedPlayers.length})` : 'Top Rated Purchases'}
+                </span>
               </div>
-
-              <div className="bg-zinc-900 p-3 rounded border border-zinc-800 text-xs space-y-1">
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Kalshi Ask vs Model Fair:</span>
-                  <span className="font-bold text-white">${selectedPlayer.ask.toFixed(2)} → <span className="text-emerald-400">${selectedPlayer.fair.toFixed(2)}</span></span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Projected Discrepancy (Edge):</span>
-                  <span className="font-bold text-emerald-400">{selectedPlayer.edge}</span>
-                </div>
+              <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
+                <span className="text-zinc-500 block text-[10px] uppercase">Top 10 Avg GLC%</span>
+                <span className="font-bold text-emerald-400 text-sm">{avgLeaderGLC}%</span>
               </div>
-
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => setSelectedPlayer(null)}
-                  className="flex-1 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-xs font-bold transition-colors"
-                >
-                  Close
-                </button>
-                <a
-                  href={selectedPlayer.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 text-center py-2 bg-emerald-500 hover:bg-emerald-400 text-black rounded text-xs font-bold transition-colors"
-                >
-                  Execute on Kalshi ↗
-                </a>
+              <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
+                <span className="text-zinc-500 block text-[10px] uppercase">Routing Mode</span>
+                <span className="font-bold text-emerald-400 text-sm">Direct Market Slug</span>
+              </div>
+              <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
+                <span className="text-zinc-500 block text-[10px] uppercase">Execution Latency</span>
+                <span className="font-bold text-zinc-300 text-sm">Instant Paint</span>
               </div>
             </div>
           </div>
-        )}
 
-        {/* Regulatory Disclaimer */}
-        <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
-          <div className="font-semibold uppercase tracking-wider text-zinc-500">
-            Statutory Publisher & Regulatory Disclaimer
+          {/* Matrix Table */}
+          <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
+            <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center text-xs">
+              <span className="font-bold text-white uppercase tracking-wider">
+                {searchQuery ? `Search Results for "${searchQuery}"` : 'Top Touchdown Contracts to Trade'}
+              </span>
+              <span className="text-zinc-500">{displayedPlayers.length} Active Lines</span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
+                  <tr>
+                    <th className="px-4 py-3">Rank / Player</th>
+                    <th className="px-4 py-3">Vegas ITT</th>
+                    <th className="px-4 py-3">GLC%</th>
+                    <th className="px-4 py-3">RZ Snap%</th>
+                    <th className="px-4 py-3">Kalshi Ask</th>
+                    <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
+                    <th className="px-4 py-3 text-right">Edge (Δ)</th>
+                    <th className="px-4 py-3 text-center">Analyze</th>
+                    <th className="px-4 py-3 text-center">Execution</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-800">
+                  {displayedPlayers.map((row, idx) => (
+                    <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center space-x-2">
+                          {!searchQuery && (
+                            <span className="text-[10px] font-bold text-zinc-500">#{idx + 1}</span>
+                          )}
+                          <span className="font-bold text-white">{row.player}</span>
+                          <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
+                            Direct
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} ({row.opp})</div>
+                      </td>
+                      <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
+                      <td className="px-4 py-3 font-semibold text-zinc-200">{row.glc}%</td>
+                      <td className="px-4 py-3 text-zinc-400">{row.rzSnap}%</td>
+                      <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
+                      <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right font-bold text-emerald-400">{row.edge}</td>
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => setSelectedPlayer(row)}
+                          className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-[10px] font-semibold transition-colors"
+                        >
+                          Compare 📊
+                        </button>
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <a
+                          href={row.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors shadow-sm"
+                        >
+                          Trade ↗
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds. All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes. Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
-          </p>
-        </footer>
 
+          {/* Modal */}
+          {selectedPlayer && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+              <div className="bg-zinc-950 border border-zinc-700 rounded-lg max-w-lg w-full p-6 space-y-5 shadow-2xl">
+                <div className="flex justify-between items-start border-b border-zinc-800 pb-3">
+                  <div>
+                    <h3 className="text-lg font-black text-white">{selectedPlayer.player}</h3>
+                    <p className="text-xs text-zinc-400">
+                      {selectedPlayer.pos} • {selectedPlayer.team} ({selectedPlayer.opp})
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedPlayer(null)}
+                    className="text-zinc-500 hover:text-white text-base font-bold"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                    Volume Profile vs. Top 10 Slate Leaders
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-zinc-400">Goal-Line Carry Share (GLC%)</span>
+                      <span className="font-bold text-white">
+                        {selectedPlayer.glc}% <span className="text-zinc-500 font-normal">vs {avgLeaderGLC}% Top 10 avg</span>
+                      </span>
+                    </div>
+                    <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
+                      <div
+                        className="bg-emerald-500 h-2 rounded-full"
+                        style={{ width: `${Math.min(selectedPlayer.glc, 100)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-zinc-400">Red Zone Snap Dominance</span>
+                      <span className="font-bold text-white">
+                        {selectedPlayer.rzSnap}% <span className="text-zinc-500 font-normal">vs 82% Top 10 avg</span>
+                      </span>
+                    </div>
+                    <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
+                      <div
+                        className="bg-cyan-500 h-2 rounded-full"
+                        style={{ width: `${Math.min(selectedPlayer.rzSnap, 100)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-zinc-400">Vegas Implied Team Total (ITT)</span>
+                      <span className="font-bold text-white">
+                        {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 26.0 pts</span>
+                      </span>
+                    </div>
+                    <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
+                      <div
+                        className="bg-amber-500 h-2 rounded-full"
+                        style={{ width: `${(selectedPlayer.itt / 32) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-zinc-900 p-3 rounded border border-zinc-800 text-xs space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-zinc-400">Kalshi Ask vs Model Fair:</span>
+                    <span className="font-bold text-white">${selectedPlayer.ask.toFixed(2)} → <span className="text-emerald-400">${selectedPlayer.fair.toFixed(2)}</span></span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-zinc-400">Projected Discrepancy (Edge):</span>
+                    <span className="font-bold text-emerald-400">{selectedPlayer.edge}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    onClick={() => setSelectedPlayer(null)}
+                    className="flex-1 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-xs font-bold transition-colors"
+                  >
+                    Close
+                  </button>
+                  <a
+                    href={selectedPlayer.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 text-center py-2 bg-emerald-500 hover:bg-emerald-400 text-black rounded text-xs font-bold transition-colors"
+                  >
+                    Execute on Kalshi ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Regulatory Disclaimer */}
+          <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
+            <div className="font-semibold uppercase tracking-wider text-zinc-500">
+              Statutory Publisher & Regulatory Disclaimer
+            </div>
+            <p>
+              Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds. All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes. Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
+            </p>
+          </footer>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }
