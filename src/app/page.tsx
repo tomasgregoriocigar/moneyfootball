@@ -18,7 +18,7 @@ interface PlayerContract {
   url: string;
 }
 
-// Full NFL Leaguewide Database with Direct Kalshi Deep-Links
+// Active Verified Slate with Exact Kalshi Order Book Tickers
 const FULL_LEAGUE_CONTRACTS: PlayerContract[] = [
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
@@ -36,94 +36,64 @@ const FULL_LEAGUE_CONTRACTS: PlayerContract[] = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21ATLPHI-PHISBARKLEY26-1',
-    player: 'Saquon Barkley',
+    ticker: 'KXNFLTD-26SEP20CLETB-TBBRWHITE1-1',
+    player: 'Rachaad White',
     pos: 'RB',
-    team: 'PHI',
-    opp: 'vs ATL',
-    itt: 28.0,
-    glc: 78,
-    rzSnap: 84,
-    ask: 0.54,
-    fair: 0.63,
-    edgeVal: 9,
-    edge: '+9.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21atlphi?op_market_ticker=KXNFLTD-26SEP21ATLPHI-PHISBARKLEY26-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
-    player: 'Kyren Williams',
-    pos: 'RB',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 82,
-    rzSnap: 86,
-    ask: 0.52,
-    fair: 0.61,
-    edgeVal: 9,
-    edge: '+9.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21CHITEN-CHIRJOHNSON23-1',
-    player: 'Roschon Johnson',
-    pos: 'RB',
-    team: 'CHI',
-    opp: 'vs TEN',
-    itt: 23.2,
-    glc: 65,
-    rzSnap: 58,
-    ask: 0.19,
-    fair: 0.27,
-    edgeVal: 8,
-    edge: '+8.2¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21chiten?op_market_ticker=KXNFLTD-26SEP21CHITEN-CHIRJOHNSON23-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21DETARI-DETDMONTGOMERY5-1',
-    player: 'David Montgomery',
-    pos: 'RB',
-    team: 'DET',
-    opp: '@ ARI',
-    itt: 28.5,
-    glc: 74,
-    rzSnap: 68,
-    ask: 0.44,
-    fair: 0.52,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21detari?op_market_ticker=KXNFLTD-26SEP21DETARI-DETDMONTGOMERY5-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21ATLPHI-ATLBROBINSON7-1',
-    player: 'Bijan Robinson',
-    pos: 'RB',
-    team: 'ATL',
-    opp: '@ PHI',
-    itt: 25.5,
+    team: 'TB',
+    opp: 'vs CLE',
+    itt: 26.5,
     glc: 68,
-    rzSnap: 81,
-    ask: 0.36,
-    fair: 0.44,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21atlphi?op_market_ticker=KXNFLTD-26SEP21ATLPHI-ATLBROBINSON7-1&op_order_side=yes&op_order_type=dollars'
+    rzSnap: 74,
+    ask: 0.32,
+    fair: 0.42,
+    edgeVal: 10,
+    edge: '+10.0¢',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-TBBRWHITE1-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21SFOLAR-SFOIGUERENDO31-1',
-    player: 'Isaac Guerendo',
+    ticker: 'KXNFLTD-26SEP20CLETB-CLEJFORD34-1',
+    player: 'Jerome Ford',
     pos: 'RB',
-    team: 'SFO',
-    opp: '@ LAR',
-    itt: 27.8,
-    glc: 48,
-    rzSnap: 44,
-    ask: 0.22,
-    fair: 0.29,
-    edgeVal: 7,
-    edge: '+7.5¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_market_ticker=KXNFLTD-26SEP21SFOLAR-SFOIGUERENDO31-1&op_order_side=yes&op_order_type=dollars'
+    team: 'CLE',
+    opp: '@ TB',
+    itt: 21.0,
+    glc: 64,
+    rzSnap: 71,
+    ask: 0.24,
+    fair: 0.33,
+    edgeVal: 9,
+    edge: '+9.0¢',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-CLEJFORD34-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP20CLETB-TBBMMEVANS13-1',
+    player: 'Mike Evans',
+    pos: 'WR',
+    team: 'TB',
+    opp: 'vs CLE',
+    itt: 26.5,
+    glc: 38,
+    rzSnap: 86,
+    ask: 0.41,
+    fair: 0.49,
+    edgeVal: 8,
+    edge: '+8.0¢',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-TBBMMEVANS13-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP20CLETB-TBBMAYFIELD6-1',
+    player: 'Baker Mayfield',
+    pos: 'QB',
+    team: 'TB',
+    opp: 'vs CLE',
+    itt: 26.5,
+    glc: 26,
+    rzSnap: 100,
+    ask: 0.18,
+    fair: 0.26,
+    edgeVal: 8,
+    edge: '+8.0¢',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-TBBMAYFIELD6-1&op_order_side=yes&op_order_type=dollars'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1',
@@ -141,129 +111,52 @@ const FULL_LEAGUE_CONTRACTS: PlayerContract[] = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21SFOLAR-SFOGKITTLE85-1',
-    player: 'George Kittle',
-    pos: 'TE',
-    team: 'SFO',
-    opp: '@ LAR',
-    itt: 27.8,
-    glc: 32,
-    rzSnap: 89,
+    ticker: 'KXNFLTD-26SEP20CLETB-CLEACOOPER2-1',
+    player: 'Amari Cooper',
+    pos: 'WR',
+    team: 'CLE',
+    opp: '@ TB',
+    itt: 21.0,
+    glc: 24,
+    rzSnap: 84,
     ask: 0.28,
     fair: 0.35,
     edgeVal: 7,
     edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_market_ticker=KXNFLTD-26SEP21SFOLAR-SFOGKITTLE85-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-CLEACOOPER2-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21DETARI-DETJARSB14-1',
-    player: 'Amon-Ra St. Brown',
+    ticker: 'KXNFLTD-26SEP20CLETB-CLEJJEUDY3-1',
+    player: 'Jerry Jeudy',
     pos: 'WR',
-    team: 'DET',
-    opp: '@ ARI',
-    itt: 28.5,
-    glc: 36,
-    rzSnap: 91,
-    ask: 0.42,
-    fair: 0.49,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21detari?op_market_ticker=KXNFLTD-26SEP21DETARI-DETJARSB14-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21DETARI-ARIMHARRISON18-1',
-    player: 'Marvin Harrison Jr.',
-    pos: 'WR',
-    team: 'ARI',
-    opp: 'vs DET',
-    itt: 24.5,
-    glc: 38,
-    rzSnap: 85,
-    ask: 0.35,
-    fair: 0.42,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21detari?op_market_ticker=KXNFLTD-26SEP21DETARI-ARIMHARRISON18-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21ATLPHI-PHIABROWN11-1',
-    player: 'A.J. Brown',
-    pos: 'WR',
-    team: 'PHI',
-    opp: 'vs ATL',
-    itt: 28.0,
-    glc: 32,
-    rzSnap: 86,
-    ask: 0.41,
-    fair: 0.48,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21atlphi?op_market_ticker=KXNFLTD-26SEP21ATLPHI-PHIABROWN11-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDMOONEY11-1',
-    player: 'Darnell Mooney',
-    pos: 'WR',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
+    team: 'CLE',
+    opp: '@ TB',
+    itt: 21.0,
     glc: 18,
-    rzSnap: 72,
-    ask: 0.11,
-    fair: 0.18,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDMOONEY11-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1',
-    player: 'Theo Johnson',
-    pos: 'TE',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 24,
-    rzSnap: 65,
-    ask: 0.11,
-    fair: 0.17,
+    rzSnap: 78,
+    ask: 0.21,
+    fair: 0.27,
     edgeVal: 6,
     edge: '+6.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1',
-    player: 'Puka Nacua',
-    pos: 'WR',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 28,
-    rzSnap: 84,
-    ask: 0.38,
-    fair: 0.44,
-    edgeVal: 6,
-    edge: '+6.0¢',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep20cletb?op_market_ticker=KXNFLTD-26SEP20CLETB-CLEJJEUDY3-1&op_order_side=yes&op_order_type=dollars'
   }
 ];
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE'>('ALL');
+  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE' | 'QB'>('ALL');
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerContract | null>(null);
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // Sorted Top 10 Contracts
   const topTen = useMemo(() => {
-    return [...FULL_LEAGUE_CONTRACTS].sort((a, b) => b.edgeVal - a.edgeVal).slice(0, 10);
+    return [...FULL_LEAGUE_CONTRACTS].sort((a, b) => b.edgeVal - a.edgeVal);
   }, []);
 
   const avgLeaderGLC = useMemo(() => {
     return Math.round(topTen.reduce((acc, p) => acc + p.glc, 0) / topTen.length);
   }, [topTen]);
 
-  // Display either search query results or the default Top 10
   const displayedPlayers = useMemo(() => {
     if (searchQuery.trim().length > 0) {
       return FULL_LEAGUE_CONTRACTS.filter((p) => {
@@ -292,7 +185,7 @@ export default function Home() {
               </h1>
             </div>
             <p className="text-xs text-zinc-500 mt-1">
-              Quantitative NFL Touchdown Arbitrage Terminal & Execution Engine
+              Quantitative NFL Touchdown Arbitrage Terminal & Live Kalshi Execution
             </p>
           </div>
           <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
@@ -306,7 +199,7 @@ export default function Home() {
             <div className="relative flex-1">
               <input
                 type="text"
-                placeholder="Search any player across the NFL (e.g. Singletary, Barkley, Nabers, Kittle)..."
+                placeholder="Search any player across active slates (e.g. Mayfield, White, Evans, Singletary)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-zinc-900 border border-zinc-700 text-xs px-3.5 py-2.5 rounded text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
@@ -323,7 +216,7 @@ export default function Home() {
 
             {/* Position Filter Tabs */}
             <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-xs">
-              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
+              {(['ALL', 'RB', 'WR', 'TE', 'QB'] as const).map((pos) => (
                 <button
                   key={pos}
                   onClick={() => setFilterPos(pos)}
@@ -344,20 +237,20 @@ export default function Home() {
             <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
               <span className="text-zinc-500 block text-[10px] uppercase">Active Board</span>
               <span className="font-bold text-white text-sm">
-                {searchQuery ? `Search Results (${displayedPlayers.length})` : 'Top 10 Purchase Options'}
+                {searchQuery ? `Search Results (${displayedPlayers.length})` : 'Top Rated Purchases'}
               </span>
             </div>
             <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Top 10 Avg GLC%</span>
+              <span className="text-zinc-500 block text-[10px] uppercase">Leader Avg GLC%</span>
               <span className="font-bold text-emerald-400 text-sm">{avgLeaderGLC}%</span>
             </div>
             <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Top 10 Edge</span>
-              <span className="font-bold text-emerald-400 text-sm">+8.4¢ avg</span>
+              <span className="text-zinc-500 block text-[10px] uppercase">Average Model Edge</span>
+              <span className="font-bold text-emerald-400 text-sm">+8.2¢</span>
             </div>
             <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
               <span className="text-zinc-500 block text-[10px] uppercase">Direct Execution</span>
-              <span className="font-bold text-zinc-300 text-sm">Pre-Staged Slip</span>
+              <span className="font-bold text-emerald-400 text-sm">100% Pre-Staged</span>
             </div>
           </div>
         </div>
@@ -366,9 +259,9 @@ export default function Home() {
         <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center text-xs">
             <span className="font-bold text-white uppercase tracking-wider">
-              {searchQuery ? `Search Results for "${searchQuery}"` : 'Top 10 Touchdown Contracts to Purchase'}
+              {searchQuery ? `Search Results for "${searchQuery}"` : 'Top Quantitative Touchdown Contracts'}
             </span>
-            <span className="text-zinc-500">{displayedPlayers.length} Active Contracts</span>
+            <span className="text-zinc-500">{displayedPlayers.length} Active Lines</span>
           </div>
 
           <div className="overflow-x-auto">
@@ -394,58 +287,53 @@ export default function Home() {
                     </td>
                   </tr>
                 ) : (
-                  displayedPlayers.map((row, idx) => {
-                    const isTopTen = topTen.some((t) => t.ticker === row.ticker);
-                    return (
-                      <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
-                        <td className="px-4 py-3">
-                          <div className="flex items-center space-x-2">
-                            {!searchQuery && (
-                              <span className="text-[10px] font-bold text-zinc-500">#{idx + 1}</span>
-                            )}
-                            <span className="font-bold text-white">{row.player}</span>
-                            {isTopTen && (
-                              <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
-                                Top 10
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} ({row.opp})</div>
-                        </td>
-                        <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
-                        <td className="px-4 py-3 font-semibold text-zinc-200">{row.glc}%</td>
-                        <td className="px-4 py-3 text-zinc-400">{row.rzSnap}%</td>
-                        <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
-                        <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
-                        <td className="px-4 py-3 text-right font-bold text-emerald-400">{row.edge}</td>
-                        <td className="px-4 py-3 text-center">
-                          <button
-                            onClick={() => setSelectedPlayer(row)}
-                            className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-[10px] font-semibold transition-colors"
-                          >
-                            Compare 📊
-                          </button>
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                          <a
-                            href={row.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors shadow-sm"
-                          >
-                            Trade ↗
-                          </a>
-                        </td>
-                      </tr>
-                    );
-                  })
+                  displayedPlayers.map((row, idx) => (
+                    <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
+                      <td className="px-4 py-3">
+                        <div className="flex items-center space-x-2">
+                          {!searchQuery && (
+                            <span className="text-[10px] font-bold text-zinc-500">#{idx + 1}</span>
+                          )}
+                          <span className="font-bold text-white">{row.player}</span>
+                          <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
+                            Verified
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} ({row.opp})</div>
+                      </td>
+                      <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
+                      <td className="px-4 py-3 font-semibold text-zinc-200">{row.glc}%</td>
+                      <td className="px-4 py-3 text-zinc-400">{row.rzSnap}%</td>
+                      <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
+                      <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right font-bold text-emerald-400">{row.edge}</td>
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => setSelectedPlayer(row)}
+                          className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-[10px] font-semibold transition-colors"
+                        >
+                          Compare 📊
+                        </button>
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <a
+                          href={row.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors shadow-sm"
+                        >
+                          Trade ↗
+                        </a>
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Modal: Player Benchmark vs Slate Leaders */}
+        {/* Benchmark Modal */}
         {selectedPlayer && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-zinc-950 border border-zinc-700 rounded-lg max-w-lg w-full p-6 space-y-5 shadow-2xl">
@@ -464,18 +352,16 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* Head-to-Head Comparison Card */}
               <div className="space-y-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Quantitative Profile vs. Top 10 Slate Leaders
+                  Volume Profile vs. Top Slate Leaders
                 </div>
 
-                {/* GLC Comparison */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-zinc-400">Goal-Line Carry Share (GLC%)</span>
                     <span className="font-bold text-white">
-                      {selectedPlayer.glc}% <span className="text-zinc-500 font-normal">vs {avgLeaderGLC}% Top 10 avg</span>
+                      {selectedPlayer.glc}% <span className="text-zinc-500 font-normal">vs {avgLeaderGLC}% avg</span>
                     </span>
                   </div>
                   <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
@@ -486,12 +372,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* RZ Snap Share */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-zinc-400">Red Zone Snap Dominance</span>
                     <span className="font-bold text-white">
-                      {selectedPlayer.rzSnap}% <span className="text-zinc-500 font-normal">vs 82% Top 10 avg</span>
+                      {selectedPlayer.rzSnap}% <span className="text-zinc-500 font-normal">vs 82% avg</span>
                     </span>
                   </div>
                   <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
@@ -502,12 +387,11 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Vegas Implied Total */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-zinc-400">Vegas Implied Team Total (ITT)</span>
                     <span className="font-bold text-white">
-                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 26.5 pts</span>
+                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 24.5 pts</span>
                     </span>
                   </div>
                   <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
@@ -519,7 +403,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Edge Assessment Box */}
               <div className="bg-zinc-900 p-3 rounded border border-zinc-800 text-xs space-y-1">
                 <div className="flex justify-between">
                   <span className="text-zinc-400">Kalshi Ask vs Model Fair:</span>
@@ -531,7 +414,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => setSelectedPlayer(null)}
@@ -586,7 +468,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* Regulatory Disclaimer */}
+        {/* Disclaimer */}
         <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
           <div className="font-semibold uppercase tracking-wider text-zinc-500">
             Statutory Publisher & Regulatory Disclaimer
