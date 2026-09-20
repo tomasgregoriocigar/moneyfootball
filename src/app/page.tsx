@@ -4,74 +4,74 @@ import React, { useState } from 'react';
 
 const SLATE_EDGES = [
   {
-    ticker: 'KXNFLTD-DSING',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
     player: 'Devin Singletary',
     pos: 'RB',
     team: 'NYG',
-    opp: '@DAL',
+    opp: 'vs LAR',
     itt: 24.5,
     glc: 72,
-    ask: 0.25,
-    fair: 0.34,
-    edge: '+9.0¢',
+    ask: 0.17,
+    fair: 0.28,
+    edge: '+11.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-RJOHN',
+    ticker: 'KXNFLTD-26SEP21CHITEN-CHIRJOHNSON-1',
     player: 'Roschon Johnson',
     pos: 'RB',
     team: 'CHI',
-    opp: 'TEN',
+    opp: 'vs TEN',
     itt: 23.2,
     glc: 65,
     ask: 0.19,
     fair: 0.27,
     edge: '+8.2¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21chiten?op_order_side=yes'
   },
   {
-    ticker: 'KXNFLTD-IGUER',
+    ticker: 'KXNFLTD-26SEP21SFOLAR-SFOIGUERENDO-1',
     player: 'Isaac Guerendo',
     pos: 'RB',
     team: 'SFO',
-    opp: '@LAR',
+    opp: '@ LAR',
     itt: 27.8,
     glc: 48,
     ask: 0.22,
     fair: 0.29,
     edge: '+7.5¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_order_side=yes'
   },
   {
-    ticker: 'KXNFLTD-CSTEE',
+    ticker: 'KXNFLTD-26SEP21KCCLAC-KCCCSTEELE-1',
     player: 'Carson Steele',
     pos: 'RB',
     team: 'KCC',
-    opp: 'LAC',
+    opp: '@ LAC',
     itt: 26.4,
     glc: 38,
     ask: 0.16,
     fair: 0.21,
     edge: '+5.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21kcclac?op_order_side=yes'
   },
   {
-    ticker: 'KXNFLTD-JDOWNS',
+    ticker: 'KXNFLTD-26SEP21INDCHI-INDJDOWNS-1',
     player: 'Josh Downs',
     pos: 'WR',
     team: 'IND',
-    opp: 'CHI',
+    opp: 'vs CHI',
     itt: 20.8,
     glc: 22,
     ask: 0.27,
     fair: 0.25,
     edge: '-1.5¢',
     action: 'NEUTRAL',
-    url: 'https://kalshi.com'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21indchi?op_order_side=yes'
   }
 ];
 
@@ -138,7 +138,7 @@ export default function Home() {
                   <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-bold text-white">{row.player}</div>
-                      <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} {row.opp} • {row.ticker}</div>
+                      <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} {row.opp}</div>
                     </td>
                     <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
                     <td className="px-4 py-3 text-zinc-300">{row.glc}%</td>
