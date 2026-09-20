@@ -1,24 +1,7 @@
 import React from 'react';
-import TerminalClient from './TerminalClient';
+import ClientBoard, { PlayerContract } from './ClientBoard';
 
-export const revalidate = 60; // Auto-refresh data from Kalshi every 60s
-
-interface PlayerContract {
-  ticker: string;
-  eventTicker: string;
-  player: string;
-  pos: string;
-  team: string;
-  opp: string;
-  itt: number;
-  glc: number;
-  rzSnap: number;
-  ask: number;
-  fair: number;
-  edgeVal: number;
-  edge: string;
-  url: string;
-}
+export const revalidate = 60; // Auto-refresh server data every 60s
 
 const QUANT_MODEL_DB = [
   { name: 'Devin Singletary', pos: 'RB', team: 'NYG', itt: 24.5, glc: 72, rzSnap: 78 },
@@ -60,7 +43,6 @@ function findQuantStats(kalshiText: string) {
   return null;
 }
 
-// Fallback verified anchors if Kalshi is between live trading sessions
 const VERIFIED_ANCHORS: PlayerContract[] = [
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
@@ -132,7 +114,6 @@ export default async function Page() {
   let contracts: PlayerContract[] = [];
 
   try {
-    // Server-side fetch (NO CORS restrictions)
     const res = await fetch(
       'https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXNFLGAME&status=open&with_nested_markets=true',
       {
@@ -199,19 +180,14 @@ export default async function Page() {
     console.error('Server fetch failed:', e);
   }
 
-  // If live query had no active markets, merge with verified anchors
-  if (contracts.length === 0) {
-    contracts = VERIFIED_ANCHORS;
-  } else {
-    // Ensure verified anchors are always included
-    for (const a of VERIFIED_ANCHORS) {
-      if (!contracts.some((c) => c.ticker === a.ticker)) {
-        contracts.push(a);
-      }
+  // Ensure verified anchors are always included
+  for (const a of VERIFIED_ANCHORS) {
+    if (!contracts.some((c) => c.ticker === a.ticker)) {
+      contracts.push(a);
     }
   }
 
   contracts.sort((a, b) => b.edgeVal - a.edgeVal);
 
-  return <TerminalClient initialContracts={contracts} />;
+  return <ClientBoard initialContracts={contracts} />;
 }
