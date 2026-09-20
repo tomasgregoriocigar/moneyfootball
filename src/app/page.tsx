@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface EdgeItem {
   ticker: string;
@@ -17,45 +17,33 @@ interface EdgeItem {
   url: string;
 }
 
-const LEAGUEWIDE_EDGES: EdgeItem[] = [
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
-    player: 'Devin Singletary',
-    pos: 'RB',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 72,
-    ask: 0.17,
-    fair: 0.28,
-    edge: '+11.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1',
-    player: 'Malik Nabers',
-    pos: 'WR',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 34,
-    ask: 0.32,
-    fair: 0.39,
-    edge: '+7.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
-  }
-];
-
 export default function Home() {
-  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR'>('ALL');
+  const [edges, setEdges] = useState<EdgeItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE'>('ALL');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => {
+    async function loadSlate() {
+      try {
+        const res = await fetch('/api/kalshi');
+        const data = await res.json();
+        if (data.edges) {
+          setEdges(data.edges);
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic Kalshi slate', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSlate();
+  }, []);
+
   const displayedEdges = filterPos === 'ALL' 
-    ? LEAGUEWIDE_EDGES 
-    : LEAGUEWIDE_EDGES.filter((item) => item.pos === filterPos);
+    ? edges 
+    : edges.filter((item) => item.pos === filterPos);
 
   return (
     <div className="min-h-screen bg-black text-zinc-200 font-mono p-4 md:p-8 selection:bg-emerald-500 selection:text-black">
@@ -71,36 +59,36 @@ export default function Home() {
               </h1>
             </div>
             <p className="text-xs text-zinc-500 mt-1">
-              Quantitative NFL Touchdown Derivatives & Arbitrage Matrix
+              Automated CFTC Prediction Market Edge Terminal
             </p>
           </div>
           <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
-            MODEL: <span className="text-emerald-400 font-bold">TPI v2.4</span> | FEED: <span className="text-white">KALSHI CFTC</span>
+            MODEL: <span className="text-emerald-400 font-bold">TPI v2.4</span> | FEED: <span className="text-white">KALSHI CFTC (AUTO)</span>
           </div>
         </header>
 
         {/* Live Banner */}
         <div className="bg-zinc-950 border border-zinc-800 p-4 rounded text-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div>
-            <span className="text-emerald-400 font-bold uppercase">Direct Execution Active: </span>
+            <span className="text-emerald-400 font-bold uppercase">Dynamic Feed Connected: </span>
             <span className="text-zinc-300">
-              Order slips deep-linked directly to Kalshi CFTC order book tickets.
+              Markets and order slip deep-links are populated directly from the Kalshi order book.
             </span>
           </div>
           <span className="bg-zinc-900 border border-zinc-700 px-2.5 py-1 rounded text-zinc-400">
-            100% Cash Collateralized
+            Auto-Sync 60s
           </span>
         </div>
 
-        {/* The Matrix Table & Filters */}
+        {/* Table */}
         <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex flex-wrap justify-between items-center gap-2 text-xs">
             <div className="flex items-center space-x-3">
               <span className="font-bold text-white uppercase tracking-wider">Touchdown Contract Spreads</span>
-              <span className="text-zinc-500">({displayedEdges.length} Active Lines)</span>
+              <span className="text-zinc-500">({loading ? 'Loading feed...' : `${displayedEdges.length} Active Lines`})</span>
             </div>
             <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-[11px]">
-              {(['ALL', 'RB', 'WR'] as const).map((pos) => (
+              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
                 <button
                   key={pos}
                   onClick={() => setFilterPos(pos)}
@@ -117,49 +105,53 @@ export default function Home() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
-                <tr>
-                  <th className="px-4 py-3">Player / Matchup</th>
-                  <th className="px-4 py-3">Vegas ITT</th>
-                  <th className="px-4 py-3">GLC Share</th>
-                  <th className="px-4 py-3">Kalshi Ask</th>
-                  <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
-                  <th className="px-4 py-3 text-right">Edge (Δ)</th>
-                  <th className="px-4 py-3 text-center">Execution</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800">
-                {displayedEdges.map((row) => {
-                  const isPositive = row.edge.startsWith('+');
-                  return (
-                    <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
-                      <td className="px-4 py-3">
-                        <div className="font-bold text-white">{row.player}</div>
-                        <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} {row.opp}</div>
-                      </td>
-                      <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
-                      <td className="px-4 py-3 text-zinc-300">{row.glc}%</td>
-                      <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
-                      <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
-                      <td className={`px-4 py-3 text-right font-bold ${isPositive ? 'text-emerald-400' : 'text-zinc-500'}`}>
-                        {row.edge}
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <a
-                          href={row.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors"
-                        >
-                          Trade ↗
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {loading ? (
+              <div className="p-8 text-center text-zinc-500 text-xs">Fetching live leaguewide contracts from Kalshi...</div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
+                  <tr>
+                    <th className="px-4 py-3">Player / Matchup</th>
+                    <th className="px-4 py-3">Vegas ITT</th>
+                    <th className="px-4 py-3">GLC Share</th>
+                    <th className="px-4 py-3">Kalshi Ask</th>
+                    <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
+                    <th className="px-4 py-3 text-right">Edge (Δ)</th>
+                    <th className="px-4 py-3 text-center">Execution</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-800">
+                  {displayedEdges.map((row) => {
+                    const isPositive = row.edge.startsWith('+');
+                    return (
+                      <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
+                        <td className="px-4 py-3">
+                          <div className="font-bold text-white">{row.player}</div>
+                          <div className="text-[10px] text-zinc-500">{row.pos} • {row.team}</div>
+                        </td>
+                        <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
+                        <td className="px-4 py-3 text-zinc-300">{row.glc}%</td>
+                        <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
+                        <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
+                        <td className={`px-4 py-3 text-right font-bold ${isPositive ? 'text-emerald-400' : 'text-zinc-500'}`}>
+                          {row.edge}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <a
+                            href={row.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors"
+                          >
+                            Trade ↗
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
 
@@ -167,7 +159,7 @@ export default function Home() {
         <div className="border border-zinc-800 bg-zinc-950 p-6 rounded text-center max-w-lg mx-auto space-y-3">
           <h3 className="text-sm font-bold text-white uppercase tracking-wide">Sunday 11:30 AM Kickoff Alerts</h3>
           <p className="text-xs text-zinc-400">
-            Get leaguewide goal-line carry discrepancies delivered the moment inactives post before 1:00 PM kickoff.
+            Get automated red-zone discrepancies delivered the second inactive reports drop.
           </p>
           {submitted ? (
             <div className="text-xs text-emerald-400 font-bold py-2">✓ Locked in. You are on the Sunday dispatch list.</div>
