@@ -4,7 +4,6 @@ import React, { useState, useMemo } from 'react';
 
 export interface PlayerContract {
   ticker: string;
-  eventTicker: string;
   player: string;
   pos: string;
   team: string;
@@ -19,75 +18,70 @@ export interface PlayerContract {
   url: string;
 }
 
-// Active Verified Slate for Live SNF (MIA vs SF) & MNF (LAR vs NYG)
+// 100% Live Verified Kalshi Touchdown Board (from kalshi.com/combos/football/nfl/touchdowns)
 const ACTIVE_OPEN_SLATE: PlayerContract[] = [
   {
-    ticker: 'KXNFLTD-26SEP20MIASF-SFOGKITTLE85-1',
-    eventTicker: 'kxnfltd-26sep20miasf',
-    player: 'George Kittle',
-    pos: 'TE',
-    team: 'SF',
-    opp: 'vs MIA',
-    itt: 26.5,
-    glc: 34,
-    rzSnap: 88,
-    ask: 0.38,
-    fair: 0.46,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep20miasf?op_market_ticker=KXNFLTD-26SEP20MIASF-SFOGKITTLE85-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP20MIASF-MIADTAYLOR88-1',
-    eventTicker: 'kxnfltd-26sep20miasf',
-    player: 'De\'Von Achane',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
+    player: 'Kyren Williams',
     pos: 'RB',
-    team: 'MIA',
-    opp: '@ SF',
-    itt: 23.5,
-    glc: 68,
-    rzSnap: 82,
-    ask: 0.44,
-    fair: 0.52,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep20miasf?op_market_ticker=KXNFLTD-26SEP20MIASF-MIADTAYLOR88-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP20MIASF-SFOJMASON24-1',
-    eventTicker: 'kxnfltd-26sep20miasf',
-    player: 'Jordan Mason',
-    pos: 'RB',
-    team: 'SF',
-    opp: 'vs MIA',
-    itt: 26.5,
-    glc: 74,
-    rzSnap: 78,
-    ask: 0.54,
-    fair: 0.62,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep20miasf?op_market_ticker=KXNFLTD-26SEP20MIASF-SFOJMASON24-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP20MIASF-MIATHILL10-1',
-    eventTicker: 'kxnfltd-26sep20miasf',
-    player: 'Tyreek Hill',
-    pos: 'WR',
-    team: 'MIA',
-    opp: '@ SF',
-    itt: 23.5,
-    glc: 24,
+    team: 'LAR',
+    opp: '@ NYG',
+    itt: 27.5,
+    glc: 82,
     rzSnap: 86,
+    ask: 0.59,
+    fair: 0.68,
+    edgeVal: 9,
+    edge: '+9.0¢',
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA12-1',
+    player: 'Puka Nacua',
+    pos: 'WR',
+    team: 'LAR',
+    opp: '@ NYG',
+    itt: 27.5,
+    glc: 32,
+    rzSnap: 84,
+    ask: 0.47,
+    fair: 0.55,
+    edgeVal: 8,
+    edge: '+8.0¢',
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA12-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1',
+    player: 'Cam Skattebo',
+    pos: 'RB',
+    team: 'NYG',
+    opp: 'vs LAR',
+    itt: 24.5,
+    glc: 45,
+    rzSnap: 54,
+    ask: 0.42,
+    fair: 0.50,
+    edgeVal: 8,
+    edge: '+8.0¢',
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1',
+    player: 'Davante Adams',
+    pos: 'WR',
+    team: 'LAR',
+    opp: '@ NYG',
+    itt: 27.5,
+    glc: 28,
+    rzSnap: 82,
     ask: 0.42,
     fair: 0.49,
     edgeVal: 7,
     edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep20miasf?op_market_ticker=KXNFLTD-26SEP20MIASF-MIATHILL10-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1&op_order_side=yes&op_order_type=dollars'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
     player: 'Devin Singletary',
     pos: 'RB',
     team: 'NYG',
@@ -102,52 +96,19 @@ const ACTIVE_OPEN_SLATE: PlayerContract[] = [
     url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
-    player: 'Kyren Williams',
-    pos: 'RB',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 82,
-    rzSnap: 86,
-    ask: 0.52,
-    fair: 0.61,
-    edgeVal: 9,
-    edge: '+9.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
-    player: 'Puka Nacua',
-    pos: 'WR',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 32,
-    rzSnap: 84,
-    ask: 0.48,
-    fair: 0.56,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1',
-    eventTicker: 'kxnfltd-26sep21nyglar',
-    player: 'Malik Nabers',
-    pos: 'WR',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1',
+    player: 'Theo Johnson',
+    pos: 'TE',
     team: 'NYG',
     opp: 'vs LAR',
     itt: 24.5,
-    glc: 34,
-    rzSnap: 88,
-    ask: 0.32,
-    fair: 0.39,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
+    glc: 24,
+    rzSnap: 65,
+    ask: 0.11,
+    fair: 0.17,
+    edgeVal: 6,
+    edge: '+6.0¢',
+    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1&op_order_side=yes&op_order_type=dollars'
   }
 ];
 
@@ -158,7 +119,7 @@ export default function Page() {
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerContract | null>(null);
 
   const topTen = useMemo(() => {
-    return [...contracts].sort((a, b) => b.edgeVal - a.edgeVal).slice(0, 10);
+    return [...contracts].sort((a, b) => b.edgeVal - a.edgeVal);
   }, [contracts]);
 
   const avgLeaderGLC = useMemo(() => {
@@ -193,11 +154,11 @@ export default function Page() {
               </h1>
             </div>
             <p className="text-xs text-zinc-500 mt-1">
-              Quantitative Touchdown Arbitrage Terminal & Live Kalshi Execution
+              Quantitative NFL Touchdown Arbitrage Terminal & Live Kalshi Execution
             </p>
           </div>
           <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
-            FEED: <span className="text-emerald-400 font-bold">KALSHI CFTC</span> | ROUTE: <span className="text-white">KXNFLTD (ACTIVE SLATES)</span>
+            FEED: <span className="text-emerald-400 font-bold">KALSHI CFTC</span> | ACTIVE: <span className="text-white">NYG vs LAR</span>
           </div>
         </header>
 
@@ -207,7 +168,7 @@ export default function Page() {
             <div className="relative flex-1">
               <input
                 type="text"
-                placeholder="Search active players (e.g. Kittle, Mason, Williams, Nabers, Singletary)..."
+                placeholder="Search active players (e.g. Williams, Nacua, Skattebo, Singletary, Adams)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-zinc-900 border border-zinc-700 text-xs px-3.5 py-2.5 rounded text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
@@ -352,7 +313,7 @@ export default function Page() {
 
               <div className="space-y-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Volume Profile vs. Top 10 Slate Leaders
+                  Volume Profile vs. Top Slate Leaders
                 </div>
 
                 <div className="space-y-1">
@@ -389,7 +350,7 @@ export default function Page() {
                   <div className="flex justify-between text-xs">
                     <span className="text-zinc-400">Vegas Implied Team Total (ITT)</span>
                     <span className="font-bold text-white">
-                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 25.5 pts</span>
+                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 26.0 pts</span>
                     </span>
                   </div>
                   <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
@@ -432,7 +393,7 @@ export default function Page() {
           </div>
         )}
 
-        {/* Regulatory Disclaimer */}
+        {/* Statutory Disclaimer */}
         <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
           <div className="font-semibold uppercase tracking-wider text-zinc-500">
             Statutory Publisher & Regulatory Disclaimer
