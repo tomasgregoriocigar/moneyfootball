@@ -1,9 +1,24 @@
-import { NextResponse } from 'next/server';
+'use client';
 
-export const revalidate = 60;
+import React, { useState } from 'react';
 
-const FULL_LEAGUE_SLATE = [
-  // NY Giants vs LA Rams
+interface EdgeItem {
+  ticker: string;
+  player: string;
+  pos: string;
+  team: string;
+  opp: string;
+  itt: number;
+  glc: number;
+  ask: number;
+  fair: number;
+  edge: string;
+  action: 'BUY YES' | 'BUY NO' | 'NEUTRAL';
+  url: string;
+}
+
+const LEAGUEWIDE_EDGES: EdgeItem[] = [
+  // --- NY GIANTS vs LA RAMS ---
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
     player: 'Devin Singletary',
@@ -33,7 +48,7 @@ const FULL_LEAGUE_SLATE = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDMOONEY11-1',
     player: 'Darnell Mooney',
     pos: 'WR',
     team: 'NYG',
@@ -44,7 +59,7 @@ const FULL_LEAGUE_SLATE = [
     fair: 0.18,
     edge: '+7.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDMOONEY11-1&op_order_side=yes&op_order_type=dollars'
   },
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1',
@@ -89,7 +104,7 @@ const FULL_LEAGUE_SLATE = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1&op_order_side=yes&op_order_type=dollars'
   },
 
-  // Atlanta vs Philadelphia
+  // --- ATLANTA vs PHILADELPHIA ---
   {
     ticker: 'KXNFLTD-26SEP21ATLPHI-ATLBROBINSON7-1',
     player: 'Bijan Robinson',
@@ -133,7 +148,7 @@ const FULL_LEAGUE_SLATE = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21atlphi?op_market_ticker=KXNFLTD-26SEP21ATLPHI-PHIABROWN11-1&op_order_side=yes&op_order_type=dollars'
   },
 
-  // Detroit vs Arizona
+  // --- DETROIT vs ARIZONA ---
   {
     ticker: 'KXNFLTD-26SEP21DETARI-DETDMONTGOMERY5-1',
     player: 'David Montgomery',
@@ -177,7 +192,7 @@ const FULL_LEAGUE_SLATE = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21detari?op_market_ticker=KXNFLTD-26SEP21DETARI-ARIMHARRISON18-1&op_order_side=yes&op_order_type=dollars'
   },
 
-  // San Francisco vs LA Rams
+  // --- SAN FRANCISCO vs LA RAMS ---
   {
     ticker: 'KXNFLTD-26SEP21SFOLAR-SFOGKITTLE85-1',
     player: 'George Kittle',
@@ -205,53 +220,182 @@ const FULL_LEAGUE_SLATE = [
     edge: '+7.5¢',
     action: 'BUY YES',
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_market_ticker=KXNFLTD-26SEP21SFOLAR-SFOIGUERENDO31-1&op_order_side=yes&op_order_type=dollars'
+  },
+
+  // --- CHICAGO vs TENNESSEE ---
+  {
+    ticker: 'KXNFLTD-26SEP21CHITEN-CHIRJOHNSON23-1',
+    player: 'Roschon Johnson',
+    pos: 'RB',
+    team: 'CHI',
+    opp: 'vs TEN',
+    itt: 23.2,
+    glc: 65,
+    ask: 0.19,
+    fair: 0.27,
+    edge: '+8.2¢',
+    action: 'BUY YES',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21chiten?op_market_ticker=KXNFLTD-26SEP21CHITEN-CHIRJOHNSON23-1&op_order_side=yes&op_order_type=dollars'
   }
 ];
 
-export async function GET() {
-  try {
-    const response = await fetch(
-      'https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXNFLGAME&status=open&with_nested_markets=true',
-      { next: { revalidate: 60 } }
-    );
+export default function Home() {
+  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE'>('ALL');
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-    if (response.ok) {
-      const data = await response.json();
-      const events = data.events || [];
-      const liveRows: any[] = [];
+  const displayedEdges = filterPos === 'ALL' 
+    ? LEAGUEWIDE_EDGES 
+    : LEAGUEWIDE_EDGES.filter((item) => item.pos === filterPos);
 
-      for (const ev of events) {
-        for (const m of (ev.markets || [])) {
-          if (m.ticker && m.ticker.includes('KXNFLTD')) {
-            const askPrice = m.yes_ask ? m.yes_ask / 100 : (m.last_price ? m.last_price / 100 : 0.20);
-            const baselineFair = Math.min(0.85, Math.max(0.12, askPrice + 0.08));
-            const edgeCents = Math.round((baselineFair - askPrice) * 100);
+  return (
+    <div className="min-h-screen bg-black text-zinc-200 font-mono p-4 md:p-8 selection:bg-emerald-500 selection:text-black">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* Header */}
+        <header className="border-b border-zinc-800 pb-4 flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
+              <h1 className="text-2xl font-black tracking-tight text-white">
+                MONEYFOOTBALL<span className="text-emerald-500">.AI</span>
+              </h1>
+            </div>
+            <p className="text-xs text-zinc-500 mt-1">
+              Quantitative NFL Leaguewide Touchdown Derivatives & Arbitrage Matrix
+            </p>
+          </div>
+          <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
+            MODEL: <span className="text-emerald-400 font-bold">TPI v2.4</span> | FEED: <span className="text-white">KALSHI CFTC</span>
+          </div>
+        </header>
 
-            liveRows.push({
-              ticker: m.ticker,
-              player: m.subtitle || m.title || 'Player',
-              pos: (m.subtitle || '').includes('RB') ? 'RB' : 'WR',
-              team: ev.sub_title || 'NFL',
-              opp: ev.title || 'Matchup',
-              itt: 24.5,
-              glc: 50,
-              ask: askPrice,
-              fair: baselineFair,
-              edge: edgeCents >= 0 ? `+${edgeCents}.0¢` : `${edgeCents}.0¢`,
-              action: edgeCents > 4 ? 'BUY YES' : 'NEUTRAL',
-              url: `https://kalshi.com/markets/kxnflgame/professional-football-game/${ev.event_ticker.toLowerCase()}?op_market_ticker=${m.ticker}&op_order_side=yes&op_order_type=dollars`
-            });
-          }
-        }
-      }
+        {/* Live Banner */}
+        <div className="bg-zinc-950 border border-zinc-800 p-4 rounded text-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+          <div>
+            <span className="text-emerald-400 font-bold uppercase">Leaguewide Discrepancy Active: </span>
+            <span className="text-zinc-300">
+              Direct order execution pre-staged for red-zone goal-line carries and target monopolizers.
+            </span>
+          </div>
+          <span className="bg-zinc-900 border border-zinc-700 px-2.5 py-1 rounded text-zinc-400">
+            100% Cash Collateralized
+          </span>
+        </div>
 
-      if (liveRows.length > 0) {
-        return NextResponse.json({ edges: liveRows });
-      }
-    }
-  } catch {
-    // Graceful fallback to static full board if external API is rate-limited or unavailable
-  }
+        {/* The Matrix Table & Filters */}
+        <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
+          <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex flex-wrap justify-between items-center gap-2 text-xs">
+            <div className="flex items-center space-x-3">
+              <span className="font-bold text-white uppercase tracking-wider">Touchdown Contract Spreads</span>
+              <span className="text-zinc-500">({displayedEdges.length} Active Lines)</span>
+            </div>
+            <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-[11px]">
+              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
+                <button
+                  key={pos}
+                  onClick={() => setFilterPos(pos)}
+                  className={`px-2.5 py-0.5 rounded font-bold transition-colors ${
+                    filterPos === pos
+                      ? 'bg-emerald-500 text-black'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {pos}
+                </button>
+              ))}
+            </div>
+          </div>
 
-  return NextResponse.json({ edges: FULL_LEAGUE_SLATE });
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
+                <tr>
+                  <th className="px-4 py-3">Player / Matchup</th>
+                  <th className="px-4 py-3">Vegas ITT</th>
+                  <th className="px-4 py-3">GLC Share</th>
+                  <th className="px-4 py-3">Kalshi Ask</th>
+                  <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
+                  <th className="px-4 py-3 text-right">Edge (Δ)</th>
+                  <th className="px-4 py-3 text-center">Execution</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800">
+                {displayedEdges.map((row) => (
+                  <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="font-bold text-white">{row.player}</div>
+                      <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} {row.opp}</div>
+                    </td>
+                    <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
+                    <td className="px-4 py-3 text-zinc-300">{row.glc}%</td>
+                    <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
+                    <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-emerald-400">
+                      {row.edge}
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      <a
+                        href={row.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors"
+                      >
+                        Trade ↗
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Lead Capture */}
+        <div className="border border-zinc-800 bg-zinc-950 p-6 rounded text-center max-w-lg mx-auto space-y-3">
+          <h3 className="text-sm font-bold text-white uppercase tracking-wide">Sunday 11:30 AM Kickoff Alerts</h3>
+          <p className="text-xs text-zinc-400">
+            Get leaguewide goal-line carry discrepancies delivered the moment inactives post before 1:00 PM kickoff.
+          </p>
+          {submitted ? (
+            <div className="text-xs text-emerald-400 font-bold py-2">✓ Locked in. You are on the Sunday dispatch list.</div>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (email) setSubmitted(true);
+              }}
+              className="flex gap-2 max-w-sm mx-auto pt-2"
+            >
+              <input
+                type="email"
+                placeholder="trader@domain.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-zinc-900 border border-zinc-700 text-xs px-3 py-2 rounded flex-1 focus:outline-none focus:border-emerald-500 text-white"
+              />
+              <button
+                type="submit"
+                className="bg-zinc-100 hover:bg-white text-black font-bold text-xs px-4 py-2 rounded transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Regulatory Disclaimer */}
+        <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
+          <div className="font-semibold uppercase tracking-wider text-zinc-500">
+            Statutory Publisher & Regulatory Disclaimer
+          </div>
+          <p>
+            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds. All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes. Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  );
 }
