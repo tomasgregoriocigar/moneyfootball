@@ -33,7 +33,7 @@ const LEAGUEWIDE_EDGES: EdgeItem[] = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS-1',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1',
     player: 'Malik Nabers',
     pos: 'WR',
     team: 'NYG',
@@ -44,82 +44,12 @@ const LEAGUEWIDE_EDGES: EdgeItem[] = [
     fair: 0.39,
     edge: '+7.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1',
-    player: 'Darnell Mooney',
-    pos: 'WR',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 18,
-    ask: 0.11,
-    fair: 0.18,
-    edge: '+7.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON-1',
-    player: 'Theo Johnson',
-    pos: 'TE',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 24,
-    ask: 0.11,
-    fair: 0.17,
-    edge: '+6.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS-1',
-    player: 'Kyren Williams',
-    pos: 'RB',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 82,
-    ask: 0.52,
-    fair: 0.61,
-    edge: '+9.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA-1',
-    player: 'Puka Nacua',
-    pos: 'WR',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 28,
-    ask: 0.38,
-    fair: 0.44,
-    edge: '+6.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGJDART-1',
-    player: 'Jaxson Dart',
-    pos: 'QB',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 12,
-    ask: 0.28,
-    fair: 0.22,
-    edge: '-6.0¢',
-    action: 'NEUTRAL',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGJDART-1&op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS1-1&op_order_side=yes&op_order_type=dollars'
   }
 ];
 
 export default function Home() {
-  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE'>('ALL');
+  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR'>('ALL');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -170,7 +100,7 @@ export default function Home() {
               <span className="text-zinc-500">({displayedEdges.length} Active Lines)</span>
             </div>
             <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-[11px]">
-              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
+              {(['ALL', 'RB', 'WR'] as const).map((pos) => (
                 <button
                   key={pos}
                   onClick={() => setFilterPos(pos)}
