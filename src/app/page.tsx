@@ -18,7 +18,6 @@ interface EdgeItem {
 }
 
 const LEAGUEWIDE_EDGES: EdgeItem[] = [
-  // High-Volume Goal-Line Workhorses
   {
     ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
     player: 'Devin Singletary',
@@ -34,148 +33,88 @@ const LEAGUEWIDE_EDGES: EdgeItem[] = [
     url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21ATLPHI-ATLBROBINSON-1',
-    player: 'Bijan Robinson',
-    pos: 'RB',
-    team: 'ATL',
-    opp: '@ PHI',
-    itt: 25.5,
-    glc: 68,
-    ask: 0.36,
-    fair: 0.44,
-    edge: '+8.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21atlphi?op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21CHITEN-CHIRJOHNSON-1',
-    player: 'Roschon Johnson',
-    pos: 'RB',
-    team: 'CHI',
-    opp: 'vs TEN',
-    itt: 23.2,
-    glc: 65,
-    ask: 0.19,
-    fair: 0.27,
-    edge: '+8.2¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21chiten?op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21SFOLAR-SFOIGUERENDO-1',
-    player: 'Isaac Guerendo',
-    pos: 'RB',
-    team: 'SFO',
-    opp: '@ LAR',
-    itt: 27.8,
-    glc: 48,
-    ask: 0.22,
-    fair: 0.29,
-    edge: '+7.5¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21KCCLAC-KCCCSTEELE-1',
-    player: 'Carson Steele',
-    pos: 'RB',
-    team: 'KCC',
-    opp: '@ LAC',
-    itt: 26.4,
-    glc: 52,
-    ask: 0.16,
-    fair: 0.23,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGMNABERS-1',
+    player: 'Malik Nabers',
+    pos: 'WR',
+    team: 'NYG',
+    opp: 'vs LAR',
+    itt: 24.5,
+    glc: 34,
+    ask: 0.32,
+    fair: 0.39,
     edge: '+7.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21kcclac?op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGMNABERS-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21DETARI-DETDMONTGOMERY-1',
-    player: 'David Montgomery',
-    pos: 'RB',
-    team: 'DET',
-    opp: '@ ARI',
-    itt: 28.5,
-    glc: 74,
-    ask: 0.44,
-    fair: 0.52,
-    edge: '+8.0¢',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1',
+    player: 'Darnell Mooney',
+    pos: 'WR',
+    team: 'NYG',
+    opp: 'vs LAR',
+    itt: 24.5,
+    glc: 18,
+    ask: 0.11,
+    fair: 0.18,
+    edge: '+7.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21detari?op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDMOONEY-1&op_order_side=yes&op_order_type=dollars'
   },
-
-  // Elite Red-Zone Target Monopolizers
   {
-    ticker: 'KXNFLTD-26SEP21SFOLAR-SFOGKITTLE-1',
-    player: 'George Kittle',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON-1',
+    player: 'Theo Johnson',
     pos: 'TE',
-    team: 'SFO',
-    opp: '@ LAR',
-    itt: 27.8,
-    glc: 32,
-    ask: 0.28,
-    fair: 0.35,
-    edge: '+7.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21sfolar?op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21MINHOU-MINJJEFFERSON-1',
-    player: 'Justin Jefferson',
-    pos: 'WR',
-    team: 'MIN',
-    opp: 'vs HOU',
-    itt: 24.0,
-    glc: 28,
-    ask: 0.33,
-    fair: 0.40,
-    edge: '+7.0¢',
-    action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21minhou?op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21CINWAS-CINTMCBRIDE-1',
-    player: 'Tee Higgins',
-    pos: 'WR',
-    team: 'CIN',
-    opp: 'vs WAS',
-    itt: 26.5,
+    team: 'NYG',
+    opp: 'vs LAR',
+    itt: 24.5,
     glc: 24,
-    ask: 0.25,
-    fair: 0.31,
+    ask: 0.11,
+    fair: 0.17,
     edge: '+6.0¢',
     action: 'BUY YES',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21cinwas?op_order_side=yes&op_order_type=dollars'
-  },
-
-  // Mispriced or Overvalued Lines (Neutral / Fade Candidates)
-  {
-    ticker: 'KXNFLTD-26SEP21INDCHI-INDJDOWNS-1',
-    player: 'Josh Downs',
-    pos: 'WR',
-    team: 'IND',
-    opp: 'vs CHI',
-    itt: 20.8,
-    glc: 12,
-    ask: 0.27,
-    fair: 0.22,
-    edge: '-5.0¢',
-    action: 'NEUTRAL',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21indchi?op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON-1&op_order_side=yes&op_order_type=dollars'
   },
   {
-    ticker: 'KXNFLTD-26SEP21DENNYG-DENBNIX-1',
-    player: 'Bo Nix',
-    pos: 'QB',
-    team: 'DEN',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS-1',
+    player: 'Kyren Williams',
+    pos: 'RB',
+    team: 'LAR',
     opp: '@ NYG',
-    itt: 21.0,
-    glc: 22,
-    ask: 0.22,
-    fair: 0.18,
-    edge: '-4.0¢',
+    itt: 27.5,
+    glc: 82,
+    ask: 0.52,
+    fair: 0.61,
+    edge: '+9.0¢',
+    action: 'BUY YES',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA-1',
+    player: 'Puka Nacua',
+    pos: 'WR',
+    team: 'LAR',
+    opp: '@ NYG',
+    itt: 27.5,
+    glc: 28,
+    ask: 0.38,
+    fair: 0.44,
+    edge: '+6.0¢',
+    action: 'BUY YES',
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA-1&op_order_side=yes&op_order_type=dollars'
+  },
+  {
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGJDART-1',
+    player: 'Jaxson Dart',
+    pos: 'QB',
+    team: 'NYG',
+    opp: 'vs LAR',
+    itt: 24.5,
+    glc: 12,
+    ask: 0.28,
+    fair: 0.22,
+    edge: '-6.0¢',
     action: 'NEUTRAL',
-    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21dennyg?op_order_side=yes&op_order_type=dollars'
+    url: 'https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGJDART-1&op_order_side=yes&op_order_type=dollars'
   }
 ];
 
@@ -202,7 +141,7 @@ export default function Home() {
               </h1>
             </div>
             <p className="text-xs text-zinc-500 mt-1">
-              Quantitative NFL Leaguewide Touchdown Derivatives & Arbitrage Matrix
+              Quantitative NFL Touchdown Derivatives & Arbitrage Matrix
             </p>
           </div>
           <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
@@ -213,9 +152,9 @@ export default function Home() {
         {/* Live Banner */}
         <div className="bg-zinc-950 border border-zinc-800 p-4 rounded text-xs flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div>
-            <span className="text-emerald-400 font-bold uppercase">Leaguewide Discrepancy: </span>
+            <span className="text-emerald-400 font-bold uppercase">Direct Execution Active: </span>
             <span className="text-zinc-300">
-              Retail order books systematically underprice secondary goal-line rushers (GLC &gt; 45%) and high-ITT tight ends.
+              Order slips deep-linked directly to Kalshi CFTC order book tickets.
             </span>
           </div>
           <span className="bg-zinc-900 border border-zinc-700 px-2.5 py-1 rounded text-zinc-400">
@@ -230,7 +169,6 @@ export default function Home() {
               <span className="font-bold text-white uppercase tracking-wider">Touchdown Contract Spreads</span>
               <span className="text-zinc-500">({displayedEdges.length} Active Lines)</span>
             </div>
-            {/* Position Filter Tabs */}
             <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-[11px]">
               {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
                 <button
