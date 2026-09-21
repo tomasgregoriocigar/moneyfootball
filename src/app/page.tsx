@@ -1,409 +1,209 @@
-'use client';
+import React from 'react';
 
-import React, { useState, useMemo } from 'react';
+// Referral Tracking Constants
+const REF_ID = process.env.NEXT_PUBLIC_KALSHI_REF_ID || '346071dd-bafa-4eca-93c2-13b1e0886a1a';
+const KALSHI_SIGNUP_URL = `https://kalshi.com/sign-up/?referral=${REF_ID}&utm_source=moneyfootball`;
 
-export interface PlayerContract {
-  ticker: string;
+interface ContractData {
+  rank: number;
   player: string;
-  pos: string;
-  team: string;
-  opp: string;
-  itt: number;
+  positionTeam: string;
+  vegasItt: number;
   glc: number;
   rzSnap: number;
-  ask: number;
-  fair: number;
-  edgeVal: number;
-  edge: string;
-  url: string;
+  kalshiAsk: number;
+  tpiFair: number;
+  edge: number;
+  ticker: string;
 }
 
-// 100% Live Verified Kalshi Touchdown Board (from kalshi.com/combos/football/nfl/touchdowns)
-const ACTIVE_OPEN_SLATE: PlayerContract[] = [
+const CONTRACTS: ContractData[] = [
   {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
-    player: 'Kyren Williams',
-    pos: 'RB',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 82,
-    rzSnap: 86,
-    ask: 0.59,
-    fair: 0.68,
-    edgeVal: 9,
-    edge: '+9.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA12-1',
-    player: 'Puka Nacua',
-    pos: 'WR',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 32,
-    rzSnap: 84,
-    ask: 0.47,
-    fair: 0.55,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARPNACUA12-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1',
-    player: 'Cam Skattebo',
-    pos: 'RB',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
-    glc: 45,
-    rzSnap: 54,
-    ask: 0.42,
-    fair: 0.50,
-    edgeVal: 8,
-    edge: '+8.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1',
-    player: 'Davante Adams',
-    pos: 'WR',
-    team: 'LAR',
-    opp: '@ NYG',
-    itt: 27.5,
-    glc: 28,
-    rzSnap: 82,
-    ask: 0.42,
-    fair: 0.49,
-    edgeVal: 7,
-    edge: '+7.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1&op_order_side=yes&op_order_type=dollars'
-  },
-  {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
+    rank: 1,
     player: 'Devin Singletary',
-    pos: 'RB',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
+    positionTeam: 'RB • NYG (vs LAR)',
+    vegasItt: 24.5,
     glc: 72,
     rzSnap: 78,
-    ask: 0.17,
-    fair: 0.28,
-    edgeVal: 11,
-    edge: '+11.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1&op_order_side=yes&op_order_type=dollars'
+    kalshiAsk: 0.17,
+    tpiFair: 0.28,
+    edge: 11.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-DSINGLETARY',
   },
   {
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1',
+    rank: 2,
+    player: 'Kyren Williams',
+    positionTeam: 'RB • LAR (@ NYG)',
+    vegasItt: 27.5,
+    glc: 82,
+    rzSnap: 86,
+    kalshiAsk: 0.59,
+    tpiFair: 0.68,
+    edge: 9.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-KWILLIAMS',
+  },
+  {
+    rank: 3,
+    player: 'Puka Nacua',
+    positionTeam: 'WR • LAR (@ NYG)',
+    vegasItt: 27.5,
+    glc: 32,
+    rzSnap: 84,
+    kalshiAsk: 0.47,
+    tpiFair: 0.55,
+    edge: 8.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-PNACUA',
+  },
+  {
+    rank: 4,
+    player: 'Cam Skattebo',
+    positionTeam: 'RB • NYG (vs LAR)',
+    vegasItt: 24.5,
+    glc: 45,
+    rzSnap: 54,
+    kalshiAsk: 0.42,
+    tpiFair: 0.50,
+    edge: 8.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-CSKATTEBO',
+  },
+  {
+    rank: 5,
+    player: 'Davante Adams',
+    positionTeam: 'WR • LAR (@ NYG)',
+    vegasItt: 27.5,
+    glc: 28,
+    rzSnap: 82,
+    kalshiAsk: 0.42,
+    tpiFair: 0.49,
+    edge: 7.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1',
+  },
+  {
+    rank: 6,
     player: 'Theo Johnson',
-    pos: 'TE',
-    team: 'NYG',
-    opp: 'vs LAR',
-    itt: 24.5,
+    positionTeam: 'TE • NYG (vs LAR)',
+    vegasItt: 24.5,
     glc: 24,
     rzSnap: 65,
-    ask: 0.11,
-    fair: 0.17,
-    edgeVal: 6,
-    edge: '+6.0¢',
-    url: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON84-1&op_order_side=yes&op_order_type=dollars'
-  }
+    kalshiAsk: 0.11,
+    tpiFair: 0.17,
+    edge: 6.0,
+    ticker: 'KXNFLTD-26SEP21NYGLAR-TJOHNSON',
+  },
 ];
 
-export default function Page() {
-  const [contracts] = useState<PlayerContract[]>(ACTIVE_OPEN_SLATE);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterPos, setFilterPos] = useState<'ALL' | 'RB' | 'WR' | 'TE'>('ALL');
-  const [selectedPlayer, setSelectedPlayer] = useState<PlayerContract | null>(null);
-
-  const topTen = useMemo(() => {
-    return [...contracts].sort((a, b) => b.edgeVal - a.edgeVal);
-  }, [contracts]);
-
-  const avgLeaderGLC = useMemo(() => {
-    if (topTen.length === 0) return 72;
-    return Math.round(topTen.reduce((acc, p) => acc + p.glc, 0) / topTen.length);
-  }, [topTen]);
-
-  const displayedPlayers = useMemo(() => {
-    if (searchQuery.trim().length > 0) {
-      return contracts.filter((p) => {
-        const matchName = p.player.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          p.team.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchPos = filterPos === 'ALL' || p.pos === filterPos;
-        return matchName && matchPos;
-      });
-    }
-    if (filterPos === 'ALL') return topTen;
-    return topTen.filter((p) => p.pos === filterPos);
-  }, [contracts, topTen, searchQuery, filterPos]);
+export default function Home() {
+  const buildKalshiUrl = (ticker: string) => {
+    const base = `https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar`;
+    const params = new URLSearchParams({
+      op_market_ticker: ticker,
+      op_order_side: 'yes',
+      op_order_type: 'dollars',
+      referral: REF_ID,
+      utm_source: 'moneyfootball',
+    });
+    return `${base}?${params.toString()}`;
+  };
 
   return (
-    <div className="min-h-screen bg-black text-zinc-200 font-mono p-4 md:p-8 selection:bg-emerald-500 selection:text-black">
-      <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Header */}
-        <header className="border-b border-zinc-800 pb-4 flex flex-wrap justify-between items-center gap-4">
-          <div>
-            <div className="flex items-center space-x-2">
-              <span className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
-              <h1 className="text-2xl font-black tracking-tight text-white">
-                MONEYFOOTBALL<span className="text-emerald-500">.AI</span>
-              </h1>
-            </div>
-            <p className="text-xs text-zinc-500 mt-1">
-              Quantitative NFL Touchdown Arbitrage Terminal & Live Kalshi Execution
-            </p>
-          </div>
-          <div className="text-xs bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded text-zinc-400">
-            FEED: <span className="text-emerald-400 font-bold">KALSHI CFTC</span> | ACTIVE: <span className="text-white">NYG vs LAR</span>
-          </div>
-        </header>
+    <main className="min-h-screen bg-black text-neutral-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-400">
+      {/* Sticky Promotional Affiliate Banner */}
+      <div className="w-full bg-neutral-900 border-b border-neutral-800 px-4 py-2 text-center text-xs font-mono text-neutral-300 flex items-center justify-center gap-2">
+        <span>⚡ Exploit live NFL touchdown mispricings on Kalshi.</span>
+        <a
+          href={KALSHI_SIGNUP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-emerald-400 font-bold underline hover:text-emerald-300 transition-colors inline-flex items-center gap-1"
+        >
+          Claim up to $25 bonus on sign-up ↗
+        </a>
+      </div>
 
-        {/* Global Search Bar */}
-        <div className="bg-zinc-950 border border-zinc-800 p-4 rounded space-y-3">
-          <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder="Search active players (e.g. Williams, Nacua, Skattebo, Singletary, Adams)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-700 text-xs px-3.5 py-2.5 rounded text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-2.5 text-xs text-zinc-400 hover:text-white"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-
-            <div className="flex bg-zinc-900 rounded border border-zinc-800 p-0.5 text-xs">
-              {(['ALL', 'RB', 'WR', 'TE'] as const).map((pos) => (
-                <button
-                  key={pos}
-                  onClick={() => setFilterPos(pos)}
-                  className={`px-3 py-1.5 rounded font-bold transition-colors ${
-                    filterPos === pos
-                      ? 'bg-emerald-500 text-black'
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
-                >
-                  {pos}
-                </button>
-              ))}
-            </div>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Terminal Header */}
+        <div className="flex items-center justify-between border-b border-neutral-800 pb-3 mb-6 font-mono text-xs">
+          <div className="flex items-center gap-2 font-bold tracking-wider text-neutral-100 uppercase">
+            <span>Top Touchdown Contracts to Trade</span>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs border-t border-zinc-900">
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Active Board</span>
-              <span className="font-bold text-white text-sm">
-                {searchQuery ? `Search Results (${displayedPlayers.length})` : 'Top Rated Purchases'}
-              </span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Top 10 Avg GLC%</span>
-              <span className="font-bold text-emerald-400 text-sm">{avgLeaderGLC}%</span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Routing Target</span>
-              <span className="font-bold text-emerald-400 text-sm">KXNFLTD Pre-Staged</span>
-            </div>
-            <div className="bg-zinc-900/50 p-2 rounded border border-zinc-800/80">
-              <span className="text-zinc-500 block text-[10px] uppercase">Order Execution</span>
-              <span className="font-bold text-zinc-300 text-sm">Cash Covered ($)</span>
-            </div>
-          </div>
+          <span className="text-neutral-500 font-medium">6 Active Lines</span>
         </div>
 
-        {/* Matrix Table */}
-        <div className="border border-zinc-800 rounded bg-zinc-950 overflow-hidden">
-          <div className="px-4 py-3 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center text-xs">
-            <span className="font-bold text-white uppercase tracking-wider">
-              {searchQuery ? `Search Results for "${searchQuery}"` : 'Top Touchdown Contracts to Trade'}
-            </span>
-            <span className="text-zinc-500">{displayedPlayers.length} Active Lines</span>
-          </div>
+        {/* Data Table */}
+        <div className="overflow-x-auto border border-neutral-800 rounded-lg bg-neutral-950/60 shadow-2xl">
+          <table className="w-full text-left border-collapse text-xs font-mono">
+            <thead>
+              <tr className="border-b border-neutral-800 text-neutral-500 text-[11px] uppercase tracking-wider bg-neutral-900/40">
+                <th className="py-3 px-4">Rank / Player</th>
+                <th className="py-3 px-3 text-center">Vegas ITT</th>
+                <th className="py-3 px-3 text-center">GLC%</th>
+                <th className="py-3 px-3 text-center">RZ Snap%</th>
+                <th className="py-3 px-3 text-center">Kalshi Ask</th>
+                <th className="py-3 px-3 text-center text-emerald-400">TPI Fair</th>
+                <th className="py-3 px-3 text-center text-emerald-400">Edge (Δ)</th>
+                <th className="py-3 px-3 text-center">Analyze</th>
+                <th className="py-3 px-4 text-center">Execution</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-800/60">
+              {CONTRACTS.map((item) => (
+                <tr key={item.ticker} className="hover:bg-neutral-900/50 transition-colors">
+                  <td className="py-3.5 px-4 font-sans">
+                    <div className="flex items-center gap-2">
+                      <span className="text-neutral-500 font-mono text-xs font-semibold">#{item.rank}</span>
+                      <span className="font-bold text-neutral-100 text-sm">{item.player}</span>
+                      <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 text-[10px] px-1.5 py-0.5 rounded font-mono font-medium tracking-wide">
+                        TOUCHDOWN
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-neutral-400 mt-0.5 font-medium">{item.positionTeam}</div>
+                  </td>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-900 text-zinc-400 uppercase border-b border-zinc-800">
-                <tr>
-                  <th className="px-4 py-3">Rank / Player</th>
-                  <th className="px-4 py-3">Vegas ITT</th>
-                  <th className="px-4 py-3">GLC%</th>
-                  <th className="px-4 py-3">RZ Snap%</th>
-                  <th className="px-4 py-3">Kalshi Ask</th>
-                  <th className="px-4 py-3 text-emerald-400">TPI Fair</th>
-                  <th className="px-4 py-3 text-right">Edge (Δ)</th>
-                  <th className="px-4 py-3 text-center">Analyze</th>
-                  <th className="px-4 py-3 text-center">Execution</th>
+                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">{item.vegasItt.toFixed(1)}</td>
+                  <td className="py-3.5 px-3 text-center font-mono font-bold text-neutral-100">{item.glc}%</td>
+                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">{item.rzSnap}%</td>
+                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">${item.kalshiAsk.toFixed(2)}</td>
+                  <td className="py-3.5 px-3 text-center font-mono font-bold text-emerald-400">${item.tpiFair.toFixed(2)}</td>
+                  <td className="py-3.5 px-3 text-center font-mono font-bold text-emerald-400">+{item.edge.toFixed(1)}¢</td>
+
+                  <td className="py-3.5 px-3 text-center">
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-neutral-800/80 hover:bg-neutral-700 text-neutral-300 border border-neutral-700 text-[11px] font-mono transition"
+                    >
+                      Compare 📊
+                    </button>
+                  </td>
+
+                  <td className="py-3.5 px-4 text-center">
+                    <a
+                      href={buildKalshiUrl(item.ticker)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-mono font-semibold transition"
+                    >
+                      Trade ↗
+                    </a>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-800">
-                {displayedPlayers.map((row, idx) => (
-                  <tr key={row.ticker} className="hover:bg-zinc-900/50 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center space-x-2">
-                        {!searchQuery && (
-                          <span className="text-[10px] font-bold text-zinc-500">#{idx + 1}</span>
-                        )}
-                        <span className="font-bold text-white">{row.player}</span>
-                        <span className="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase">
-                          Touchdown
-                        </span>
-                      </div>
-                      <div className="text-[10px] text-zinc-500">{row.pos} • {row.team} ({row.opp})</div>
-                    </td>
-                    <td className="px-4 py-3 text-zinc-300">{row.itt}</td>
-                    <td className="px-4 py-3 font-semibold text-zinc-200">{row.glc}%</td>
-                    <td className="px-4 py-3 text-zinc-400">{row.rzSnap}%</td>
-                    <td className="px-4 py-3 text-zinc-300">${row.ask.toFixed(2)}</td>
-                    <td className="px-4 py-3 font-semibold text-emerald-400">${row.fair.toFixed(2)}</td>
-                    <td className="px-4 py-3 text-right font-bold text-emerald-400">{row.edge}</td>
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => setSelectedPlayer(row)}
-                        className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-[10px] font-semibold transition-colors"
-                      >
-                        Compare 📊
-                      </button>
-                    </td>
-                    <td className="px-4 py-3 text-center">
-                      <a
-                        href={row.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-block px-3 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded text-[11px] transition-colors shadow-sm"
-                      >
-                        Trade ↗
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* Modal */}
-        {selectedPlayer && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-zinc-950 border border-zinc-700 rounded-lg max-w-lg w-full p-6 space-y-5 shadow-2xl">
-              <div className="flex justify-between items-start border-b border-zinc-800 pb-3">
-                <div>
-                  <h3 className="text-lg font-black text-white">{selectedPlayer.player}</h3>
-                  <p className="text-xs text-zinc-400">
-                    {selectedPlayer.pos} • {selectedPlayer.team} ({selectedPlayer.opp})
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedPlayer(null)}
-                  className="text-zinc-500 hover:text-white text-base font-bold"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-3">
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Volume Profile vs. Top Slate Leaders
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Goal-Line Carry Share (GLC%)</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.glc}% <span className="text-zinc-500 font-normal">vs {avgLeaderGLC}% Top 10 avg</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-emerald-500 h-2 rounded-full"
-                      style={{ width: `${Math.min(selectedPlayer.glc, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Red Zone Snap Dominance</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.rzSnap}% <span className="text-zinc-500 font-normal">vs 82% Top 10 avg</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-cyan-500 h-2 rounded-full"
-                      style={{ width: `${Math.min(selectedPlayer.rzSnap, 100)}%` }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">Vegas Implied Team Total (ITT)</span>
-                    <span className="font-bold text-white">
-                      {selectedPlayer.itt} pts <span className="text-zinc-500 font-normal">vs 26.0 pts</span>
-                    </span>
-                  </div>
-                  <div className="w-full bg-zinc-900 rounded-full h-2 overflow-hidden flex">
-                    <div
-                      className="bg-amber-500 h-2 rounded-full"
-                      style={{ width: `${(selectedPlayer.itt / 32) * 100}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-zinc-900 p-3 rounded border border-zinc-800 text-xs space-y-1">
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Kalshi Ask vs Model Fair:</span>
-                  <span className="font-bold text-white">${selectedPlayer.ask.toFixed(2)} → <span className="text-emerald-400">${selectedPlayer.fair.toFixed(2)}</span></span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">Projected Discrepancy (Edge):</span>
-                  <span className="font-bold text-emerald-400">{selectedPlayer.edge}</span>
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => setSelectedPlayer(null)}
-                  className="flex-1 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded text-xs font-bold transition-colors"
-                >
-                  Close
-                </button>
-                <a
-                  href={selectedPlayer.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex-1 text-center py-2 bg-emerald-500 hover:bg-emerald-400 text-black rounded text-xs font-bold transition-colors"
-                >
-                  Execute on Kalshi ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Statutory Disclaimer */}
-        <footer className="border-t border-zinc-900 pt-6 text-[10px] text-zinc-600 space-y-2 leading-relaxed">
-          <div className="font-semibold uppercase tracking-wider text-zinc-500">
+        {/* Regulatory Disclaimer */}
+        <footer className="mt-12 border-t border-neutral-900 pt-6 text-[11px] text-neutral-500 leading-relaxed font-sans">
+          <div className="font-mono text-neutral-400 text-xs uppercase tracking-wider mb-2 font-semibold">
             Statutory Publisher & Regulatory Disclaimer
           </div>
           <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds. All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes. Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
+            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1, 12]. Moneyfootball is not
+            a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds.
+            All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes[cite: 12].
+            Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss[cite: 12].
           </p>
         </footer>
-
       </div>
-    </div>
+    </main>
   );
 }
