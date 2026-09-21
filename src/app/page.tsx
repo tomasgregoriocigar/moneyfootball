@@ -93,21 +93,9 @@ const CONTRACTS: ContractData[] = [
 ];
 
 export default function Home() {
-  const buildKalshiUrl = (ticker: string) => {
-    const base = `https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar`;
-    const params = new URLSearchParams({
-      op_market_ticker: ticker,
-      op_order_side: 'yes',
-      op_order_type: 'dollars',
-      referral: REF_ID,
-      utm_source: 'moneyfootball',
-    });
-    return `${base}?${params.toString()}`;
-  };
-
   return (
     <main className="min-h-screen bg-black text-neutral-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-400">
-      {/* Sticky Promotional Affiliate Banner */}
+      {/* Referral Sign-Up Banner */}
       <div className="w-full bg-neutral-900 border-b border-neutral-800 px-4 py-2 text-center text-xs font-mono text-neutral-300 flex items-center justify-center gap-2">
         <span>⚡ Exploit live NFL touchdown mispricings on Kalshi.</span>
         <a
@@ -177,7 +165,7 @@ export default function Home() {
 
                   <td className="py-3.5 px-4 text-center">
                     <a
-                      href={buildKalshiUrl(item.ticker)}
+                      href={`https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=${item.ticker}&op_order_side=yes&op_order_type=dollars`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-mono font-semibold transition"
@@ -197,10 +185,10 @@ export default function Home() {
             Statutory Publisher & Regulatory Disclaimer
           </div>
           <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1, 12]. Moneyfootball is not
+            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1]. Moneyfootball is not
             a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds.
-            All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes[cite: 12].
-            Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss[cite: 12].
+            All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes.
+            Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
           </p>
         </footer>
       </div>
