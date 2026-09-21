@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 // Referral Tracking Constants
 const REF_ID = process.env.NEXT_PUBLIC_KALSHI_REF_ID || '346071dd-bafa-4eca-93c2-13b1e0886a1a';
@@ -93,6 +95,12 @@ const CONTRACTS: ContractData[] = [
 ];
 
 export default function Home() {
+  const [selectedPlayer, setSelectedPlayer] = useState<ContractData | null>(null);
+
+  const getKalshiOrderUrl = (ticker: string) => {
+    return `https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=${ticker}&op_order_side=yes&op_order_type=dollars`;
+  };
+
   return (
     <main className="min-h-screen bg-black text-neutral-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-400">
       {/* Referral Sign-Up Header Banner */}
@@ -157,7 +165,8 @@ export default function Home() {
                   <td className="py-3.5 px-3 text-center">
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-neutral-800/80 hover:bg-neutral-700 text-neutral-300 border border-neutral-700 text-[11px] font-mono transition"
+                      onClick={() => setSelectedPlayer(item)}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-neutral-800/80 hover:bg-neutral-700 hover:text-white text-neutral-300 border border-neutral-700 text-[11px] font-mono transition cursor-pointer"
                     >
                       Compare 📊
                     </button>
@@ -165,7 +174,7 @@ export default function Home() {
 
                   <td className="py-3.5 px-4 text-center">
                     <a
-                      href={`https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=${item.ticker}&op_order_side=yes&op_order_type=dollars`}
+                      href={getKalshiOrderUrl(item.ticker)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-mono font-semibold transition"
@@ -179,13 +188,86 @@ export default function Home() {
           </table>
         </div>
 
+        {/* Modal: Quantitative Deep-Dive Comparison */}
+        {selectedPlayer && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+            <div className="bg-neutral-900 border border-neutral-700 rounded-xl max-w-lg w-full p-6 shadow-2xl font-mono text-neutral-200">
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-3 mb-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white">{selectedPlayer.player}</h3>
+                  <p className="text-xs text-neutral-400">{selectedPlayer.positionTeam}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPlayer(null)}
+                  className="text-neutral-400 hover:text-white text-lg font-bold px-2 py-1"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="space-y-4 text-xs">
+                <div className="grid grid-cols-2 gap-3 bg-neutral-950/80 p-3 rounded-lg border border-neutral-800">
+                  <div>
+                    <span className="text-neutral-500 block">Kalshi Ask:</span>
+                    <span className="text-base font-bold text-neutral-200">${selectedPlayer.kalshiAsk.toFixed(2)}</span>
+                    <span className="text-[10px] text-neutral-400 block">({Math.round(selectedPlayer.kalshiAsk * 100)}% Implied)</span>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">TPI Fair Value:</span>
+                    <span className="text-base font-bold text-emerald-400">${selectedPlayer.tpiFair.toFixed(2)}</span>
+                    <span className="text-[10px] text-emerald-500 block">({Math.round(selectedPlayer.tpiFair * 100)}% Model)</span>
+                  </div>
+                </div>
+
+                <div className="bg-neutral-950/40 p-3 rounded-lg border border-neutral-800/80 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-neutral-400">Quantitative Edge (Δ):</span>
+                    <span className="font-bold text-emerald-400">+{selectedPlayer.edge.toFixed(1)}¢</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-400">Goal-Line Carry Share (GLC%):</span>
+                    <span className="font-bold text-neutral-200">{selectedPlayer.glc}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-400">Red Zone Snap Share:</span>
+                    <span className="font-bold text-neutral-200">{selectedPlayer.rzSnap}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-neutral-400">Implied Team Total (Vegas ITT):</span>
+                    <span className="font-bold text-neutral-200">{selectedPlayer.vegasItt.toFixed(1)} pts</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex items-center justify-end gap-3 border-t border-neutral-800 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setSelectedPlayer(null)}
+                  className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold transition"
+                >
+                  Close
+                </button>
+                <a
+                  href={getKalshiOrderUrl(selectedPlayer.ticker)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-bold transition inline-flex items-center gap-1"
+                >
+                  Execute Order Ticket ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Regulatory Disclaimer */}
         <footer className="mt-12 border-t border-neutral-900 pt-6 text-[11px] text-neutral-500 leading-relaxed font-sans">
           <div className="font-mono text-neutral-400 text-xs uppercase tracking-wider mb-2 font-semibold">
             Statutory Publisher & Regulatory Disclaimer
           </div>
           <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not
+            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1]. Moneyfootball is not
             a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds.
             All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes.
             Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
