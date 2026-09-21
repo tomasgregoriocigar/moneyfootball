@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Referral Tracking Constants
 const REF_ID = process.env.NEXT_PUBLIC_KALSHI_REF_ID || '346071dd-bafa-4eca-93c2-13b1e0886a1a';
 const KALSHI_SIGNUP_URL = `https://kalshi.com/sign-up/?referral=${REF_ID}&utm_source=moneyfootball`;
 
@@ -94,8 +95,8 @@ const CONTRACTS: ContractData[] = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-black text-neutral-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-400">
-      {/* Referral Sign-Up Banner */}
-      <div className="w-full bg-neutral-900 border-b border-neutral-800 px-4 py-2 text-center text-xs font-mono text-neutral-300 flex items-center justify-center gap-2">
+      {/* Referral Sign-Up Header Banner */}
+      <div className="w-full bg-neutral-900 border-b border-neutral-800 px-4 py-2.5 text-center text-xs font-mono text-neutral-300 flex items-center justify-center gap-2">
         <span>⚡ Exploit live NFL touchdown mispricings on Kalshi.</span>
         <a
           href={KALSHI_SIGNUP_URL}
