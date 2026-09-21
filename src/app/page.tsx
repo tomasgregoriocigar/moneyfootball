@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Referral Tracking Constants
 const REF_ID = process.env.NEXT_PUBLIC_KALSHI_REF_ID || '346071dd-bafa-4eca-93c2-13b1e0886a1a';
 const KALSHI_SIGNUP_URL = `https://kalshi.com/sign-up/?referral=${REF_ID}&utm_source=moneyfootball`;
 
@@ -28,7 +27,7 @@ const CONTRACTS: ContractData[] = [
     kalshiAsk: 0.17,
     tpiFair: 0.28,
     edge: 11.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-DSINGLETARY',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
   },
   {
     rank: 2,
@@ -40,7 +39,7 @@ const CONTRACTS: ContractData[] = [
     kalshiAsk: 0.59,
     tpiFair: 0.68,
     edge: 9.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-KWILLIAMS',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
   },
   {
     rank: 3,
@@ -52,7 +51,7 @@ const CONTRACTS: ContractData[] = [
     kalshiAsk: 0.47,
     tpiFair: 0.55,
     edge: 8.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-PNACUA',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1',
   },
   {
     rank: 4,
@@ -64,7 +63,7 @@ const CONTRACTS: ContractData[] = [
     kalshiAsk: 0.42,
     tpiFair: 0.50,
     edge: 8.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-CSKATTEBO',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1',
   },
   {
     rank: 5,
@@ -88,7 +87,7 @@ const CONTRACTS: ContractData[] = [
     kalshiAsk: 0.11,
     tpiFair: 0.17,
     edge: 6.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-TJOHNSON',
+    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON87-1',
   },
 ];
 
@@ -185,7 +184,7 @@ export default function Home() {
             Statutory Publisher & Regulatory Disclaimer
           </div>
           <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1]. Moneyfootball is not
+            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher. Moneyfootball is not
             a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds.
             All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes.
             Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
