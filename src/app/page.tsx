@@ -44,7 +44,7 @@ export default function Home() {
         </p>
 
         {/* System Pipeline Status Box */}
-        <div style={{ backgroundColor: '#0d1117', border: '1px solid #21262d', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
+        <div style={{ backgroundColor: '#0d1117', border: '1px solid #21262d', borderRadius: '8px', padding: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '13px' }}>
             <span style={{ color: '#8b949e' }}>Touchdown Projection Index (TPI):</span>
             <span style={{ color: '#faa356', fontWeight: 600 }}>Optimizing W3 Parameters</span>
@@ -57,47 +57,6 @@ export default function Home() {
             <span style={{ color: '#8b949e' }}>Points-Only FFL Engine (REMFL):</span>
             <span style={{ color: '#388bfd', fontWeight: 600 }}>Surface Testing</span>
           </div>
-        </div>
-
-        {/* Actions / Routing */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-          <a
-            href="https://discord.gg"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              flex: '1',
-              textAlign: 'center',
-              backgroundColor: '#238636',
-              color: '#ffffff',
-              padding: '12px 18px',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              fontWeight: 600,
-              fontSize: '14px'
-            }}
-          >
-            Access Live Models in Discord
-          </a>
-          <a
-            href="https://x.com/MoneyFootballai"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              flex: '1',
-              textAlign: 'center',
-              backgroundColor: '#21262d',
-              border: '1px solid #30363d',
-              color: '#c9d1d9',
-              padding: '12px 18px',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              fontWeight: 600,
-              fontSize: '14px'
-            }}
-          >
-            Follow Updates on X
-          </a>
         </div>
       </div>
     </div>
