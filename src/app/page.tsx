@@ -1,279 +1,105 @@
-'use client';
-
-import React, { useState } from 'react';
-
-// Referral Tracking Constants
-const REF_ID = process.env.NEXT_PUBLIC_KALSHI_REF_ID || '346071dd-bafa-4eca-93c2-13b1e0886a1a';
-const KALSHI_SIGNUP_URL = `https://kalshi.com/sign-up/?referral=${REF_ID}&utm_source=moneyfootball`;
-
-interface ContractData {
-  rank: number;
-  player: string;
-  positionTeam: string;
-  vegasItt: number;
-  glc: number;
-  rzSnap: number;
-  kalshiAsk: number;
-  tpiFair: number;
-  edge: number;
-  ticker: string;
-}
-
-const CONTRACTS: ContractData[] = [
-  {
-    rank: 1,
-    player: 'Devin Singletary',
-    positionTeam: 'RB • NYG (vs LAR)',
-    vegasItt: 24.5,
-    glc: 72,
-    rzSnap: 78,
-    kalshiAsk: 0.17,
-    tpiFair: 0.28,
-    edge: 11.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGDSINGLETARY26-1',
-  },
-  {
-    rank: 2,
-    player: 'Kyren Williams',
-    positionTeam: 'RB • LAR (@ NYG)',
-    vegasItt: 27.5,
-    glc: 82,
-    rzSnap: 86,
-    kalshiAsk: 0.59,
-    tpiFair: 0.68,
-    edge: 9.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARKWILLIAMS23-1',
-  },
-  {
-    rank: 3,
-    player: 'Puka Nacua',
-    positionTeam: 'WR • LAR (@ NYG)',
-    vegasItt: 27.5,
-    glc: 32,
-    rzSnap: 84,
-    kalshiAsk: 0.47,
-    tpiFair: 0.55,
-    edge: 8.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARPNACUA17-1',
-  },
-  {
-    rank: 4,
-    player: 'Cam Skattebo',
-    positionTeam: 'RB • NYG (vs LAR)',
-    vegasItt: 24.5,
-    glc: 45,
-    rzSnap: 54,
-    kalshiAsk: 0.42,
-    tpiFair: 0.50,
-    edge: 8.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGCSKATTEBO44-1',
-  },
-  {
-    rank: 5,
-    player: 'Davante Adams',
-    positionTeam: 'WR • LAR (@ NYG)',
-    vegasItt: 27.5,
-    glc: 28,
-    rzSnap: 82,
-    kalshiAsk: 0.42,
-    tpiFair: 0.49,
-    edge: 7.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-LARDADAMS17-1',
-  },
-  {
-    rank: 6,
-    player: 'Theo Johnson',
-    positionTeam: 'TE • NYG (vs LAR)',
-    vegasItt: 24.5,
-    glc: 24,
-    rzSnap: 65,
-    kalshiAsk: 0.11,
-    tpiFair: 0.17,
-    edge: 6.0,
-    ticker: 'KXNFLTD-26SEP21NYGLAR-NYGTJOHNSON87-1',
-  },
-];
+import React from 'react';
 
 export default function Home() {
-  const [selectedPlayer, setSelectedPlayer] = useState<ContractData | null>(null);
-
-  const getKalshiOrderUrl = (ticker: string) => {
-    return `https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/kxnfltd-26sep21nyglar?op_market_ticker=${ticker}&op_order_side=yes&op_order_type=dollars`;
-  };
-
   return (
-    <main className="min-h-screen bg-black text-neutral-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-400">
-      {/* Referral Sign-Up Header Banner */}
-      <div className="w-full bg-neutral-900 border-b border-neutral-800 px-4 py-2.5 text-center text-xs font-mono text-neutral-300 flex items-center justify-center gap-2">
-        <span>⚡ Exploit live NFL touchdown mispricings on Kalshi.</span>
-        <a
-          href={KALSHI_SIGNUP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-emerald-400 font-bold underline hover:text-emerald-300 transition-colors inline-flex items-center gap-1"
-        >
-          Claim up to $25 bonus on sign-up ↗
-        </a>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 py-8">
+    <div style={{
+      backgroundColor: '#0b0e14',
+      color: '#e6edf3',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '24px',
+      boxSizing: 'border-box'
+    }}>
+      <div style={{
+        maxWidth: '680px',
+        width: '100%',
+        backgroundColor: '#161b22',
+        border: '1px solid #30363d',
+        borderRadius: '12px',
+        padding: '36px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
+      }}>
         {/* Terminal Header */}
-        <div className="flex items-center justify-between border-b border-neutral-800 pb-3 mb-6 font-mono text-xs">
-          <div className="flex items-center gap-2 font-bold tracking-wider text-neutral-100 uppercase">
-            <span>Top Touchdown Contracts to Trade</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', borderBottom: '1px solid #21262d', paddingBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ height: '12px', width: '12px', borderRadius: '50%', backgroundColor: '#fa7970' }}></span>
+            <span style={{ height: '12px', width: '12px', borderRadius: '50%', backgroundColor: '#faa356' }}></span>
+            <span style={{ height: '12px', width: '12px', borderRadius: '50%', backgroundColor: '#3fb950' }}></span>
           </div>
-          <span className="text-neutral-500 font-medium">6 Active Lines</span>
+          <span style={{ fontSize: '12px', color: '#8b949e', letterSpacing: '1px', textTransform: 'uppercase' }}>
+            TERMINAL STATUS: ENGINE RE-CALIBRATION
+          </span>
         </div>
 
-        {/* Data Table */}
-        <div className="overflow-x-auto border border-neutral-800 rounded-lg bg-neutral-950/60 shadow-2xl">
-          <table className="w-full text-left border-collapse text-xs font-mono">
-            <thead>
-              <tr className="border-b border-neutral-800 text-neutral-500 text-[11px] uppercase tracking-wider bg-neutral-900/40">
-                <th className="py-3 px-4">Rank / Player</th>
-                <th className="py-3 px-3 text-center">Vegas ITT</th>
-                <th className="py-3 px-3 text-center">GLC%</th>
-                <th className="py-3 px-3 text-center">RZ Snap%</th>
-                <th className="py-3 px-3 text-center">Kalshi Ask</th>
-                <th className="py-3 px-3 text-center text-emerald-400">TPI Fair</th>
-                <th className="py-3 px-3 text-center text-emerald-400">Edge (Δ)</th>
-                <th className="py-3 px-3 text-center">Analyze</th>
-                <th className="py-3 px-4 text-center">Execution</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-800/60">
-              {CONTRACTS.map((item) => (
-                <tr key={item.ticker} className="hover:bg-neutral-900/50 transition-colors">
-                  <td className="py-3.5 px-4 font-sans">
-                    <div className="flex items-center gap-2">
-                      <span className="text-neutral-500 font-mono text-xs font-semibold">#{item.rank}</span>
-                      <span className="font-bold text-neutral-100 text-sm">{item.player}</span>
-                      <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 text-[10px] px-1.5 py-0.5 rounded font-mono font-medium tracking-wide">
-                        TOUCHDOWN
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-neutral-400 mt-0.5 font-medium">{item.positionTeam}</div>
-                  </td>
+        {/* Title */}
+        <h1 style={{ fontSize: '26px', fontWeight: 800, margin: '0 0 12px 0', color: '#ffffff' }}>
+          MONEYFOOTBALL<span style={{ color: '#388bfd' }}>.AI</span>
+        </h1>
+        <p style={{ color: '#8b949e', fontSize: '15px', lineHeight: '1.6', margin: '0 0 24px 0' }}>
+          The Touchdown Projection Index (TPI) terminal is undergoing scheduled data pipeline upgrades to integrate Week 3 Goal-to-Go (GTG) carry equity, kicker red-zone stall models, and split-surface QB distributions.
+        </p>
 
-                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">{item.vegasItt.toFixed(1)}</td>
-                  <td className="py-3.5 px-3 text-center font-mono font-bold text-neutral-100">{item.glc}%</td>
-                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">{item.rzSnap}%</td>
-                  <td className="py-3.5 px-3 text-center font-mono text-neutral-300">${item.kalshiAsk.toFixed(2)}</td>
-                  <td className="py-3.5 px-3 text-center font-mono font-bold text-emerald-400">${item.tpiFair.toFixed(2)}</td>
-                  <td className="py-3.5 px-3 text-center font-mono font-bold text-emerald-400">+{item.edge.toFixed(1)}¢</td>
-
-                  <td className="py-3.5 px-3 text-center">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPlayer(item)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-neutral-800/80 hover:bg-neutral-700 hover:text-white text-neutral-300 border border-neutral-700 text-[11px] font-mono transition cursor-pointer"
-                    >
-                      Compare 📊
-                    </button>
-                  </td>
-
-                  <td className="py-3.5 px-4 text-center">
-                    <a
-                      href={getKalshiOrderUrl(item.ticker)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-mono font-semibold transition"
-                    >
-                      Trade ↗
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* System Pipeline Status Box */}
+        <div style={{ backgroundColor: '#0d1117', border: '1px solid #21262d', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '13px' }}>
+            <span style={{ color: '#8b949e' }}>Touchdown Projection Index (TPI):</span>
+            <span style={{ color: '#faa356', fontWeight: 600 }}>Optimizing W3 Parameters</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '13px' }}>
+            <span style={{ color: '#8b949e' }}>Kalshi KXNFLTD Discrepancy Scraper:</span>
+            <span style={{ color: '#3fb950', fontWeight: 600 }}>Active / Syncing</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '13px' }}>
+            <span style={{ color: '#8b949e' }}>Points-Only FFL Engine (REMFL):</span>
+            <span style={{ color: '#388bfd', fontWeight: 600 }}>Surface Testing</span>
+          </div>
         </div>
 
-        {/* Modal: Quantitative Deep-Dive Comparison */}
-        {selectedPlayer && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <div className="bg-neutral-900 border border-neutral-700 rounded-xl max-w-lg w-full p-6 shadow-2xl font-mono text-neutral-200">
-              <div className="flex items-center justify-between border-b border-neutral-800 pb-3 mb-4">
-                <div>
-                  <h3 className="text-lg font-bold text-white">{selectedPlayer.player}</h3>
-                  <p className="text-xs text-neutral-400">{selectedPlayer.positionTeam}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedPlayer(null)}
-                  className="text-neutral-400 hover:text-white text-lg font-bold px-2 py-1"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div className="space-y-4 text-xs">
-                <div className="grid grid-cols-2 gap-3 bg-neutral-950/80 p-3 rounded-lg border border-neutral-800">
-                  <div>
-                    <span className="text-neutral-500 block">Kalshi Ask:</span>
-                    <span className="text-base font-bold text-neutral-200">${selectedPlayer.kalshiAsk.toFixed(2)}</span>
-                    <span className="text-[10px] text-neutral-400 block">({Math.round(selectedPlayer.kalshiAsk * 100)}% Implied)</span>
-                  </div>
-                  <div>
-                    <span className="text-neutral-500 block">TPI Fair Value:</span>
-                    <span className="text-base font-bold text-emerald-400">${selectedPlayer.tpiFair.toFixed(2)}</span>
-                    <span className="text-[10px] text-emerald-500 block">({Math.round(selectedPlayer.tpiFair * 100)}% Model)</span>
-                  </div>
-                </div>
-
-                <div className="bg-neutral-950/40 p-3 rounded-lg border border-neutral-800/80 space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Quantitative Edge (Δ):</span>
-                    <span className="font-bold text-emerald-400">+{selectedPlayer.edge.toFixed(1)}¢</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Goal-Line Carry Share (GLC%):</span>
-                    <span className="font-bold text-neutral-200">{selectedPlayer.glc}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Red Zone Snap Share:</span>
-                    <span className="font-bold text-neutral-200">{selectedPlayer.rzSnap}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-neutral-400">Implied Team Total (Vegas ITT):</span>
-                    <span className="font-bold text-neutral-200">{selectedPlayer.vegasItt.toFixed(1)} pts</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 flex items-center justify-end gap-3 border-t border-neutral-800 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setSelectedPlayer(null)}
-                  className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold transition"
-                >
-                  Close
-                </button>
-                <a
-                  href={getKalshiOrderUrl(selectedPlayer.ticker)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-neutral-950 text-xs font-bold transition inline-flex items-center gap-1"
-                >
-                  Execute Order Ticket ↗
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Regulatory Disclaimer */}
-        <footer className="mt-12 border-t border-neutral-900 pt-6 text-[11px] text-neutral-500 leading-relaxed font-sans">
-          <div className="font-mono text-neutral-400 text-xs uppercase tracking-wider mb-2 font-semibold">
-            Statutory Publisher & Regulatory Disclaimer
-          </div>
-          <p>
-            Moneyfootball.ai is an independent statistical data utility and quantitative media publisher[cite: 1]. Moneyfootball is not
-            a registered Commodity Trading Advisor (CTA), broker-dealer, or designated exchange, and does not accept or custody user funds.
-            All outputs, Touchdown Projection Index (TPI) metrics, and edge estimates are published strictly for educational and analytical purposes.
-            Event contracts traded on CFTC-regulated exchanges (e.g., Kalshi) involve financial risk of capital loss.
-          </p>
-        </footer>
+        {/* Actions / Routing */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+          <a
+            href="https://discord.gg"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              flex: '1',
+              textAlign: 'center',
+              backgroundColor: '#238636',
+              color: '#ffffff',
+              padding: '12px 18px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '14px'
+            }}
+          >
+            Access Live Models in Discord
+          </a>
+          <a
+            href="https://x.com/MoneyFootballai"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              flex: '1',
+              textAlign: 'center',
+              backgroundColor: '#21262d',
+              border: '1px solid #30363d',
+              color: '#c9d1d9',
+              padding: '12px 18px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '14px'
+            }}
+          >
+            Follow Updates on X
+          </a>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
