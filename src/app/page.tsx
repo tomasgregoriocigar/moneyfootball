@@ -1,12 +1,12 @@
 import React from 'react';
 
 export default function Home() {
-  const WHOP_FILE_URL = "https://whop.com/moneyfootball-ai/nfl-week-3-touchdown-projection-index-tpi-full-slate-csv";
-  const WHOP_DISCORD_URL = "https://whop.com/moneyfootball-ai";
+  const WHOP_FILE_URL = "https://whop.com/moneyfootball-ai/nfl-week-3-touchdown-projection-index-tpi-full-slate-csv/";
+  const WHOP_DISCORD_URL = "https://whop.com/moneyfootball-ai/quant-tier-full-terminal-access/";
 
   return (
     <main className="min-h-screen bg-[#0a0d14] text-slate-100 font-sans selection:bg-cyan-500 selection:text-black">
-      {/* Header */}
+      {/* Header / Nav */}
       <header className="border-b border-slate-800/80 bg-[#0d111a]/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center max-w-7xl mx-auto">
         <div className="flex items-center space-x-3">
           <span className="text-xl font-black tracking-tight text-white">MONEYFOOTBALL<span className="text-cyan-400">.AI</span></span>
@@ -169,6 +169,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Locked Board Prompt */}
         <div className="mt-4 p-4 rounded-lg bg-slate-900/60 border border-dashed border-slate-800 text-center font-mono text-xs text-slate-400">
           🔒 67 additional Week 3 skill player projections, Poisson matrices, and negative-EV under signals locked in full export.
         </div>
