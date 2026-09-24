@@ -169,6 +169,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Locked Board Prompt */}
         <div className="mt-4 p-4 rounded-lg bg-slate-900/60 border border-dashed border-slate-800 text-center font-mono text-xs text-slate-400">
           🔒 67 additional Week 3 skill player projections, Poisson matrices, and negative-EV under signals locked in full export.
         </div>
