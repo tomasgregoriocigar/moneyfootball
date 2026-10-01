@@ -1,0 +1,31 @@
+name: REMFL Daily Morning Brief
+
+on:
+  schedule:
+    # 11:30 UTC = 7:30 AM EDT
+    - cron: '30 11 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests pandas
+
+      - name: Execute REMFL Daily Pipeline
+        env:
+          TPI_SENDER_EMAIL: ${{ secrets.TPI_SENDER_EMAIL }}
+          TPI_APP_PASSWORD: ${{ secrets.TPI_APP_PASSWORD }}
+        run: |
+          python remfl_pipeline.py
