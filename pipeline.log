@@ -1,0 +1,104 @@
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+  File "C:\Users\tomas\OneDrive\Documents\Moneyfootball\send_remfl.py", line 1
+    @echo off
+          ^^^
+SyntaxError: invalid syntax
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+[Wed 09/30/2026 18:25:00.29] Starting Full Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+  File "C:\Users\tomas\OneDrive\Documents\Moneyfootball\send_remfl.py", line 1
+    @echo off
+          ^^^
+SyntaxError: invalid syntax
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+[Wed 09/30/2026 18:25:06.04] Pipeline Run Finished 
+[Wed 09/30/2026 18:28:41.49] Starting Full Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+  File "C:\Users\tomas\OneDrive\Documents\Moneyfootball\send_remfl.py", line 1
+    @echo off
+          ^^^
+SyntaxError: invalid syntax
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+[Wed 09/30/2026 18:28:45.65] Pipeline Run Finished 
+[Wed 09/30/2026 18:36:11.24] Starting Daily Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+Traceback (most recent call last):
+  File "C:\Users\tomas\OneDrive\Documents\Moneyfootball\send_remfl.py", line 1, in <module>
+    python
+NameError: name 'python' is not defined
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+[Wed 09/30/2026 18:36:15.17] Daily Pipeline Run Finished 
+[Wed 09/30/2026 18:41:17.10] Starting Daily Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+Traceback (most recent call last):
+  File "C:\Users\tomas\OneDrive\Documents\Moneyfootball\send_remfl.py", line 9, in <module>
+    SENDER_EMAIL = os.environ.get("TPI_SENDER_EMAIL", "tomasgregoriojr@gmail.com")
+                   ^^
+NameError: name 'os' is not defined. Did you forget to import 'os'?
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+[Wed 09/30/2026 18:41:21.69] Daily Pipeline Run Finished 
+[Wed 09/30/2026 18:45:00.68] Starting Daily Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+--- REMFL EMAIL PREVIEW GENERATED (DRY RUN) ---
+Locked to Week 4. Kalshi and betting metrics stripped.
+Recipients: tomasgregoriojr@gmail.com
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+[Wed 09/30/2026 18:45:07.15] Daily Pipeline Run Finished 
+[Wed 09/30/2026 19:00:44.67] Starting Daily Pipeline Run 
+INFO: --- RUNNING ACCREDITED TPI SLATE FOR WEEK 4 ---
+INFO: Loaded 2670 players from MFL Master Database.
+INFO: Loaded 240 rostered player IDs from REMFL 30605.
+SUCCESS: Calibrated 935 players in C:\Users\tomas\OneDrive\Documents\Moneyfootball\tpi_touchdown_board_full_slate.csv
+Current NFL Week Locked: 4
+--- REMFL EMAIL PREVIEW GENERATED (DRY RUN) ---
+Locked to Week 4. Kalshi and betting metrics stripped.
+Recipients: tomasgregoriojr@gmail.com, balavignesh@icloud.com
+INFO: Generated email content successfully.
+To send live emails, set TPI_APP_PASSWORD environment variable or configure SMTP.
+Summary: Week 4 report ready with 935 evaluated players.
+[Wed 09/30/2026 19:00:48.31] Daily Pipeline Run Finished 

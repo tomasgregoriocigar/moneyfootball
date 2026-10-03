@@ -1,0 +1,112 @@
+{
+  "timestamp": "2026-09-24T08:40:52.604213",
+  "roster_by_category": {
+    "QB": [
+      {
+        "id": "16582",
+        "name": "Bo Nix",
+        "position": "QB",
+        "team": "DEN",
+        "status": "Active"
+      },
+      {
+        "id": "16148",
+        "name": "Bryce Young",
+        "position": "QB",
+        "team": "CAR",
+        "status": "Active"
+      }
+    ],
+    "RB": [
+      {
+        "id": "14800",
+        "name": "J.K. Dobbins",
+        "position": "RB",
+        "team": "DEN",
+        "status": "Questionable"
+      },
+      {
+        "id": "17477",
+        "name": "Jonah Coleman",
+        "position": "RB",
+        "team": "DEN",
+        "status": "Questionable"
+      },
+      {
+        "id": "17060",
+        "name": "DJ Giddens",
+        "position": "RB",
+        "team": "IND",
+        "status": "Active"
+      },
+      {
+        "id": "17069",
+        "name": "Jaydon Blue",
+        "position": "RB",
+        "team": "PHI",
+        "status": "Active"
+      },
+      {
+        "id": "14080",
+        "name": "Devin Singletary",
+        "position": "RB",
+        "team": "NYG",
+        "status": "Active"
+      }
+    ],
+    "REC": [
+      {
+        "id": "13299",
+        "name": "George Kittle",
+        "position": "TE",
+        "team": "SFO",
+        "status": "Active"
+      },
+      {
+        "id": "16186",
+        "name": "Jordan Addison",
+        "position": "WR",
+        "team": "MIN",
+        "status": "Active"
+      },
+      {
+        "id": "16187",
+        "name": "Josh Downs",
+        "position": "WR",
+        "team": "IND",
+        "status": "Active"
+      },
+      {
+        "id": "17507",
+        "name": "Zachariah Branch",
+        "position": "WR",
+        "team": "ATL",
+        "status": "Active"
+      },
+      {
+        "id": "17073",
+        "name": "Elic Ayomanor",
+        "position": "WR",
+        "team": "TEN",
+        "status": "Active"
+      },
+      {
+        "id": "16193",
+        "name": "Kayshon Boutte",
+        "position": "WR",
+        "team": "HOU",
+        "status": "Active"
+      }
+    ],
+    "K": [
+      {
+        "id": "13354",
+        "name": "Harrison Butker",
+        "position": "PK",
+        "team": "KCC",
+        "status": "Active"
+      }
+    ]
+  },
+  "waiver_queue": []
+}
