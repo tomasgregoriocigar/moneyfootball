@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 // REPLACE WITH YOUR SINGLE WHOP CHECKOUT URL:
-const WHOP_CHECKOUT_URL = "https://whop.com/checkout/moneyfootball-terminal";
+const WHOP_CHECKOUT_URL = "https://whop.com/moneyfootball-ai/";
 
 interface QuantPlayer {
   rank: number;
