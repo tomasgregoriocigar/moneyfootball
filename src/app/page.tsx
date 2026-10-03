@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 // REPLACE WITH YOUR SINGLE WHOP CHECKOUT URL:
-const WHOP_CHECKOUT_URL = "YOUR_DIRECT_CHECKOUT_OR_PLAN_URL";
+const WHOP_CHECKOUT_URL = "https://whop.com/checkout/plan_jXFaFkKUaAXTh";
 
 interface QuantPlayer {
   rank: number;
