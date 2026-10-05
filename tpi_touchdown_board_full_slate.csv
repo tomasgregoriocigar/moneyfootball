@@ -1,14 +1,17 @@
-Rank,Player,Pos,Team,Opponent,Vegas ITT,3 Yrd line,5 yrd line,10 yard line,20 yard line,Total TD,Tier
-1,Derrick Henry,RB,BAL,vs. TEN,27.50,57.0%,21.1%,8.1%,1.7%,69.4%,TIER 2 (STARTABLE)
-2,Kyren Williams,RB,LAR,@ PHI,22.00,46.7%,16.3%,5.6%,1.2%,58.4%,TIER 2 (STARTABLE)
-3,J.K. Dobbins,RB,DEN,@ SF,21.00,43.5%,14.6%,4.9%,1.0%,54.6%,TIER 2 (STARTABLE)
-4,George Kittle,TE,SF,vs. DEN,24.50,21.2%,7.6%,4.4%,1.3%,31.3%,TIER 3 (FLEX / LEAN)
-5,Jaydon Blue,RB,DAL,@ HOU,23.50,21.8%,6.8%,2.7%,0.6%,29.6%,TIER 4 (PASS)
-6,Jordan Addison,WR,MIN,vs. MIA,24.75,12.7%,4.9%,3.7%,1.2%,21.0%,TIER 4 (PASS)
-7,Alexander Mattison,RB,MIA,@ MIN,14.25,14.7%,4.5%,1.7%,0.4%,20.2%,TIER 4 (PASS)
-8,Samaje Perine,RB,KC,@ LV,26.50,13.0%,5.5%,2.2%,0.5%,20.1%,TIER 4 (PASS)
-9,Josh Downs,WR,IND,@ WAS,25.50,10.3%,4.1%,3.4%,1.3%,18.0%,TIER 4 (PASS)
-10,Zachariah Branch,WR,ATL,@ NO,22.50,9.7%,3.7%,3.0%,1.2%,16.6%,TIER 4 (PASS)
-11,Elic Ayomanor,WR,TEN,@ BAL,18.25,6.4%,2.5%,2.2%,0.8%,11.5%,TIER 4 (PASS)
-12,Kayshon Boutte,WR,NE,@ BUF,17.00,4.0%,1.6%,1.5%,0.5%,7.5%,TIER 4 (PASS)
-13,Jonah Coleman,RB,DEN,@ SF,21.00,3.6%,1.1%,0.8%,0.3%,5.7%,TIER 4 (PASS)
+Rank,Player,Pos,Team,Opponent,Vegas ITT,3 Yrd line,5 yrd line,10 yard line,20 yard line,Total TD,Tier,REMFL Status
+1,Ja'Marr Chase,WR,CIN,vs. JAX,27.00,47.8%,47.8%,45.5%,7.6%,73.7%,TIER 2 (CORE VALUE),AVAILABLE_FA
+2,Derrick Henry,RB,BAL,vs. TEN,27.50,57.0%,21.1%,8.1%,1.7%,69.4%,TIER 2 (CORE VALUE),ROSTERED
+3,Kyren Williams,RB,LAR,@ PHI,23.25,48.6%,17.1%,5.9%,1.3%,60.4%,TIER 2 (CORE VALUE),ROSTERED
+4,Josh Downs,WR,IND,@ WAS,26.00,35.8%,35.8%,25.5%,5.9%,55.0%,TIER 2 (CORE VALUE),ROSTERED
+5,J.K. Dobbins,RB,DEN,@ SF,21.00,43.5%,14.6%,4.9%,1.0%,54.6%,TIER 2 (CORE VALUE),ROSTERED
+6,Jordan Addison,WR,MIN,vs. MIA,24.75,30.5%,30.5%,28.3%,4.7%,52.6%,TIER 2 (CORE VALUE),ROSTERED
+7,George Kittle,TE,SF,vs. DEN,24.50,31.4%,31.4%,20.3%,5.3%,48.2%,TIER 3 (FLEX LEAN),ROSTERED
+8,Dontayvion Wicks,WR,GB,@ TB,21.50,26.8%,26.8%,20.7%,4.1%,44.3%,TIER 3 (FLEX LEAN),AVAILABLE_FA
+9,Pat Bryant,WR,DEN,@ SF,21.00,22.9%,22.9%,13.9%,4.3%,36.5%,TIER 3 (FLEX LEAN),AVAILABLE_FA
+10,Zachariah Branch,WR,ATL,@ NO,22.50,20.7%,20.7%,13.5%,3.4%,33.7%,TIER 3 (FLEX LEAN),ROSTERED
+11,Jaydon Blue,RB,DAL,@ HOU,23.50,21.8%,6.8%,2.7%,0.6%,29.6%,TIER 3 (FLEX LEAN),ROSTERED
+12,Elic Ayomanor,WR,TEN,@ BAL,18.25,12.8%,12.8%,6.2%,2.5%,20.2%,TIER 3 (FLEX LEAN),ROSTERED
+13,Samaje Perine,RB,KC,@ LV,26.50,13.0%,5.5%,2.2%,0.5%,20.1%,TIER 3 (FLEX LEAN),ROSTERED
+14,Alexander Mattison,RB,MIA,@ MIN,14.00,14.5%,4.4%,1.6%,0.4%,19.9%,TIER 4 (PASS),ROSTERED
+15,Jonah Coleman,RB,DEN,@ SF,21.00,3.6%,1.1%,0.8%,0.3%,5.7%,TIER 4 (PASS),ROSTERED
+16,Keenan Allen,WR,IND,@ WAS,26.00,0.0%,0.0%,0.0%,0.0%,0.0%,INACTIVE (OUT),ROSTERED
