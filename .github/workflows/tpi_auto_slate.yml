@@ -1,0 +1,37 @@
+name: Automated TPI Defensive Slate Pipeline
+
+on:
+  schedule:
+    # Runs Tuesday 8:00 AM UTC (Waivers), Thursday 18:00 UTC (TNF), Sunday 14:00 UTC (Main Slate)
+    - cron: '0 8 * * 2'
+    - cron: '0 18 * * 4'
+    - cron: '0 14 * * 0'
+  workflow_dispatch: # Allows manual one-click trigger from GitHub mobile app if desired
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install numpy pandas pydantic requests
+
+      - name: Execute Autonomous TPI Pipeline
+        run: |
+          python auto_pipeline.py
+
+      - name: Commit & Push Updated Verdicts
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add slate_verdict.json
+          git diff-index --quiet HEAD || git commit -m "auto: update TPI defensive slate verdicts"
+          git push
