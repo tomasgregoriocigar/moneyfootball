@@ -39,7 +39,7 @@ interface SlateTarget {
 const DEFAULT_SLATE: SlateTarget[] = [
   {
     player: "Chase Brown",
-    ticker: "KXNFLTD-26OCT11CINMIA-CINCBROWN30-1",
+    ticker: "KXNFLTD-CBROWN",
     position: "RB",
     team: "CIN",
     opponent: "vs. MIA",
@@ -52,8 +52,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "48.2%",
     net_edge: "+12.2%",
     tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11cinmia?op_market_ticker=KXNFLTD-26OCT11CINMIA-CINCBROWN30-1&op_side=buy&op_order_side=yes",
-    polymarket_url: "https://polymarket.com/event/nfl-chase-brown-touchdown",
+    kalshi_url: "https://kalshi.com/markets?query=Chase+Brown+touchdown",
+    polymarket_url: "https://polymarket.com/markets?_q=Chase+Brown",
     zone_decay: {
       under_3yd: "62%",
       five_yd_plunge: "22.4%",
@@ -68,7 +68,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Trey McBride",
-    ticker: "KXNFLTD-26OCT11ARIDET-ARITMCBRIDE85-1",
+    ticker: "KXNFLTD-TMCBRIDE",
     position: "TE",
     team: "ARI",
     opponent: "vs. DET",
@@ -81,8 +81,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "46.5%",
     net_edge: "+8.5%",
     tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11aridet?op_market_ticker=KXNFLTD-26OCT11ARIDET-ARITMCBRIDE85-1&op_side=buy&op_order_side=yes",
-    polymarket_url: "https://polymarket.com/event/nfl-trey-mcbride-touchdown",
+    kalshi_url: "https://kalshi.com/markets?query=Trey+McBride+touchdown",
+    polymarket_url: "https://polymarket.com/markets?_q=Trey+McBride",
     zone_decay: {
       under_3yd: "28%",
       five_yd_plunge: "31.0%",
@@ -97,7 +97,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Dontayvion Wicks",
-    ticker: "KXNFLTD-26OCT11GBCHI-GBDWICKS13-1",
+    ticker: "KXNFLTD-DWICKS",
     position: "WR",
     team: "GB",
     opponent: "vs. CHI",
@@ -110,8 +110,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "38.4%",
     net_edge: "+8.4%",
     tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11gbchi?op_market_ticker=KXNFLTD-26OCT11GBCHI-GBDWICKS13-1&op_side=buy&op_order_side=yes",
-    polymarket_url: "https://polymarket.com/event/nfl-dontayvion-wicks-touchdown",
+    kalshi_url: "https://kalshi.com/markets?query=Dontayvion+Wicks+touchdown",
+    polymarket_url: "https://polymarket.com/markets?_q=Dontayvion+Wicks",
     zone_decay: {
       under_3yd: "18%",
       five_yd_plunge: "24.0%",
@@ -126,7 +126,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Juwan Johnson",
-    ticker: "KXNFLTD-26OCT11NOATL-NOJJOHNSON83-1",
+    ticker: "KXNFLTD-JJOHNSON",
     position: "TE",
     team: "NO",
     opponent: "vs. ATL",
@@ -139,8 +139,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "37.6%",
     net_edge: "+7.6%",
     tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11noatl?op_market_ticker=KXNFLTD-26OCT11NOATL-NOJJOHNSON83-1&op_side=buy&op_order_side=yes",
-    polymarket_url: "https://polymarket.com/event/nfl-juwan-johnson-touchdown",
+    kalshi_url: "https://kalshi.com/markets?query=Juwan+Johnson+touchdown",
+    polymarket_url: "https://polymarket.com/markets?_q=Juwan+Johnson",
     zone_decay: {
       under_3yd: "15%",
       five_yd_plunge: "19.2%",
@@ -435,7 +435,7 @@ export default function Home(): JSX.Element {
                           </div>
                         </div>
 
-                        {/* Direct Order Book Links */}
+                        {/* Direct Search-Targeted Order Book Links */}
                         <div className="flex flex-col justify-between space-y-3">
                           <div>
                             <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider mb-1">
@@ -453,7 +453,7 @@ export default function Home(): JSX.Element {
                               rel="noopener noreferrer"
                               className="flex-1 text-center bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold py-2 rounded transition"
                             >
-                              View Kalshi Book ({item.kalshi_ask}) &rarr;
+                              Search Kalshi ({item.kalshi_ask}) &rarr;
                             </a>
                             <a
                               href={item.polymarket_url}
@@ -461,7 +461,7 @@ export default function Home(): JSX.Element {
                               rel="noopener noreferrer"
                               className="flex-1 text-center bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-2 rounded transition"
                             >
-                              View Polymarket ({item.polymarket_ask}) &rarr;
+                              Search Polymarket ({item.polymarket_ask}) &rarr;
                             </a>
                           </div>
                         </div>
