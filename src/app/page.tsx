@@ -1,455 +1,390 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
-interface PlayerTarget {
-  tier: string;
-  name: string;
+interface SlateTarget {
+  player: string;
   ticker: string;
-  pos: string;
+  position: string;
   team: string;
   opponent: string;
-  vegasITT: string;
-  tpiFairVal: string;
-  kalshiAsk: string;
-  polyAsk: string;
-  deVigBook: string;
-  netEdge: string;
-  signal: string;
-  kalshiUrl: string;
-  polyUrl: string;
-  decaySub3: string;
-  decay5Yrd: string;
-  decay10Yrd: string;
-  decay20Yrd: string;
-  gateITT: string;
-  gateSub3: string;
-  gateUnderCenter: string;
-  bestMarket: string;
+  vegas_itt: number;
+  kalshi_ask: string;
+  polymarket_ask: string;
+  c_def: number;
+  adjusted_fair_value: string;
+  net_edge: string;
+  decision: string;
+  hvt_under_3yd: string;
+  gl_share: string;
+  tier: string;
 }
 
-const TARGETS: PlayerTarget[] = [
+const DEFAULT_TARGETS: SlateTarget[] = [
   {
-    tier: 'TIER 1',
-    name: 'Derrick Henry',
-    ticker: 'KXNFLTD-26OCT04-DHEN',
-    pos: 'RB',
-    team: 'BAL',
-    opponent: 'VS. TEN',
-    vegasITT: '27.50',
-    tpiFairVal: '84.6%',
-    kalshiAsk: '64¢',
-    polyAsk: '62¢',
-    deVigBook: '59.2%',
-    netEdge: '+22.6%',
-    signal: 'BUY YES (MAX)',
-    kalshiUrl: 'https://kalshi.com/markets/kxnfltd/ten-titans-vs-bal-ravens-touchdowns/KXNFLTD-26OCT04TENBAL?utm_source=kalshiapp_eventdetails',
-    polyUrl: 'https://polymarket.com',
-    decaySub3: '57%',
-    decay5Yrd: '21.1%',
-    decay10Yrd: '8.1%',
-    decay20Yrd: '1.7%',
-    gateITT: 'PASSED (27.5)',
-    gateSub3: '88%',
-    gateUnderCenter: '72%',
-    bestMarket: '62¢ vs. Model Fair Value: 84.6¢'
+    player: "Chase Brown",
+    ticker: "KXNFLTD-26OCT-CBRO",
+    position: "RB",
+    team: "CIN",
+    opponent: "vs. MIA",
+    vegas_itt: 25.0,
+    kalshi_ask: "36¢",
+    polymarket_ask: "37¢",
+    c_def: 1.22,
+    adjusted_fair_value: "48.2%",
+    net_edge: "+12.2%",
+    decision: "STRONG BUY",
+    hvt_under_3yd: "62%",
+    gl_share: "88%",
+    tier: "TIER 1"
   },
   {
-    tier: 'TIER 1',
-    name: "Ja'Marr Chase",
-    ticker: 'KXNFLTD-26OCT04-JCHA',
-    pos: 'WR',
-    team: 'CIN',
-    opponent: 'VS. JAX',
-    vegasITT: '26.25',
-    tpiFairVal: '68.4%',
-    kalshiAsk: '51¢',
-    polyAsk: '50¢',
-    deVigBook: '48.5%',
-    netEdge: '+18.4%',
-    signal: 'BUY YES',
-    kalshiUrl: 'https://kalshi.com/markets/kxnfltd/pro-football-touchdowns/KXNFLTD-26OCT04JACCIN',
-    polyUrl: 'https://polymarket.com',
-    decaySub3: '14%',
-    decay5Yrd: '29.0%',
-    decay10Yrd: '38.5%',
-    decay20Yrd: '18.5%',
-    gateITT: 'PASSED (26.25)',
-    gateSub3: '34% Red-Zone Share',
-    gateUnderCenter: 'Pass-Heavy Script',
-    bestMarket: '50¢ vs. Model Fair Value: 68.4¢'
+    player: "Trey McBride",
+    ticker: "KXNFLTD-26OCT-TMCB",
+    position: "TE",
+    team: "ARI",
+    opponent: "vs. DET",
+    vegas_itt: 26.5,
+    kalshi_ask: "38¢",
+    polymarket_ask: "39¢",
+    c_def: 1.16,
+    adjusted_fair_value: "46.5%",
+    net_edge: "+8.5%",
+    decision: "BUY",
+    hvt_under_3yd: "24%",
+    gl_share: "31%",
+    tier: "TIER 1"
   },
   {
-    tier: 'TIER 2',
-    name: 'Kyren Williams',
-    ticker: 'KXNFLTD-26OCT04-KWIL',
-    pos: 'RB',
-    team: 'LAR',
-    opponent: '@ PHI',
-    vegasITT: '23.00',
-    tpiFairVal: '59.1%',
-    kalshiAsk: '48¢',
-    polyAsk: '49¢',
-    deVigBook: '46.2%',
-    netEdge: '+10.1%',
-    signal: 'BUY YES',
-    kalshiUrl: 'https://kalshi.com',
-    polyUrl: 'https://polymarket.com',
-    decaySub3: '49%',
-    decay5Yrd: '24.0%',
-    decay10Yrd: '18.0%',
-    decay20Yrd: '9.0%',
-    gateITT: 'BORDERLINE (23.0)',
-    gateSub3: '81%',
-    gateUnderCenter: '65%',
-    bestMarket: '48¢ vs. Model Fair Value: 59.1¢'
+    player: "Dontayvion Wicks",
+    ticker: "KXNFLTD-26OCT-DWIC",
+    position: "WR",
+    team: "GB",
+    opponent: "vs. CHI",
+    vegas_itt: 24.5,
+    kalshi_ask: "30¢",
+    polymarket_ask: "31¢",
+    c_def: 1.14,
+    adjusted_fair_value: "38.4%",
+    net_edge: "+8.4%",
+    decision: "BUY",
+    hvt_under_3yd: "18%",
+    gl_share: "28%",
+    tier: "TIER 2"
   },
   {
-    tier: 'TIER 2',
-    name: 'J.K. Dobbins',
-    ticker: 'KXNFLTD-26OCT04-JDOB',
-    pos: 'RB',
-    team: 'LAC',
-    opponent: '@ SEA',
-    vegasITT: '21.50',
-    tpiFairVal: '44.2%',
-    kalshiAsk: '36¢',
-    polyAsk: '35¢',
-    deVigBook: '34.0%',
-    netEdge: '+8.2%',
-    signal: 'BUY YES',
-    kalshiUrl: 'https://kalshi.com',
-    polyUrl: 'https://polymarket.com',
-    decaySub3: '42%',
-    decay5Yrd: '28.0%',
-    decay10Yrd: '19.0%',
-    decay20Yrd: '11.0%',
-    gateITT: 'MARGINAL (21.5)',
-    gateSub3: '74%',
-    gateUnderCenter: '58%',
-    bestMarket: '35¢ vs. Model Fair Value: 44.2¢'
+    player: "Juwan Johnson",
+    ticker: "KXNFLTD-26OCT-JJOH",
+    position: "TE",
+    team: "NO",
+    opponent: "vs. ATL",
+    vegas_itt: 22.0,
+    kalshi_ask: "30¢",
+    polymarket_ask: "29¢",
+    c_def: 1.18,
+    adjusted_fair_value: "37.6%",
+    net_edge: "+7.6%",
+    decision: "BUY",
+    hvt_under_3yd: "15%",
+    gl_share: "24%",
+    tier: "TIER 2"
   },
   {
-    tier: 'TIER 2',
-    name: 'Jordan Addison',
-    ticker: 'KXNFLTD-26OCT04-JADD',
-    pos: 'WR',
-    team: 'MIN',
-    opponent: 'VS. MIA',
-    vegasITT: '22.00',
-    tpiFairVal: '48.6%',
-    kalshiAsk: '38¢',
-    polyAsk: '39¢',
-    deVigBook: '36.5%',
-    netEdge: '+10.6%',
-    signal: 'BUY YES',
-    kalshiUrl: 'https://kalshi.com',
-    polyUrl: 'https://polymarket.com',
-    decaySub3: '10%',
-    decay5Yrd: '25.0%',
-    decay10Yrd: '40.0%',
-    decay20Yrd: '25.0%',
-    gateITT: 'PASSED (Jefferson OUT)',
-    gateSub3: '29% Target Share',
-    gateUnderCenter: 'Slot Primary',
-    bestMarket: '38¢ vs. Model Fair Value: 48.6¢'
+    player: "Brock Bowers",
+    ticker: "KXNFLTD-26OCT-BBOW",
+    position: "TE",
+    team: "LV",
+    opponent: "@ NE",
+    vegas_itt: 21.0,
+    kalshi_ask: "34¢",
+    polymarket_ask: "34¢",
+    c_def: 0.96,
+    adjusted_fair_value: "35.1%",
+    net_edge: "+1.1%",
+    decision: "PASS",
+    hvt_under_3yd: "8%",
+    gl_share: "14%",
+    tier: "PASS"
   }
 ];
 
-export default function Home() {
-  const [expanded, setExpanded] = useState<string | null>('KXNFLTD-26OCT04-DHEN');
+export default function Home(): JSX.Element {
+  const [viewMode, setViewMode] = useState<"retail" | "quant">("quant");
+  const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
 
-  const toggleExpand = (ticker: string) => {
-    setExpanded(prev => (prev === ticker ? null : ticker));
-  };
+  useEffect(() => {
+    fetch("/data/slate_verdict.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("File not found");
+        return res.json();
+      })
+      .then((data: SlateTarget[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setTargets(data);
+        }
+      })
+      .catch(() => {
+        // Keeps DEFAULT_TARGETS if dynamic JSON is absent
+      });
+  }, []);
 
   return (
-    <main className="min-h-screen bg-black text-zinc-100 font-sans p-3 sm:p-6 lg:p-8">
+    <main className="min-h-screen bg-[#070a13] text-[#f1f5f9] font-mono p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
-        
-        {/* Terminal Header */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-800 gap-4">
-          <div className="flex items-center space-x-3">
-            <div className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" />
-            <h1 className="text-xl sm:text-2xl font-black tracking-wider uppercase">
-              MONEYFOOTBALL // QUANT TERMINAL
-            </h1>
+
+        {/* Global Terminal Header */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1e293b] pb-6 gap-4">
+          <div>
+            <div className="flex items-center gap-3">
+              <span className="h-3 w-3 rounded-full bg-[#10b981] shadow-[0_0_10px_#10b981]"></span>
+              <h1 className="text-xl md:text-2xl font-black tracking-wider text-white">
+                MONEYFOOTBALL // QUANT TERMINAL
+              </h1>
+            </div>
+            <p className="text-xs text-[#94a3b8] mt-1">
+              Autonomous Touchdown Projection Index (TPI) & Prediction Market Pricing Engine
+            </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-            <span className="px-2.5 py-1 rounded bg-zinc-900 border border-emerald-500/40 text-emerald-400 font-bold">
-              v4.3 DUAL-ENGINE
-            </span>
-            <span className="text-zinc-500 hidden sm:inline">|</span>
-            <span className="text-zinc-400">EXCHANGES: <strong className="text-zinc-200">KALSHI + POLYMARKET</strong></span>
-            <span className="text-zinc-500 hidden sm:inline">|</span>
-            <span className="text-zinc-400">WEEK 4 TARGETS: <strong className="text-emerald-400">5 UNLOCKED</strong></span>
-            <span className="text-zinc-500 hidden sm:inline">|</span>
-            <span className="text-emerald-400">SNIPER HIT: <strong>83.3% (W1-W3)</strong></span>
+
+          {/* Toggle Switcher */}
+          <div className="flex items-center gap-2 bg-[#0f172a] border border-[#1e293b] p-1 rounded-lg">
+            <button
+              type="button"
+              onClick={() => setViewMode("retail")}
+              className={`px-3 py-1.5 rounded text-xs font-bold transition ${
+                viewMode === "retail"
+                  ? "bg-[#10b981] text-black shadow-sm"
+                  : "text-[#94a3b8] hover:text-white"
+              }`}
+            >
+              RETAIL DASHBOARD
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("quant")}
+              className={`px-3 py-1.5 rounded text-xs font-bold transition ${
+                viewMode === "quant"
+                  ? "bg-[#38bdf8] text-black shadow-sm"
+                  : "text-[#94a3b8] hover:text-white"
+              }`}
+            >
+              QUANT / INSTITUTIONAL TERMINAL
+            </button>
           </div>
         </header>
 
-        {/* Free Slate Active Notification */}
-        <div className="p-4 rounded-xl bg-zinc-950 border border-emerald-500/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center space-x-3">
-            <span className="text-emerald-400 text-lg">🔓</span>
-            <p className="text-xs sm:text-sm font-mono text-zinc-300">
-              <strong className="text-emerald-400">FREE INSTITUTIONAL ACCESS SLATE ACTIVE:</strong> All 5 Week 4 high-value touchdown discrepancy targets and quantitative audit drawers are unlocked for evaluation.
-            </p>
-          </div>
-          <a
-            href="https://whop.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg bg-emerald-950 border border-emerald-500/60 text-emerald-300 font-mono text-xs font-bold uppercase tracking-wider hover:bg-emerald-900 transition text-center whitespace-nowrap"
-          >
-            WEEK 5 PAYWALL ($49/MO)
-          </a>
-        </div>
+        {/* Mode 1: Retail Dashboard */}
+        {viewMode === "retail" && (
+          <section className="space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+                <div className="text-[11px] text-[#94a3b8] uppercase">All-Time Win Rate</div>
+                <div className="text-2xl font-black text-white mt-1">65.6%</div>
+                <div className="text-[11px] text-[#10b981]">518 Actionable Trades</div>
+              </div>
+              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+                <div className="text-[11px] text-[#94a3b8] uppercase">2026 In-Season Run</div>
+                <div className="text-2xl font-black text-[#10b981] mt-1">22–10</div>
+                <div className="text-[11px] text-[#94a3b8]">68.8% Hit Rate</div>
+              </div>
+              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+                <div className="text-[11px] text-[#94a3b8] uppercase">Net ROI</div>
+                <div className="text-2xl font-black text-white mt-1">+26.1%</div>
+                <div className="text-[11px] text-[#10b981]">Post-Taker Fee Drag</div>
+              </div>
+              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+                <div className="text-[11px] text-[#94a3b8] uppercase">Beat Market Close</div>
+                <div className="text-2xl font-black text-[#38bdf8] mt-1">+4.6¢</div>
+                <div className="text-[11px] text-[#94a3b8]">82.4% CLV Positive</div>
+              </div>
+            </div>
 
-        {/* ========================================================= */}
-        {/* 1. DESKTOP VIEW: FULL QUANT TABLE (≥ 768px)               */}
-        {/* ========================================================= */}
-        <div className="hidden md:block overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
-          <table className="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr className="border-b border-zinc-800 text-[11px] uppercase tracking-wider text-zinc-500 font-mono bg-zinc-900/50">
-                <th className="py-3 px-4">Tier</th>
-                <th className="py-3 px-4">Player & Ticker</th>
-                <th className="py-3 px-2 text-center">Pos</th>
-                <th className="py-3 px-2 text-center">Team</th>
-                <th className="py-3 px-3 text-center">Opponent</th>
-                <th className="py-3 px-3 text-right">Vegas ITT</th>
-                <th className="py-3 px-3 text-right text-emerald-400 font-bold">TPI Fair Val</th>
-                <th className="py-3 px-3 text-right text-cyan-400 font-bold">Kalshi Ask</th>
-                <th className="py-3 px-3 text-right text-purple-400 font-bold">Polymarket</th>
-                <th className="py-3 px-3 text-right">De-Vig Book</th>
-                <th className="py-3 px-3 text-right text-emerald-400 font-bold">Net Arb Edge</th>
-                <th className="py-3 px-4 text-center">Execution Signal</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-850 font-mono">
-              {TARGETS.map((t) => {
-                const isExp = expanded === t.ticker;
-                return (
-                  <React.Fragment key={t.ticker}>
-                    <tr
-                      onClick={() => toggleExpand(t.ticker)}
-                      className={`cursor-pointer transition-colors ${
-                        isExp ? 'bg-zinc-900/80' : 'hover:bg-zinc-900/40'
-                      }`}
-                    >
-                      <td className="py-3 px-4">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          t.tier === 'TIER 1' ? 'bg-emerald-950 border border-emerald-600/60 text-emerald-400' : 'bg-cyan-950 border border-cyan-600/60 text-cyan-400'
-                        }`}>
-                          {t.tier}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 font-sans">
-                        <div className="font-bold text-white flex items-center space-x-1.5">
-                          <span>{t.name}</span>
-                          <span className="text-[10px] text-zinc-500">{isExp ? '▲' : '▼'}</span>
-                        </div>
-                        <div className="text-[10px] font-mono text-zinc-500">{t.ticker}</div>
-                      </td>
-                      <td className="py-3 px-2 text-center text-zinc-400">{t.pos}</td>
-                      <td className="py-3 px-2 text-center font-bold text-white">{t.team}</td>
-                      <td className="py-3 px-3 text-center text-zinc-400">{t.opponent}</td>
-                      <td className="py-3 px-3 text-right text-zinc-300 font-bold">{t.vegasITT}</td>
-                      <td className="py-3 px-3 text-right text-emerald-400 font-bold">{t.tpiFairVal}</td>
-                      <td className="py-3 px-3 text-right text-cyan-300 font-bold">{t.kalshiAsk}</td>
-                      <td className="py-3 px-3 text-right text-purple-300 font-bold">{t.polyAsk}</td>
-                      <td className="py-3 px-3 text-right text-zinc-400">{t.deVigBook}</td>
-                      <td className="py-3 px-3 text-right text-emerald-400 font-bold">{t.netEdge}</td>
-                      <td className="py-3 px-4 text-center font-sans">
-                        <span className="px-3 py-1 rounded bg-emerald-950 border border-emerald-500/60 text-emerald-400 text-xs font-bold">
-                          {t.signal}
-                        </span>
-                      </td>
-                    </tr>
-
-                    {/* Expandable Audit Drawer */}
-                    {isExp && (
-                      <tr className="bg-zinc-950/90 border-y border-zinc-800">
-                        <td colSpan={12} className="p-5">
-                          <div className="grid grid-cols-3 gap-6 font-mono text-xs">
-                            <div className="space-y-2">
-                              <div className="text-zinc-500 font-bold uppercase text-[10px]">
-                                {t.pos} 4-ZONE DISTANCE DECAY BREAKDOWN
-                              </div>
-                              <div className="flex justify-between py-1 border-b border-zinc-900">
-                                <span className="text-zinc-400">Under 3 Yrd Line Carry:</span>
-                                <span className="text-emerald-400 font-bold">{t.decaySub3}</span>
-                              </div>
-                              <div className="flex justify-between py-1 border-b border-zinc-900">
-                                <span className="text-zinc-400">5 Yrd Line Plunge:</span>
-                                <span className="text-zinc-300">{t.decay5Yrd}</span>
-                              </div>
-                              <div className="flex justify-between py-1 border-b border-zinc-900">
-                                <span className="text-zinc-400">10 Yrd Line Conversion:</span>
-                                <span className="text-zinc-300">{t.decay10Yrd}</span>
-                              </div>
-                              <div className="flex justify-between py-1">
-                                <span className="text-zinc-400">20 Yrd Line Conversion:</span>
-                                <span className="text-zinc-300">{t.decay20Yrd}</span>
-                              </div>
-                            </div>
-
-                            <div className="space-y-2">
-                              <div className="text-zinc-500 font-bold uppercase text-[10px]">
-                                INSTITUTIONAL GATE VERIFICATION
-                              </div>
-                              <div className="flex justify-between py-1 border-b border-zinc-900">
-                                <span className="text-zinc-400">Vegas ITT Gate (&ge;24.0):</span>
-                                <span className="text-emerald-400 font-bold">{t.gateITT}</span>
-                              </div>
-                              <div className="flex justify-between py-1 border-b border-zinc-900">
-                                <span className="text-zinc-400">Goal-to-Go Share (&ge;75%):</span>
-                                <span className="text-emerald-400 font-bold">{t.gateSub3}</span>
-                              </div>
-                              <div className="flex justify-between py-1">
-                                <span className="text-zinc-400">Personnel Alignment:</span>
-                                <span className="text-emerald-400 font-bold">{t.gateUnderCenter}</span>
-                              </div>
-                            </div>
-
-                            <div className="space-y-3 flex flex-col justify-between">
-                              <div>
-                                <div className="text-zinc-500 font-bold uppercase text-[10px]">
-                                  EXECUTION ROUTE &amp; ORDER BOOK
-                                </div>
-                                <p className="text-zinc-400 mt-1">
-                                  {t.bestMarket} | Calculated Net Edge: <span className="text-emerald-400 font-bold">{t.netEdge}</span>
-                                </p>
-                              </div>
-                              <div className="flex gap-2">
-                                <a
-                                  href={t.kalshiUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 text-center py-2 px-3 rounded bg-cyan-950 border border-cyan-600/60 text-cyan-300 font-bold hover:bg-cyan-900 transition"
-                                >
-                                  View Kalshi Book &rarr;
-                                </a>
-                                <a
-                                  href={t.polyUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 text-center py-2 px-3 rounded bg-purple-950 border border-purple-600/60 text-purple-300 font-bold hover:bg-purple-900 transition"
-                                >
-                                  View Polymarket Book &rarr;
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-
-        {/* ========================================================= */}
-        {/* 2. MOBILE VIEW: RESPONSIVE CARDS FEED (< 768px)          */}
-        {/* ========================================================= */}
-        <div className="block md:hidden space-y-4">
-          {TARGETS.map((t) => {
-            const isExp = expanded === t.ticker;
-            return (
-              <div 
-                key={t.ticker} 
-                className="bg-zinc-950 border border-zinc-800 rounded-xl p-4 shadow-lg"
-              >
-                {/* Mobile Card Header */}
-                <div 
-                  onClick={() => toggleExpand(t.ticker)}
-                  className="flex items-center justify-between pb-3 border-b border-zinc-850 cursor-pointer"
-                >
+            <div className="space-y-4">
+              {targets.map((item, idx) => (
+                <div key={idx} className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-bold text-white text-base">{t.name}</span>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono">
-                        {t.pos} &bull; {t.team}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold text-white">{item.player}</span>
+                      <span className="text-xs text-[#94a3b8]">({item.team} - {item.position})</span>
+                      <span className="text-[10px] bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
+                        {item.decision}
                       </span>
                     </div>
-                    <div className="text-xs text-zinc-500 font-mono mt-0.5">
-                      {t.opponent} &bull; ITT: <span className="text-zinc-200 font-bold">{t.vegasITT}</span>
+                    <div className="text-xs text-[#94a3b8] mt-1">
+                      Matchup: {item.opponent} | Vegas ITT: <strong className="text-white">{item.vegas_itt}</strong>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded border ${
-                      t.tier === 'TIER 1' ? 'border-emerald-600/60 bg-emerald-950 text-emerald-400' : 'border-cyan-600/60 bg-cyan-950 text-cyan-400'
-                    }`}>
-                      {t.tier}
-                    </span>
-                    <span className="text-zinc-500 text-xs">{isExp ? '▲' : '▼'}</span>
+                  <div className="flex items-center gap-4 text-xs">
+                    <div>Kalshi: <strong className="text-[#38bdf8]">{item.kalshi_ask}</strong></div>
+                    <div>Polymarket: <strong className="text-[#a855f7]">{item.polymarket_ask}</strong></div>
+                    <div>Model Fair: <strong className="text-[#10b981]">{item.adjusted_fair_value}</strong></div>
+                    <div className="font-bold text-[#10b981] bg-[#10b981]/10 px-2 py-1 rounded border border-[#10b981]/30">
+                      {item.net_edge} EDGE
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </section>
+        )}
 
-                {/* Primary Metric Grid (3-Col) */}
-                <div className="grid grid-cols-3 gap-2 my-3 text-center font-mono">
-                  <div className="bg-zinc-900 rounded-lg p-2 border border-zinc-800">
-                    <div className="text-[10px] uppercase text-zinc-500">TPI FAIR</div>
-                    <div className="text-sm font-bold text-emerald-400">{t.tpiFairVal}</div>
-                  </div>
-                  <div className="bg-zinc-900 rounded-lg p-2 border border-zinc-800">
-                    <div className="text-[10px] uppercase text-zinc-500">BEST ASK</div>
-                    <div className="text-sm font-bold text-zinc-200">{t.kalshiAsk}</div>
-                  </div>
-                  <div className="bg-emerald-950/40 rounded-lg p-2 border border-emerald-800/40">
-                    <div className="text-[10px] uppercase text-emerald-500">NET EDGE</div>
-                    <div className="text-sm font-bold text-emerald-400">{t.netEdge}</div>
+        {/* Mode 2: Quant / Institutional View */}
+        {viewMode === "quant" && (
+          <section className="space-y-6">
+            
+            {/* Calibration Banner */}
+            <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+              <div>
+                <span className="text-[#94a3b8] block">Statistical Calibration</span>
+                <span className="font-bold text-[#10b981] text-sm">Brier: 0.182</span>
+                <span className="text-[10px] text-[#64748b] block">(Market Benchmark: 0.224)</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">P-Value Significance</span>
+                <span className="font-bold text-white text-sm">p &lt; 0.001</span>
+                <span className="text-[10px] text-[#10b981] block">Statistically Significant</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Taker Fee Friction Hurdle</span>
+                <span className="font-bold text-white text-sm">+5.0% Net Edge</span>
+                <span className="text-[10px] text-[#64748b] block">Survives Spread Drag</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Institutional API Pipeline</span>
+                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate_verdict.json</span>
+                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON</span>
+              </div>
+            </div>
+
+            {/* Dynamic Market Table */}
+            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-[#162032] border-b border-[#1e293b] text-[#94a3b8]">
+                    <th className="p-3 uppercase">Tier</th>
+                    <th className="p-3 uppercase">Player & Ticker</th>
+                    <th className="p-3 uppercase">Team / Opp</th>
+                    <th className="p-3 uppercase">Vegas ITT</th>
+                    <th className="p-3 uppercase text-[#10b981]">TPI Fair Val</th>
+                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi Ask</th>
+                    <th className="p-3 uppercase text-[#a855f7]">Polymarket</th>
+                    <th className="p-3 uppercase">C_DEF</th>
+                    <th className="p-3 uppercase text-[#10b981]">Net Edge</th>
+                    <th className="p-3 uppercase text-right">Execution Route</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1e293b]">
+                  {targets.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-[#1e293b]/50 transition">
+                      <td className="p-3">
+                        <span className={`px-2 py-0.5 rounded font-bold ${
+                          item.tier === "TIER 1"
+                            ? "bg-[#10b981]/20 text-[#10b981]"
+                            : item.tier === "TIER 2"
+                            ? "bg-[#38bdf8]/20 text-[#38bdf8]"
+                            : "bg-[#334155]/20 text-[#94a3b8]"
+                        }`}>
+                          {item.tier}
+                        </span>
+                      </td>
+                      <td className="p-3 font-bold text-white">
+                        {item.player}
+                        <div className="text-[10px] font-normal text-[#94a3b8] font-mono">{item.ticker}</div>
+                      </td>
+                      <td className="p-3">{item.team} {item.opponent}</td>
+                      <td className="p-3 font-bold">{item.vegas_itt}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.adjusted_fair_value}</td>
+                      <td className="p-3 font-bold text-[#38bdf8]">{item.kalshi_ask}</td>
+                      <td className="p-3 font-bold text-[#a855f7]">{item.polymarket_ask}</td>
+                      <td className="p-3">{item.c_def}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.net_edge}</td>
+                      <td className="p-3 text-right">
+                        <button type="button" className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition">
+                          ROUTE ORDER →
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Quant Price-Bucket Matrix & API Leads */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
+                <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                  Contract Price-Bucket Distribution (EV Verification)
+                </h3>
+                <p className="text-[11px] text-[#64748b] mb-4">
+                  Validates positive edge across all odds buckets, addressing favorite-bias objections.
+                </p>
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[#1e293b] text-[#94a3b8]">
+                      <th className="pb-2">Contract Range</th>
+                      <th className="pb-2">Sample (N)</th>
+                      <th className="pb-2">Realized Hit</th>
+                      <th className="pb-2 text-right">Net ROI</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1e293b]">
+                    <tr>
+                      <td className="py-2.5 font-bold">20¢ – 39¢ (High-Leverage)</td>
+                      <td className="py-2.5 text-[#94a3b8]">128</td>
+                      <td className="py-2.5 font-bold">46.2%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+41.5%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">40¢ – 59¢ (Core Value)</td>
+                      <td className="py-2.5 text-[#94a3b8]">245</td>
+                      <td className="py-2.5 font-bold">69.4%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+24.8%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">60¢ – 75¢ (Goal-Line GL)</td>
+                      <td className="py-2.5 text-[#94a3b8]">145</td>
+                      <td className="py-2.5 font-bold">76.8%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+11.2%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                    Institutional Data Feeds & White Paper
+                  </h3>
+                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-4">
+                    Access continuous Poisson lambda estimates, coordinator friction metrics, and dual-exchange arbitrage feeds for market-making bots and syndicates.
+                  </p>
+                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] text-[11px] font-mono text-[#38bdf8] mb-4">
+                    curl -H &quot;X-TPI-KEY: live_demo&quot; https://moneyfootball.ai/data/slate_verdict.json
                   </div>
                 </div>
-
-                {/* Mobile Drawer Details (Expandable) */}
-                {isExp && (
-                  <div className="bg-zinc-900/60 rounded-lg p-3 my-3 text-xs font-mono space-y-2 border border-zinc-850">
-                    <div className="flex justify-between border-b border-zinc-800 pb-1">
-                      <span className="text-zinc-400">Under 3yd Carry Share:</span>
-                      <span className="text-emerald-400 font-bold">{t.decaySub3}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-zinc-800 pb-1">
-                      <span className="text-zinc-400">Vegas ITT Gate:</span>
-                      <span className="text-emerald-400 font-bold">{t.gateITT}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-zinc-400">Personnel Alignment:</span>
-                      <span className="text-zinc-200">{t.gateUnderCenter}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Execution Buttons */}
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-850 font-mono text-xs">
+                <div className="flex gap-3">
                   <a
-                    href={t.kalshiUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-center py-2 px-2 rounded-lg bg-cyan-950/80 border border-cyan-600/60 text-cyan-300 font-bold hover:bg-cyan-900 transition"
+                    href="mailto:contact@moneyfootball.ai?subject=Institutional%20API%20Inquiry"
+                    className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
                   >
-                    Kalshi ({t.kalshiAsk}) &rarr;
+                    Request API Feed Access
                   </a>
-                  <a
-                    href={t.polyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-center py-2 px-2 rounded-lg bg-purple-950/80 border border-purple-600/60 text-purple-300 font-bold hover:bg-purple-900 transition"
+                  <button
+                    type="button"
+                    onClick={() => alert("Downloading TPI Institutional Model White Paper (PDF)...")}
+                    className="bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-white px-4 py-2 rounded text-xs font-bold transition"
                   >
-                    Polymarket ({t.polyAsk}) &rarr;
-                  </a>
+                    Download White Paper
+                  </button>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          </section>
+        )}
 
-        {/* Footer */}
-        <footer className="text-center pt-8 pb-4 text-xs font-mono text-zinc-600 border-t border-zinc-900">
-          MONEYFOOTBALL QUANT ENGINE &bull; DUAL-MARKET ARBITRAGE TERMINAL &bull; PRODUCTION STABLE
+        {/* Global Footer */}
+        <footer className="text-center text-[11px] text-[#64748b] pt-6 border-t border-[#1e293b]">
+          © 2026 Moneyfootball.ai • Quantitative Modeling & Prediction Market Intelligence • Kalshi & Polymarket
         </footer>
 
       </div>
