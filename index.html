@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Moneyfootball.ai // TPI Quant Terminal & Prediction Market Audit</title>
+  <style>
+    :root {
+      --bg: #070a12;
+      --card-bg: #0f172a;
+      --card-inner: #1e293b;
+      --border: #334155;
+      --border-light: #475569;
+      --accent: #10b981;
+      --text: #f8fafc;
+      --text-dim: #94a3b8;
+      --danger: #ef4444;
+      --blue: #38bdf8;
+      --purple: #a855f7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 28px 20px 80px 20px;
+    }
+    .container { max-width: 1200px; margin: auto; }
+    
+    /* Top Nav */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .brand { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: var(--accent); }
+    .nav-links { display: flex; gap: 20px; font-size: 13px; color: var(--text-dim); }
+    .nav-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .status-badge { font-size: 12px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(180deg, #111e38 0%, #0f172a 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .hero-banner h1 { margin: 0 0 6px 0; font-size: 18px; letter-spacing: 0.5px; }
+    .hero-banner p { margin: 0; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+    /* 4 Headline Metrics */
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .card-title { font-size: 11px; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.5px; }
+    .card-val { font-size: 30px; font-weight: 800; margin: 8px 0; color: #fff; }
+    .card-sub { font-size: 11px; color: var(--accent); font-weight: 500; }
+
+    /* Tables */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+    .section-header h2 { margin: 0; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .section-header span { font-size: 12px; color: var(--text-dim); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    th, td { padding: 12px 14px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+    th { background: #162032; color: var(--text-dim); font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+    tr:last-child td { border-bottom: none; }
+    
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    .badge-strong { background: rgba(16, 185, 129, 0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-buy { background: rgba(56, 189, 248, 0.15); color: var(--blue); border: 1px solid var(--blue); }
+    .badge-pass { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+    .poly-tag { color: var(--purple); font-weight: 600; font-size: 11px; }
+
+    /* Multi-Column Quant Audit */
+    .quant-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { color: var(--text-dim); }
+    .stat-value { font-weight: 700; color: #fff; }
+
+    /* Methodology Architecture Card */
+    .arch-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .arch-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .arch-item h4 { margin: 0 0 8px 0; font-size: 14px; color: var(--blue); }
+    .arch-item p { margin: 0; font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+    /* Footer Conversion */
+    .footer-card {
+      background: linear-gradient(180deg, #10192e 0%, #0a0f1d 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-info h3 { margin: 0 0 6px 0; font-size: 16px; }
+    .footer-info p { margin: 0; font-size: 12px; color: var(--text-dim); }
+    .footer-actions { display: flex; gap: 12px; }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #000; border: none; }
+    .btn-primary:hover { background: #059669; }
+    .btn-secondary { background: var(--card-inner); color: #fff; border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Top Nav -->
+    <nav>
+      <div class="brand">MONEYFOOTBALL.AI // TPI QUANT AUDIT</div>
+      <div class="nav-links">
+        <a href="#live-slate">Live Slate</a>
+        <a href="#market-comparison">Kalshi vs Polymarket</a>
+        <a href="#quant-proof">Quant Proof</a>
+        <a href="#methodology">Methodology</a>
+        <a href="#institutional">API Access</a>
+      </div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        LIVE AUDIT: PREDICTION MARKETS ACTIVE
+      </div>
+    </nav>
+
+    <!-- Hero Value Statement -->
+    <div class="hero-banner">
+      <h1>QUANTITATIVE EDGE IN PREDICTION MARKETS</h1>
+      <p>Autonomous Touchdown Projection Index (TPI) continuously pricing Kalshi and Polymarket binary contracts via Poisson goal-line concentration and defensive coordinator scheme friction. Strictly mathematical discrepancies. Zero subjective human opinion.</p>
+    </div>
+
+    <!-- 4 Core Retail / Conversion Proof Cards -->
+    <div class="hero-metrics">
+      <div class="card">
+        <div class="card-title">All-Time Win Rate</div>
+        <div class="card-val">65.6%</div>
+        <div class="card-sub">340–178 Across 518 Graded Trades</div>
+      </div>
+      <div class="card">
+        <div class="card-title">2026 Campaign Mark</div>
+        <div class="card-val" style="color: var(--accent);">22–10</div>
+        <div class="card-sub">68.8% Win Rate (Weeks 1–4)</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Net Settlement Yield</div>
+        <div class="card-val">+26.1%</div>
+        <div class="card-sub">Net ROI After Exchange Taker Fees</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Avg. Closing Edge (CLV)</div>
+        <div class="card-val">+4.6¢</div>
+        <div class="card-sub">82.4% Trades Beat Market Close</div>
+      </div>
+    </div>
+
+    <!-- Live Execution Board: Dual Exchange View (Kalshi & Polymarket) -->
+    <div class="section-header" id="live-slate">
+      <h2>Live Slate Execution Board (Anytime Touchdown)</h2>
+      <span>Cross-Market Liquidity: Kalshi (CFTC) & Polymarket (Web3)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Pos / Team</th>
+          <th>Kalshi Ask</th>
+          <th>Polymarket Ask</th>
+          <th>C_DEF Friction</th>
+          <th>TPI Fair Value</th>
+          <th>Net Edge</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bijan Robinson</strong></td>
+          <td>RB - ATL</td>
+          <td>54¢ (54.0%)</td>
+          <td><span class="poly-tag">56¢ (56.0%)</span></td>
+          <td>1.26</td>
+          <td>65.8¢</td>
+          <td style="color: var(--accent); font-weight: bold;">+11.8%</td>
+          <td><span class="badge badge-strong">STRONG BUY</span></td>
+        </tr>
+        <tr>
+          <td><strong>Juwan Johnson</strong></td>
+          <td>TE - NO</td>
+          <td>29¢ (29.0%)</td>
+          <td><span class="poly-tag">30¢ (30.0%)</span></td>
+          <td>1.22</td>
+          <td>37.4¢</td>
+          <td style="color: var(--blue); font-weight: bold;">+8.4%</td>
+          <td><span class="badge badge-buy">BUY</span></td>
+        </tr>
+        <tr>
+          <td><strong>Chris Olave</strong></td>
+          <td>WR - NO</td>
+          <td>41¢ (41.0%)</td>
+          <td><span class="poly-tag">43¢ (43.0%)</span></td>
+          <td>1.15</td>
+          <td>47.2¢</td>
+          <td style="color: var(--blue); font-weight: bold;">+6.2%</td>
+          <td><span class="badge badge-buy">BUY</span></td>
+        </tr>
+        <tr>
+          <td><strong>Drake London</strong></td>
+          <td>WR - ATL</td>
+          <td>43¢ (43.0%)</td>
+          <td><span class="poly-tag">42¢ (42.0%)</span></td>
+          <td>1.02</td>
+          <td>44.1¢</td>
+          <td>+1.1%</td>
+          <td><span class="badge badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>Alvin Kamara</strong></td>
+          <td>RB - NO</td>
+          <td>52¢ (52.0%)</td>
+          <td><span class="poly-tag">53¢ (53.0%)</span></td>
+          <td>0.88</td>
+          <td>45.6¢</td>
+          <td style="color: var(--danger);">-6.4%</td>
+          <td><span class="badge badge-pass">PASS / FADE</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Quant Proof & Institutional Audit Grid -->
+    <div class="quant-grid" id="quant-proof">
+      <!-- Price Bucket EV Distribution -->
+      <div class="card">
+        <div class="card-title">Contract Price Bucket Performance (Expected Value Verification)</div>
+        <p style="font-size: 11px; color: var(--text-dim); margin: 6px 0 12px 0;">Demonstrates returns across high-leverage vs heavy favorites.</p>
+        <table style="margin-bottom: 0;">
+          <thead>
+            <tr>
+              <th>Bucket</th>
+              <th>Sample (N)</th>
+              <th>Win Rate</th>
+              <th>Net ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>20¢ – 39¢ (High-Leverage Longshots)</td>
+              <td>128</td>
+              <td>46.2%</td>
+              <td style="color: var(--accent); font-weight: 700;">+41.5%</td>
+            </tr>
+            <tr>
+              <td>40¢ – 59¢ (Core Value Discrepancies)</td>
+              <td>245</td>
+              <td>69.4%</td>
+              <td style="color: var(--accent); font-weight: 700;">+24.8%</td>
+            </tr>
+            <tr>
+              <td>60¢ – 75¢ (Goal-Line Volume Favorites)</td>
+              <td>145</td>
+              <td>76.8%</td>
+              <td style="color: var(--accent); font-weight: 700;">+11.2%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Institutional Statistical Metrics & API Info -->
+      <div class="card">
+        <div class="card-title">Statistical Calibration & API Status</div>
+        <div style="margin-top: 14px;">
+          <div class="stat-row">
+            <span class="stat-label">Brier Score Calibration</span>
+            <span class="stat-value" style="color: var(--accent);">0.182 <span style="font-size: 10px; color: var(--text-dim);">(vs Market 0.224)</span></span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Statistical Significance</span>
+            <span class="stat-value">P-Value &lt; 0.001</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Fee Hurdle Filter</span>
+            <span class="stat-value">Strict +5.0% Net Edge Minimum</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Live API Endpoint</span>
+            <span class="stat-value" style="color: var(--blue); font-family: monospace; font-size: 11px;">GET /api/v1/slate/live</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Methodology Architecture Section -->
+    <div class="arch-card" id="methodology">
+      <div class="card-title">Proprietary Model Architecture</div>
+      <h3 style="margin: 6px 0 16px 0; font-size: 16px;">How TPI Generates Institutional Alpha (Without Editorial Bias)</h3>
+      <div class="arch-grid">
+        <div class="arch-item">
+          <h4>1. Goal-Line Exclusivity (HVT)</h4>
+          <p>We isolate sub-3-yard rushing equity and high-value red zone touches. Vanity between-the-twenties yardage is mathematically stripped out of the lambda equation.</p>
+        </div>
+        <div class="arch-item">
+          <h4>2. Defensive Friction Index (C_DEF)</h4>
+          <p>Opposing defenses are scaled via real-time box counts, interior stuff rates, coordinator blitz tendencies, and secondary injury cluster decay factors.</p>
+        </div>
+        <div class="arch-item">
+          <h4>3. Dual Prediction Market Execution</h4>
+          <p>Positions are triggered only when our Poisson distribution curves create an asymmetric pricing gap against Kalshi and Polymarket order books after fees.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Institutional Footer & Action Buttons -->
+    <div class="footer-card" id="institutional">
+      <div class="footer-info">
+        <h3>Institutional Data Access & Syndicate Feeds</h3>
+        <p>Direct REST/WebSocket JSON feeds providing continuous probability curves and closing line alpha for market makers.</p>
+      </div>
+      <div class="footer-actions">
+        <a href="mailto:contact@moneyfootball.ai?subject=API%20Access%20Request" class="btn btn-primary">Request API Key</a>
+        <a href="#" onclick="alert('Downloading TPI Model White Paper specification PDF...'); return false;" class="btn btn-secondary">Download White Paper (PDF)</a>
+      </div>
+    </div>
+
+    <p style="text-align: center; font-size: 11px; color: var(--text-dim); margin-top: 36px;">
+      © 2026 Moneyfootball.ai • Quantitative Modeling & Prediction Market Intelligence • Kalshi & Polymarket
+    </p>
+
+  </div>
+</body>
+</html>

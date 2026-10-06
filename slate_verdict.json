@@ -1,0 +1,46 @@
+[
+  {
+    "player": "Chase Brown",
+    "team": "CIN",
+    "position": "RB",
+    "market_ask": "34\u00a2",
+    "c_def": 0.697,
+    "adjusted_fair_value": "30.7%",
+    "net_edge": "-3.3%",
+    "decision": "PASS",
+    "rejection_flag": "None"
+  },
+  {
+    "player": "Braelon Allen",
+    "team": "NYJ",
+    "position": "RB",
+    "market_ask": "31\u00a2",
+    "c_def": 0.82,
+    "adjusted_fair_value": "30.3%",
+    "net_edge": "-0.7%",
+    "decision": "PASS",
+    "rejection_flag": "None"
+  },
+  {
+    "player": "Dontayvion Wicks",
+    "team": "GB",
+    "position": "WR",
+    "market_ask": "30\u00a2",
+    "c_def": 1.0,
+    "adjusted_fair_value": "38.0%",
+    "net_edge": "+8.0%",
+    "decision": "BUY",
+    "rejection_flag": "None"
+  },
+  {
+    "player": "Matt Gay (PK)",
+    "team": "LVR",
+    "position": "TE",
+    "market_ask": "32\u00a2",
+    "c_def": 1.0,
+    "adjusted_fair_value": "45.0%",
+    "net_edge": "+13.0%",
+    "decision": "BUY",
+    "rejection_flag": "None"
+  }
+]
