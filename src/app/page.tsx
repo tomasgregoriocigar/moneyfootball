@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 
@@ -621,4 +621,230 @@ export default function Home(): JSX.Element {
                     </div>
                     <div className="flex items-center justify-between text-[#10b981]">
                       <span>● Direct Batch CSV Export:</span>
-                      <span className="
+                      <span className="font-mono text-[11px] text-white">/data/tpi_touchdown_board.csv</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowApiModal(true)}
+                    className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
+                  >
+                    Request API Feed
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowWhitePaperModal(true)}
+                    className="bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-white px-4 py-2 rounded text-xs font-bold transition"
+                  >
+                    Read White Paper
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <footer className="text-[11px] text-[#64748b] leading-relaxed pt-8 border-t border-[#1e293b] space-y-3">
+          <p>
+            DISCLAIMER AND REGULATORY NOTICE: Moneyfootball.ai is an automated quantitative modeling platform that computes theoretical probability distributions for predictive event contracts traded on CFTC-regulated exchanges and decentralized prediction markets. Moneyfootball.ai is not a broker-dealer, registered investment advisor, or commodities trading advisor.
+          </p>
+          <p>
+            All figures, including the Touchdown Projection Index (TPI), fair values, sportsbook consensus lines, and net edge percentages, represent mathematical model outputs derived from historical nflverse datasets, defensive coordinator friction indices, and public market odds. Historical performance is not indicative of future results. Trading binary event contracts carries financial risk. Trade responsibly.
+          </p>
+          <p className="text-center pt-2">
+            &copy; 2026 Moneyfootball.ai &bull; All Rights Reserved.
+          </p>
+        </footer>
+
+      </div>
+
+      {showApiModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                  Request Institutional API Feed
+                </h3>
+                <p className="text-xs text-[#94a3b8]">
+                  Fill out the evaluation form. Submission routes directly to our desk.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowApiModal(false)}
+                className="text-[#94a3b8] hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleApiSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Full Name / Contact Person</label>
+                <input
+                  type="text"
+                  required
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  placeholder="e.g., Alex Reed"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Entity / Fund / Syndicate Name</label>
+                <input
+                  type="text"
+                  required
+                  value={formEntity}
+                  onChange={(e) => setFormEntity(e.target.value)}
+                  placeholder="e.g., Apex Quantitative Trading Group"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Corporate or Contact Email</label>
+                <input
+                  type="email"
+                  required
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
+                  placeholder="name@fund.com"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Requested Data Pipeline Format</label>
+                <select
+                  value={formFormat}
+                  onChange={(e) => setFormFormat(e.target.value)}
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                >
+                  <option value="Live JSON REST Feed (/data/slate_verdict.json)">
+                    Live JSON REST Feed (/data/slate_verdict.json)
+                  </option>
+                  <option value="Daily Batch CSV Export (/data/tpi_touchdown_board.csv)">
+                    Daily Batch CSV Export (/data/tpi_touchdown_board.csv)
+                  </option>
+                  <option value="Both JSON REST & Batch CSV Feed">
+                    Both JSON REST & Batch CSV Feed
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Intended Use Case / Trading Volume</label>
+                <textarea
+                  rows={3}
+                  value={formNotes}
+                  onChange={(e) => setFormNotes(e.target.value)}
+                  placeholder="e.g., Automated Kalshi liquidity provision, cross-exchange market making..."
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowApiModal(false)}
+                  className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded bg-[#38bdf8] text-black font-bold hover:bg-[#0284c7] transition"
+                >
+                  Submit Application &rarr;
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showWhitePaperModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                  Touchdown Projection Index (TPI)
+                </h3>
+                <p className="text-xs text-[#38bdf8]">
+                  Quantitative White Paper and Statistical Calibration Architecture
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowWhitePaperModal(false)}
+                className="text-[#94a3b8] hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs text-[#94a3b8] leading-relaxed">
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">1. Executive Overview</h4>
+                <p>
+                  The Touchdown Projection Index (TPI) is an automated mathematical engine pricing binary event contracts traded across CFTC-regulated exchanges and prediction markets. Standard sportsbooks set lines using public handle heuristics. TPI derives synthetic fair value exclusively through physical touch proximity, opportunity concentration, and scheme-specific defensive drag.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">2. High-Value Touch (HVT) Filtering</h4>
+                <p>
+                  Between-the-twenties rushing and target volume exhibits weak correlation with binary touchdown probability. TPI isolates sub-3-yard rushing equity, goal-to-go carry share, and red zone target per route run to construct a Poisson lambda calibrated strictly on high-leverage scoring events.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">3. Defensive Scheme Friction</h4>
+                <p>
+                  Traditional defensive rankings rely on raw yards surrendered. TPI quantifies opponent friction through coordinator blitz profiles, box-count frequencies inside the 10-yard line, and secondary cluster injuries. When defensive friction is elevated, opponent scheme vulnerability increases baseline expectancy.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">4. Statistical Calibration</h4>
+                <p>
+                  Backtested across historical settlement data, TPI demonstrates a 0.182 Brier Score outperforming benchmark market baselines. All trade signals are gated by a mandatory net hurdle after full exchange taker fees to guarantee resilience against order-book spread decay.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">5. Delivery and Ingestion Specifications</h4>
+                <p>
+                  Production feeds are published weekly via automated pipelines in two primary formats:
+                </p>
+                <ul className="list-disc pl-5 space-y-0.5 text-white">
+                  <li><strong>REST JSON:</strong> <code>/data/slate_verdict.json</code> (Continuous updates)</li>
+                  <li><strong>Delimited CSV:</strong> <code>/data/tpi_touchdown_board_full_slate.csv</code> (Batch institutional audit)</li>
+                </ul>
+              </section>
+            </div>
+
+            <div className="pt-3 border-t border-[#1e293b] flex justify-between items-center">
+              <span className="text-[10px] text-[#64748b]">© 2026 Moneyfootball.ai • Proprietary Mathematical Model</span>
+              <button
+                type="button"
+                onClick={() => setShowWhitePaperModal(false)}
+                className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition text-xs font-bold"
+              >
+                Close White Paper
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </main>
+  );
+}
