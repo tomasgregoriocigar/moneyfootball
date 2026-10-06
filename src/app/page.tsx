@@ -163,11 +163,9 @@ export default function Home(): JSX.Element {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [slate, setSlate] = useState<SlateTarget[]>(DEFAULT_SLATE);
 
-  // Modals
   const [showApiModal, setShowApiModal] = useState<boolean>(false);
   const [showWhitePaperModal, setShowWhitePaperModal] = useState<boolean>(false);
 
-  // Form Fields
   const [formName, setFormName] = useState("");
   const [formEntity, setFormEntity] = useState("");
   const [formEmail, setFormEmail] = useState("");
@@ -221,7 +219,6 @@ export default function Home(): JSX.Element {
     <main className="min-h-screen bg-[#070a12] text-[#f8fafc] font-mono px-4 py-8 md:px-12">
       <div className="max-w-6xl mx-auto space-y-6">
 
-        {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1f2937] pb-6 gap-4">
           <div>
             <div className="flex items-center gap-3">
@@ -248,7 +245,6 @@ export default function Home(): JSX.Element {
           </div>
         </header>
 
-        {/* View Switcher */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#0f172a] border border-[#1e293b] p-2 rounded-lg gap-3">
           <div className="flex items-center gap-2">
             <button
@@ -280,7 +276,6 @@ export default function Home(): JSX.Element {
           </div>
         </div>
 
-        {/* Paywall Banner */}
         {!isUnlocked && (
           <div className="bg-[#0b1329] border border-[#10b981]/30 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-start gap-3">
@@ -305,7 +300,6 @@ export default function Home(): JSX.Element {
           </div>
         )}
 
-        {/* Stat Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
             <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">All-Time Win Rate</div>
@@ -329,7 +323,6 @@ export default function Home(): JSX.Element {
           </div>
         </div>
 
-        {/* View 1: Retail Dashboard */}
         {viewMode === "retail" && (
           <div className="space-y-4">
             {slate.map((item, idx) => {
@@ -411,7 +404,6 @@ export default function Home(): JSX.Element {
                   {!isLocked && isExpanded && (
                     <div className="p-5 border-t border-[#1e293b] bg-[#090d1a] space-y-4 text-xs">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        
                         <div className="space-y-2">
                           <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
                             RB 4-Zone Distance Decay Breakdown
@@ -462,4 +454,171 @@ export default function Home(): JSX.Element {
                               Execution Route & Order Book
                             </div>
                             <div className="text-[#94a3b8]">
-                              {item.kalshi_ask} vs. Model Fair: {
+                              {item.kalshi_ask} vs. Model Fair: {item.tpi_fair_val} | Edge:{" "}
+                              <strong className="text-[#10b981]">{item.net_edge}</strong>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href={item.kalshi_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 text-center bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold py-2 rounded transition"
+                            >
+                              Search Kalshi ({item.kalshi_ask}) &rarr;
+                            </a>
+                            <a
+                              href={item.polymarket_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 text-center bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-2 rounded transition"
+                            >
+                              Search Polymarket ({item.polymarket_ask}) &rarr;
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {viewMode === "quant" && (
+          <div className="space-y-6">
+            <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+              <div>
+                <span className="text-[#94a3b8] block">Brier Score Calibration</span>
+                <span className="font-bold text-[#10b981] text-sm">0.182</span>
+                <span className="text-[10px] text-[#64748b] block">(Benchmark: 0.224)</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Statistical Significance</span>
+                <span className="font-bold text-white text-sm">p &lt; 0.001</span>
+                <span className="text-[10px] text-[#10b981] block">Null Hypothesis Rejected</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Taker Fee Friction Filter</span>
+                <span className="font-bold text-white text-sm">+5.0% Net Hurdle</span>
+                <span className="text-[10px] text-[#64748b] block">Survives Spread Drag</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Programmatic API Feed</span>
+                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate</span>
+                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON Stream</span>
+              </div>
+            </div>
+
+            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-[#162032] border-b border-[#1e293b] text-[#94a3b8]">
+                    <th className="p-3 uppercase">Tier</th>
+                    <th className="p-3 uppercase">Player & Ticker</th>
+                    <th className="p-3 uppercase">Matchup</th>
+                    <th className="p-3 uppercase">Vegas ITT</th>
+                    <th className="p-3 uppercase text-[#10b981]">TPI Fair</th>
+                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi</th>
+                    <th className="p-3 uppercase text-[#a855f7]">Polymarket</th>
+                    <th className="p-3 uppercase text-[#f59e0b]">Sportsbook</th>
+                    <th className="p-3 uppercase">C_DEF</th>
+                    <th className="p-3 uppercase text-[#10b981]">Net Edge</th>
+                    <th className="p-3 uppercase text-right">Order Route</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1e293b]">
+                  {slate.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-[#1e293b]/50 transition">
+                      <td className="p-3">
+                        <span className="bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
+                          {item.tier}
+                        </span>
+                      </td>
+                      <td className="p-3 font-bold text-white">
+                        {item.player}
+                        <div className="text-[10px] font-normal text-[#94a3b8] font-mono">{item.ticker}</div>
+                      </td>
+                      <td className="p-3">{item.team} {item.opponent}</td>
+                      <td className="p-3 font-bold">{item.vegas_itt}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.tpi_fair_val}</td>
+                      <td className="p-3 font-bold text-[#38bdf8]">{item.kalshi_ask}</td>
+                      <td className="p-3 font-bold text-[#a855f7]">{item.polymarket_ask}</td>
+                      <td className="p-3 font-bold text-[#f59e0b]">{item.sportsbook_line}</td>
+                      <td className="p-3">{item.c_def}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.net_edge}</td>
+                      <td className="p-3 text-right">
+                        <a
+                          href={item.kalshi_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition inline-block"
+                        >
+                          ROUTE &rarr;
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
+                <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                  Contract Price-Bucket Distribution (EV Verification)
+                </h3>
+                <p className="text-[11px] text-[#64748b] mb-4">
+                  Validates positive expectancy across all pricing tiers, addressing favorite-bias concerns.
+                </p>
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[#1e293b] text-[#94a3b8]">
+                      <th className="pb-2">Contract Range</th>
+                      <th className="pb-2">Sample (N)</th>
+                      <th className="pb-2">Win Rate</th>
+                      <th className="pb-2 text-right">Net ROI</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1e293b]">
+                    <tr>
+                      <td className="py-2.5 font-bold">20¢ – 39¢ (High-Leverage)</td>
+                      <td className="py-2.5 text-[#94a3b8]">128</td>
+                      <td className="py-2.5 font-bold">46.2%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+41.5%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">40¢ – 59¢ (Core Value)</td>
+                      <td className="py-2.5 text-[#94a3b8]">245</td>
+                      <td className="py-2.5 font-bold">69.4%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+24.8%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">60¢ – 75¢ (Goal-Line GL)</td>
+                      <td className="py-2.5 text-[#94a3b8]">145</td>
+                      <td className="py-2.5 font-bold">76.8%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+11.2%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                    Institutional Data Feeds & White Paper
+                  </h3>
+                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-3">
+                    Continuous quantitative probability curves, defensive scheme friction ratings, and order-book arbitrage feeds for trading syndicates and prediction market makers.
+                  </p>
+                  
+                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] space-y-1.5 text-xs mb-4">
+                    <div className="text-[10px] text-[#94a3b8] uppercase font-bold">Supported Delivery Protocols:</div>
+                    <div className="flex items-center justify-between text-[#38bdf8]">
+                      <span>● Live REST JSON Feed:</span>
+                      <span className="font-mono text-[11px] text-white">/data/slate_verdict.json</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[#10b981]">
+                      <span>● Direct Batch CSV Export:</span>
+                      <span className="
