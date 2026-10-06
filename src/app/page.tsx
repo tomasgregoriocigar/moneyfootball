@@ -2,6 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 
+interface ZoneDecay {
+  under_3yd: string;
+  five_yd_plunge: string;
+  ten_yd_conversion: string;
+  twenty_yd_conversion: string;
+}
+
+interface GateVerification {
+  vegas_itt_gate: string;
+  goal_to_go_share: string;
+  personnel_alignment: string;
+}
+
 interface SlateTarget {
   player: string;
   ticker: string;
@@ -12,15 +25,17 @@ interface SlateTarget {
   kalshi_ask: string;
   polymarket_ask: string;
   c_def: number;
-  adjusted_fair_value: string;
+  tpi_fair_val: string;
   net_edge: string;
-  decision: string;
-  hvt_under_3yd: string;
-  gl_share: string;
-  tier: string;
+  execution_signal: string;
+  tier: "TIER 1" | "TIER 2" | "TIER 3" | "PASS";
+  kalshi_url: string;
+  polymarket_url: string;
+  zone_decay: ZoneDecay;
+  gate_verification: GateVerification;
 }
 
-const DEFAULT_TARGETS: SlateTarget[] = [
+const DEFAULT_SLATE: SlateTarget[] = [
   {
     player: "Chase Brown",
     ticker: "KXNFLTD-26OCT-CBRO",
@@ -31,12 +46,23 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     kalshi_ask: "36¢",
     polymarket_ask: "37¢",
     c_def: 1.22,
-    adjusted_fair_value: "48.2%",
+    tpi_fair_val: "48.2%",
     net_edge: "+12.2%",
-    decision: "STRONG BUY",
-    hvt_under_3yd: "62%",
-    gl_share: "88%",
-    tier: "TIER 1"
+    execution_signal: "BUY YES (MAX)",
+    tier: "TIER 1",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd",
+    polymarket_url: "https://polymarket.com",
+    zone_decay: {
+      under_3yd: "62%",
+      five_yd_plunge: "22.4%",
+      ten_yd_conversion: "9.2%",
+      twenty_yd_conversion: "1.8%"
+    },
+    gate_verification: {
+      vegas_itt_gate: "PASSED (25.0)",
+      goal_to_go_share: "88%",
+      personnel_alignment: "76%"
+    }
   },
   {
     player: "Trey McBride",
@@ -48,12 +74,23 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     kalshi_ask: "38¢",
     polymarket_ask: "39¢",
     c_def: 1.16,
-    adjusted_fair_value: "46.5%",
+    tpi_fair_val: "46.5%",
     net_edge: "+8.5%",
-    decision: "BUY",
-    hvt_under_3yd: "24%",
-    gl_share: "31%",
-    tier: "TIER 1"
+    execution_signal: "BUY YES",
+    tier: "TIER 1",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd",
+    polymarket_url: "https://polymarket.com",
+    zone_decay: {
+      under_3yd: "28%",
+      five_yd_plunge: "31.0%",
+      ten_yd_conversion: "18.5%",
+      twenty_yd_conversion: "4.2%"
+    },
+    gate_verification: {
+      vegas_itt_gate: "PASSED (26.5)",
+      goal_to_go_share: "34%",
+      personnel_alignment: "88%"
+    }
   },
   {
     player: "Dontayvion Wicks",
@@ -65,12 +102,23 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     kalshi_ask: "30¢",
     polymarket_ask: "31¢",
     c_def: 1.14,
-    adjusted_fair_value: "38.4%",
+    tpi_fair_val: "38.4%",
     net_edge: "+8.4%",
-    decision: "BUY",
-    hvt_under_3yd: "18%",
-    gl_share: "28%",
-    tier: "TIER 2"
+    execution_signal: "BUY YES",
+    tier: "TIER 2",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd",
+    polymarket_url: "https://polymarket.com",
+    zone_decay: {
+      under_3yd: "18%",
+      five_yd_plunge: "24.0%",
+      ten_yd_conversion: "14.1%",
+      twenty_yd_conversion: "5.5%"
+    },
+    gate_verification: {
+      vegas_itt_gate: "PASSED (24.5)",
+      goal_to_go_share: "28%",
+      personnel_alignment: "82%"
+    }
   },
   {
     player: "Juwan Johnson",
@@ -82,58 +130,69 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     kalshi_ask: "30¢",
     polymarket_ask: "29¢",
     c_def: 1.18,
-    adjusted_fair_value: "37.6%",
+    tpi_fair_val: "37.6%",
     net_edge: "+7.6%",
-    decision: "BUY",
-    hvt_under_3yd: "15%",
-    gl_share: "24%",
-    tier: "TIER 2"
-  },
-  {
-    player: "Brock Bowers",
-    ticker: "KXNFLTD-26OCT-BBOW",
-    position: "TE",
-    team: "LV",
-    opponent: "@ NE",
-    vegas_itt: 21.0,
-    kalshi_ask: "34¢",
-    polymarket_ask: "34¢",
-    c_def: 0.96,
-    adjusted_fair_value: "35.1%",
-    net_edge: "+1.1%",
-    decision: "PASS",
-    hvt_under_3yd: "8%",
-    gl_share: "14%",
-    tier: "PASS"
+    execution_signal: "BUY YES",
+    tier: "TIER 2",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd",
+    polymarket_url: "https://polymarket.com",
+    zone_decay: {
+      under_3yd: "15%",
+      five_yd_plunge: "19.2%",
+      ten_yd_conversion: "12.0%",
+      twenty_yd_conversion: "3.1%"
+    },
+    gate_verification: {
+      vegas_itt_gate: "MARGINAL (22.0)",
+      goal_to_go_share: "24%",
+      personnel_alignment: "70%"
+    }
   }
 ];
 
+const WHOP_CHECKOUT_URL = "https://whop.com/checkout/plan_jXFaFkKUaAXTh";
+
 export default function Home(): JSX.Element {
-  const [viewMode, setViewMode] = useState<"retail" | "quant">("quant");
-  const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
+  const [viewMode, setViewMode] = useState<"retail" | "quant">("retail");
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+  const [slate, setSlate] = useState<SlateTarget[]>(DEFAULT_SLATE);
 
   useEffect(() => {
+    // Check URL parameters for ?unlocked=true
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("unlocked") === "true") {
+        setIsUnlocked(true);
+      }
+    }
+
+    // Attempt live verdict fetch, fallback safely to defaults
     fetch("/data/slate_verdict.json")
-      .then((res) => {
-        if (!res.ok) throw new Error("File not found");
-        return res.json();
-      })
-      .then((data: SlateTarget[]) => {
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
-          setTargets(data);
+          // If live file format lacks sub-drawers, augment with defaults
+          const formatted = data.map((item: any, idx: number) => ({
+            ...DEFAULT_SLATE[idx % DEFAULT_SLATE.length],
+            ...item
+          }));
+          setSlate(formatted);
         }
       })
-      .catch(() => {
-        // Keeps DEFAULT_TARGETS if dynamic JSON is absent
-      });
+      .catch(() => {});
   }, []);
 
+  const toggleAccordion = (idx: number) => {
+    setExpandedIndex(expandedIndex === idx ? null : idx);
+  };
+
   return (
-    <main className="min-h-screen bg-[#070a13] text-[#f1f5f9] font-mono p-4 md:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <main className="min-h-screen bg-[#070a12] text-[#f8fafc] font-mono px-4 py-8 md:px-12">
+      <div className="max-w-6xl mx-auto space-y-6">
 
         {/* Global Terminal Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1e293b] pb-6 gap-4">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1f2937] pb-6 gap-4">
           <div>
             <div className="flex items-center gap-3">
               <span className="h-3 w-3 rounded-full bg-[#10b981] shadow-[0_0_10px_#10b981]"></span>
@@ -146,14 +205,28 @@ export default function Home(): JSX.Element {
             </p>
           </div>
 
-          {/* Toggle Switcher */}
-          <div className="flex items-center gap-2 bg-[#0f172a] border border-[#1e293b] p-1 rounded-lg">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 text-xs px-2.5 py-1 rounded font-bold">
+              v4.3 DUAL-ENGINE
+            </span>
+            <span className="text-xs text-[#94a3b8] hidden sm:inline">
+              EXCHANGES: <strong className="text-white">KALSHI</strong> + <strong className="text-[#a855f7]">POLYMARKET</strong>
+            </span>
+            <span className="text-xs text-[#10b981] font-bold bg-[#10b981]/10 px-2.5 py-1 rounded border border-[#10b981]/20">
+              SNIPER HIT: 83.3% (W1–W3)
+            </span>
+          </div>
+        </header>
+
+        {/* Dual Mode Switcher Bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#0f172a] border border-[#1e293b] p-2 rounded-lg gap-3">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setViewMode("retail")}
-              className={`px-3 py-1.5 rounded text-xs font-bold transition ${
+              className={`px-4 py-2 rounded text-xs font-bold transition ${
                 viewMode === "retail"
-                  ? "bg-[#10b981] text-black shadow-sm"
+                  ? "bg-[#10b981] text-black shadow-md"
                   : "text-[#94a3b8] hover:text-white"
               }`}
             >
@@ -162,128 +235,288 @@ export default function Home(): JSX.Element {
             <button
               type="button"
               onClick={() => setViewMode("quant")}
-              className={`px-3 py-1.5 rounded text-xs font-bold transition ${
+              className={`px-4 py-2 rounded text-xs font-bold transition ${
                 viewMode === "quant"
-                  ? "bg-[#38bdf8] text-black shadow-sm"
+                  ? "bg-[#38bdf8] text-black shadow-md"
                   : "text-[#94a3b8] hover:text-white"
               }`}
             >
-              QUANT / INSTITUTIONAL TERMINAL
+              QUANT / INSTITUTIONAL AUDIT
             </button>
           </div>
-        </header>
 
-        {/* Mode 1: Retail Dashboard */}
-        {viewMode === "retail" && (
-          <section className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-                <div className="text-[11px] text-[#94a3b8] uppercase">All-Time Win Rate</div>
-                <div className="text-2xl font-black text-white mt-1">65.6%</div>
-                <div className="text-[11px] text-[#10b981]">518 Actionable Trades</div>
-              </div>
-              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-                <div className="text-[11px] text-[#94a3b8] uppercase">2026 In-Season Run</div>
-                <div className="text-2xl font-black text-[#10b981] mt-1">22–10</div>
-                <div className="text-[11px] text-[#94a3b8]">68.8% Hit Rate</div>
-              </div>
-              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-                <div className="text-[11px] text-[#94a3b8] uppercase">Net ROI</div>
-                <div className="text-2xl font-black text-white mt-1">+26.1%</div>
-                <div className="text-[11px] text-[#10b981]">Post-Taker Fee Drag</div>
-              </div>
-              <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-                <div className="text-[11px] text-[#94a3b8] uppercase">Beat Market Close</div>
-                <div className="text-2xl font-black text-[#38bdf8] mt-1">+4.6¢</div>
-                <div className="text-[11px] text-[#94a3b8]">82.4% CLV Positive</div>
+          <div className="text-xs text-[#94a3b8]">
+            HISTORICAL RECORD: <strong className="text-white">340–178 (65.6%)</strong> | 2026 RUN: <strong className="text-[#10b981]">22–10 (68.8%)</strong>
+          </div>
+        </div>
+
+        {/* Paywall Banner */}
+        {!isUnlocked && (
+          <div className="bg-[#0b1329] border border-[#10b981]/30 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex items-start gap-3">
+              <span className="text-xl">🔓</span>
+              <div>
+                <p className="text-xs text-[#10b981] font-bold">
+                  FREE INSTITUTIONAL ACCESS SLATE ACTIVE:
+                </p>
+                <p className="text-xs text-[#94a3b8] mt-0.5">
+                  Tier 1 high-value touchdown discrepancy targets and quantitative audit drawers are unlocked for evaluation.
+                </p>
               </div>
             </div>
-
-            <div className="space-y-4">
-              {targets.map((item, idx) => (
-                <div key={idx} className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-white">{item.player}</span>
-                      <span className="text-xs text-[#94a3b8]">({item.team} - {item.position})</span>
-                      <span className="text-[10px] bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
-                        {item.decision}
-                      </span>
-                    </div>
-                    <div className="text-xs text-[#94a3b8] mt-1">
-                      Matchup: {item.opponent} | Vegas ITT: <strong className="text-white">{item.vegas_itt}</strong>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 text-xs">
-                    <div>Kalshi: <strong className="text-[#38bdf8]">{item.kalshi_ask}</strong></div>
-                    <div>Polymarket: <strong className="text-[#a855f7]">{item.polymarket_ask}</strong></div>
-                    <div>Model Fair: <strong className="text-[#10b981]">{item.adjusted_fair_value}</strong></div>
-                    <div className="font-bold text-[#10b981] bg-[#10b981]/10 px-2 py-1 rounded border border-[#10b981]/30">
-                      {item.net_edge} EDGE
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+            <a
+              href={WHOP_CHECKOUT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#10b981] hover:bg-[#059669] text-black text-xs font-extrabold px-5 py-2.5 rounded transition whitespace-nowrap"
+            >
+              WEEK 5 PAYWALL ($49/MO)
+            </a>
+          </div>
         )}
 
-        {/* Mode 2: Quant / Institutional View */}
+        {/* 4 Quant Performance Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">All-Time Win Rate</div>
+            <div className="text-2xl md:text-3xl font-black text-white mt-1">65.6%</div>
+            <div className="text-[11px] text-[#10b981]">340–178 Across 518 Trades</div>
+          </div>
+          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">2026 In-Season Run</div>
+            <div className="text-2xl md:text-3xl font-black text-[#10b981] mt-1">22–10</div>
+            <div className="text-[11px] text-[#94a3b8]">68.8% Win Rate (W1–W4)</div>
+          </div>
+          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">Net Settlement ROI</div>
+            <div className="text-2xl md:text-3xl font-black text-white mt-1">+26.1%</div>
+            <div className="text-[11px] text-[#10b981]">Post-Taker Fee Exchange Drag</div>
+          </div>
+          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
+            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">Closing Line Alpha (CLV)</div>
+            <div className="text-2xl md:text-3xl font-black text-[#38bdf8] mt-1">+4.6¢</div>
+            <div className="text-[11px] text-[#94a3b8]">82.4% Beat Market Close</div>
+          </div>
+        </div>
+
+        {/* ========================================================= */}
+        {/* VIEW 1: RETAIL DASHBOARD (Interactive Drawer Cards)       */}
+        {/* ========================================================= */}
+        {viewMode === "retail" && (
+          <div className="space-y-4">
+            {slate.map((item, idx) => {
+              const isLocked = !isUnlocked && item.tier !== "TIER 1";
+              const isExpanded = expandedIndex === idx;
+
+              return (
+                <div
+                  key={idx}
+                  className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-hidden transition"
+                >
+                  {/* Card Header Summary */}
+                  <div
+                    onClick={() => !isLocked && toggleAccordion(idx)}
+                    className={`p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 cursor-pointer hover:bg-[#162032] transition ${
+                      isLocked ? "opacity-60 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-bold text-white">{item.player}</span>
+                        <span className="text-xs bg-[#1e293b] text-[#94a3b8] px-2 py-0.5 rounded">
+                          {item.position} • {item.team}
+                        </span>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                            item.tier === "TIER 1"
+                              ? "bg-[#10b981]/20 text-[#10b981]"
+                              : "bg-[#38bdf8]/20 text-[#38bdf8]"
+                          }`}
+                        >
+                          {item.tier}
+                        </span>
+                      </div>
+                      <div className="text-xs text-[#94a3b8] mt-1">
+                        {item.opponent} • ITT: <strong className="text-white">{item.vegas_itt}</strong>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-6 text-center w-full md:w-auto">
+                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
+                        <div className="text-[10px] text-[#94a3b8]">TPI FAIR</div>
+                        <div className="text-sm font-bold text-[#10b981]">{item.tpi_fair_val}</div>
+                      </div>
+                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
+                        <div className="text-[10px] text-[#94a3b8]">BEST ASK</div>
+                        <div className="text-sm font-bold text-white">{item.kalshi_ask}</div>
+                      </div>
+                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
+                        <div className="text-[10px] text-[#94a3b8]">NET EDGE</div>
+                        <div className="text-sm font-bold text-[#10b981]">{item.net_edge}</div>
+                      </div>
+                    </div>
+
+                    <div className="text-xs text-[#94a3b8] hidden md:block">
+                      {isLocked ? "🔒 LOCKED" : isExpanded ? "▲ CLOSE" : "▼ AUDIT"}
+                    </div>
+                  </div>
+
+                  {/* Locked Paywall State */}
+                  {isLocked && (
+                    <div className="p-4 bg-[#0a0f1d] border-t border-[#1e293b] flex justify-between items-center text-xs">
+                      <span className="text-[#94a3b8]">
+                        Unlock Tier 2 & Tier 3 mathematical models and execution routing.
+                      </span>
+                      <a
+                        href={WHOP_CHECKOUT_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1.5 rounded text-xs transition"
+                      >
+                        Unlock ($49/mo)
+                      </a>
+                    </div>
+                  )}
+
+                  {/* Expanded Accordion Drawer (Original TPI Breakdown) */}
+                  {!isLocked && isExpanded && (
+                    <div className="p-5 border-t border-[#1e293b] bg-[#090d1a] space-y-4 text-xs">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        {/* 4-Zone Distance Decay */}
+                        <div className="space-y-2">
+                          <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
+                            RB 4-Zone Distance Decay Breakdown
+                          </div>
+                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
+                            <span className="text-[#94a3b8]">Under 3 Yrd Line Carry:</span>
+                            <span className="font-bold text-[#10b981]">{item.zone_decay.under_3yd}</span>
+                          </div>
+                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
+                            <span className="text-[#94a3b8]">5 Yrd Line Plunge:</span>
+                            <span className="font-bold text-white">{item.zone_decay.five_yd_plunge}</span>
+                          </div>
+                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
+                            <span className="text-[#94a3b8]">10 Yrd Line Conversion:</span>
+                            <span className="font-bold text-white">{item.zone_decay.ten_yd_conversion}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-[#94a3b8]">20 Yrd Line Conversion:</span>
+                            <span className="font-bold text-white">{item.zone_decay.twenty_yd_conversion}</span>
+                          </div>
+                        </div>
+
+                        {/* Institutional Gate Verification */}
+                        <div className="space-y-2">
+                          <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
+                            Institutional Gate Verification
+                          </div>
+                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
+                            <span className="text-[#94a3b8]">Vegas ITT Gate (&ge;24.0):</span>
+                            <span className="font-bold text-[#10b981]">{item.gate_verification.vegas_itt_gate}</span>
+                          </div>
+                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
+                            <span className="text-[#94a3b8]">Goal-to-Go Share (&ge;75%):</span>
+                            <span className="font-bold text-white">{item.gate_verification.goal_to_go_share}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-[#94a3b8]">Personnel Alignment:</span>
+                            <span className="font-bold text-white">{item.gate_verification.personnel_alignment}</span>
+                          </div>
+                        </div>
+
+                        {/* Working Order Book Links */}
+                        <div className="flex flex-col justify-between space-y-3">
+                          <div>
+                            <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider mb-1">
+                              Execution Route & Order Book
+                            </div>
+                            <div className="text-[#94a3b8]">
+                              {item.kalshi_ask} vs. Model Fair Value: {item.tpi_fair_val} | Calculated Edge:{" "}
+                              <strong className="text-[#10b981]">{item.net_edge}</strong>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <a
+                              href={item.kalshi_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 text-center bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold py-2 rounded transition"
+                            >
+                              View Kalshi Book ({item.kalshi_ask}) &rarr;
+                            </a>
+                            <a
+                              href={item.polymarket_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 text-center bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-2 rounded transition"
+                            >
+                              View Polymarket ({item.polymarket_ask}) &rarr;
+                            </a>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* VIEW 2: QUANT / INSTITUTIONAL TERMINAL                    */}
+        {/* ========================================================= */}
         {viewMode === "quant" && (
-          <section className="space-y-6">
+          <div className="space-y-6">
             
-            {/* Calibration Banner */}
+            {/* Calibration Proof Banner */}
             <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
               <div>
-                <span className="text-[#94a3b8] block">Statistical Calibration</span>
-                <span className="font-bold text-[#10b981] text-sm">Brier: 0.182</span>
-                <span className="text-[10px] text-[#64748b] block">(Market Benchmark: 0.224)</span>
+                <span className="text-[#94a3b8] block">Brier Score Calibration</span>
+                <span className="font-bold text-[#10b981] text-sm">0.182</span>
+                <span className="text-[10px] text-[#64748b] block">(Benchmark: 0.224)</span>
               </div>
               <div>
-                <span className="text-[#94a3b8] block">P-Value Significance</span>
+                <span className="text-[#94a3b8] block">Statistical Significance</span>
                 <span className="font-bold text-white text-sm">p &lt; 0.001</span>
-                <span className="text-[10px] text-[#10b981] block">Statistically Significant</span>
+                <span className="text-[10px] text-[#10b981] block">Null Hypothesis Rejected</span>
               </div>
               <div>
-                <span className="text-[#94a3b8] block">Taker Fee Friction Hurdle</span>
-                <span className="font-bold text-white text-sm">+5.0% Net Edge</span>
+                <span className="text-[#94a3b8] block">Taker Fee Friction Filter</span>
+                <span className="font-bold text-white text-sm">+5.0% Net Hurdle</span>
                 <span className="text-[10px] text-[#64748b] block">Survives Spread Drag</span>
               </div>
               <div>
-                <span className="text-[#94a3b8] block">Institutional API Pipeline</span>
-                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate_verdict.json</span>
-                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON</span>
+                <span className="text-[#94a3b8] block">Programmatic API Feed</span>
+                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate</span>
+                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON Stream</span>
               </div>
             </div>
 
-            {/* Dynamic Market Table */}
+            {/* Cross-Market Execution Table */}
             <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-[#162032] border-b border-[#1e293b] text-[#94a3b8]">
                     <th className="p-3 uppercase">Tier</th>
                     <th className="p-3 uppercase">Player & Ticker</th>
-                    <th className="p-3 uppercase">Team / Opp</th>
+                    <th className="p-3 uppercase">Matchup</th>
                     <th className="p-3 uppercase">Vegas ITT</th>
-                    <th className="p-3 uppercase text-[#10b981]">TPI Fair Val</th>
-                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi Ask</th>
+                    <th className="p-3 uppercase text-[#10b981]">TPI Fair</th>
+                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi</th>
                     <th className="p-3 uppercase text-[#a855f7]">Polymarket</th>
                     <th className="p-3 uppercase">C_DEF</th>
                     <th className="p-3 uppercase text-[#10b981]">Net Edge</th>
-                    <th className="p-3 uppercase text-right">Execution Route</th>
+                    <th className="p-3 uppercase text-right">Order Route</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1e293b]">
-                  {targets.map((item, idx) => (
+                  {slate.map((item, idx) => (
                     <tr key={idx} className="hover:bg-[#1e293b]/50 transition">
                       <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded font-bold ${
-                          item.tier === "TIER 1"
-                            ? "bg-[#10b981]/20 text-[#10b981]"
-                            : item.tier === "TIER 2"
-                            ? "bg-[#38bdf8]/20 text-[#38bdf8]"
-                            : "bg-[#334155]/20 text-[#94a3b8]"
-                        }`}>
+                        <span className="bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
                           {item.tier}
                         </span>
                       </td>
@@ -293,15 +526,20 @@ export default function Home(): JSX.Element {
                       </td>
                       <td className="p-3">{item.team} {item.opponent}</td>
                       <td className="p-3 font-bold">{item.vegas_itt}</td>
-                      <td className="p-3 font-bold text-[#10b981]">{item.adjusted_fair_value}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.tpi_fair_val}</td>
                       <td className="p-3 font-bold text-[#38bdf8]">{item.kalshi_ask}</td>
                       <td className="p-3 font-bold text-[#a855f7]">{item.polymarket_ask}</td>
                       <td className="p-3">{item.c_def}</td>
                       <td className="p-3 font-bold text-[#10b981]">{item.net_edge}</td>
                       <td className="p-3 text-right">
-                        <button type="button" className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition">
-                          ROUTE ORDER →
-                        </button>
+                        <a
+                          href={item.kalshi_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition inline-block"
+                        >
+                          ROUTE &rarr;
+                        </a>
                       </td>
                     </tr>
                   ))}
@@ -309,21 +547,21 @@ export default function Home(): JSX.Element {
               </table>
             </div>
 
-            {/* Quant Price-Bucket Matrix & API Leads */}
+            {/* EV Price-Bucket Matrix & API Leads */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
                 <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
                   Contract Price-Bucket Distribution (EV Verification)
                 </h3>
                 <p className="text-[11px] text-[#64748b] mb-4">
-                  Validates positive edge across all odds buckets, addressing favorite-bias objections.
+                  Validates positive expectancy across all pricing tiers, addressing favorite-bias concerns.
                 </p>
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-[#1e293b] text-[#94a3b8]">
                       <th className="pb-2">Contract Range</th>
                       <th className="pb-2">Sample (N)</th>
-                      <th className="pb-2">Realized Hit</th>
+                      <th className="pb-2">Win Rate</th>
                       <th className="pb-2 text-right">Net ROI</th>
                     </tr>
                   </thead>
@@ -367,7 +605,7 @@ export default function Home(): JSX.Element {
                     href="mailto:contact@moneyfootball.ai?subject=Institutional%20API%20Inquiry"
                     className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
                   >
-                    Request API Feed Access
+                    Request API Feed
                   </a>
                   <button
                     type="button"
@@ -379,12 +617,20 @@ export default function Home(): JSX.Element {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         )}
 
-        {/* Global Footer */}
-        <footer className="text-center text-[11px] text-[#64748b] pt-6 border-t border-[#1e293b]">
-          © 2026 Moneyfootball.ai • Quantitative Modeling & Prediction Market Intelligence • Kalshi & Polymarket
+        {/* Global Legal & Regulatory Disclaimer */}
+        <footer className="text-[11px] text-[#64748b] leading-relaxed pt-8 border-t border-[#1e293b] space-y-3">
+          <p>
+            <strong>DISCLAIMER & REGULATORY NOTICE:</strong> Moneyfootball.ai is an automated quantitative modeling platform that computes theoretical probability distributions for predictive event contracts traded on CFTC-regulated exchanges (e.g., KalshiEX LLC) and decentralized prediction markets (Polymarket). Moneyfootball.ai is not a broker-dealer, registered investment advisor, or commodities trading advisor.
+          </p>
+          <p>
+            All figures, including the Touchdown Projection Index (TPI), fair values, and net edge percentages, represent mathematical model outputs derived from historical nflverse datasets, defensive coordinator friction indices ($C_{'{'}DEF{'}'}$), and public market odds. Historical performance (including the 65.6% all-time mark and 2026 campaign record) is not indicative of future results. Trading binary event contracts carries financial risk. Trade responsibly.
+          </p>
+          <p className="text-center pt-2">
+            &copy; 2026 Moneyfootball.ai &bull; All Rights Reserved.
+          </p>
         </footer>
 
       </div>
