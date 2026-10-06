@@ -163,6 +163,17 @@ export default function Home(): JSX.Element {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [slate, setSlate] = useState<SlateTarget[]>(DEFAULT_SLATE);
 
+  // Modal States
+  const [showApiModal, setShowApiModal] = useState<boolean>(false);
+  const [showWhitePaperModal, setShowWhitePaperModal] = useState<boolean>(false);
+
+  // Form State
+  const [formName, setFormName] = useState("");
+  const [formEntity, setFormEntity] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formFormat, setFormFormat] = useState("Live JSON REST Feed");
+  const [formNotes, setFormNotes] = useState("");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -177,7 +188,9 @@ export default function Home(): JSX.Element {
         if (Array.isArray(data) && data.length > 0) {
           const formatted = data.map((item: any, idx: number) => ({
             ...DEFAULT_SLATE[idx % DEFAULT_SLATE.length],
-            ...item
+            ...item,
+            kalshi_url: `https://kalshi.com/markets?query=${encodeURIComponent(item.player)}+touchdown`,
+            polymarket_url: `https://polymarket.com/markets?_q=${encodeURIComponent(item.player)}`
           }));
           setSlate(formatted);
         }
@@ -187,6 +200,21 @@ export default function Home(): JSX.Element {
 
   const toggleAccordion = (idx: number) => {
     setExpandedIndex(expandedIndex === idx ? null : idx);
+  };
+
+  const handleApiSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`[API Feed Request] ${formEntity || formName}`);
+    const body = encodeURIComponent(
+      `Name: ${formName}\n` +
+      `Entity / Fund: ${formEntity}\n` +
+      `Contact Email: ${formEmail}\n` +
+      `Requested Data Format: ${formFormat}\n` +
+      `Use Case / Volume: ${formNotes}\n\n` +
+      `Sent via Moneyfootball.ai Institutional Portal`
+    );
+    window.location.href = `mailto:tomasgregoriojr@gmail.com?subject=${subject}&body=${body}`;
+    setShowApiModal(false);
   };
 
   return (
@@ -315,7 +343,6 @@ export default function Home(): JSX.Element {
                   key={idx}
                   className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-hidden transition"
                 >
-                  {/* Card Header Summary */}
                   <div
                     onClick={() => !isLocked && toggleAccordion(idx)}
                     className={`p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 cursor-pointer hover:bg-[#162032] transition ${
@@ -367,7 +394,6 @@ export default function Home(): JSX.Element {
                     </div>
                   </div>
 
-                  {/* Locked Paywall State */}
                   {isLocked && (
                     <div className="p-4 bg-[#0a0f1d] border-t border-[#1e293b] flex justify-between items-center text-xs">
                       <span className="text-[#94a3b8]">
@@ -384,12 +410,10 @@ export default function Home(): JSX.Element {
                     </div>
                   )}
 
-                  {/* Expanded Accordion Drawer */}
                   {!isLocked && isExpanded && (
                     <div className="p-5 border-t border-[#1e293b] bg-[#090d1a] space-y-4 text-xs">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         
-                        {/* 4-Zone Distance Decay */}
                         <div className="space-y-2">
                           <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
                             RB 4-Zone Distance Decay Breakdown
@@ -412,7 +436,6 @@ export default function Home(): JSX.Element {
                           </div>
                         </div>
 
-                        {/* Institutional Gate Verification */}
                         <div className="space-y-2">
                           <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
                             Institutional Gate Verification
@@ -435,7 +458,6 @@ export default function Home(): JSX.Element {
                           </div>
                         </div>
 
-                        {/* Direct Search-Targeted Order Book Links */}
                         <div className="flex flex-col justify-between space-y-3">
                           <div>
                             <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider mb-1">
@@ -481,7 +503,6 @@ export default function Home(): JSX.Element {
         {viewMode === "quant" && (
           <div className="space-y-6">
             
-            {/* Calibration Proof Banner */}
             <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
               <div>
                 <span className="text-[#94a3b8] block">Brier Score Calibration</span>
@@ -505,7 +526,6 @@ export default function Home(): JSX.Element {
               </div>
             </div>
 
-            {/* Cross-Market Execution Table */}
             <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
@@ -559,8 +579,9 @@ export default function Home(): JSX.Element {
               </table>
             </div>
 
-            {/* EV Price-Bucket Matrix & API Leads */}
+            {/* EV Price-Bucket Matrix & Institutional API Box */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
               <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
                 <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
                   Contract Price-Bucket Distribution (EV Verification)
@@ -600,34 +621,48 @@ export default function Home(): JSX.Element {
                 </table>
               </div>
 
+              {/* Data Feeds & Active Modal Triggers */}
               <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col justify-between">
                 <div>
                   <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
                     Institutional Data Feeds & White Paper
                   </h3>
-                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-4">
-                    Access continuous Poisson lambda estimates, coordinator friction metrics, and dual-exchange arbitrage feeds for market-making bots and syndicates.
+                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-3">
+                    Continuous quantitative probability curves, defensive scheme friction ratings, and order-book arbitrage feeds for trading syndicates and prediction market makers.
                   </p>
-                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] text-[11px] font-mono text-[#38bdf8] mb-4">
-                    curl -H &quot;X-TPI-KEY: live_demo&quot; https://moneyfootball.ai/data/slate_verdict.json
+                  
+                  {/* Clean Supported Formats Display */}
+                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] space-y-1.5 text-xs mb-4">
+                    <div className="text-[10px] text-[#94a3b8] uppercase font-bold">Supported Delivery Protocols:</div>
+                    <div className="flex items-center justify-between text-[#38bdf8]">
+                      <span>● Live REST JSON Feed:</span>
+                      <span className="font-mono text-[11px] text-white">/data/slate_verdict.json</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[#10b981]">
+                      <span>● Direct Batch CSV Export:</span>
+                      <span className="font-mono text-[11px] text-white">/data/tpi_touchdown_board.csv</span>
+                    </div>
                   </div>
                 </div>
+
                 <div className="flex gap-3">
-                  <a
-                    href="mailto:contact@moneyfootball.ai?subject=Institutional%20API%20Inquiry"
+                  <button
+                    type="button"
+                    onClick={() => setShowApiModal(true)}
                     className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
                   >
                     Request API Feed
-                  </a>
+                  </button>
                   <button
                     type="button"
-                    onClick={() => alert("Downloading TPI Institutional Model White Paper (PDF)...")}
+                    onClick={() => setShowWhitePaperModal(true)}
                     className="bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-white px-4 py-2 rounded text-xs font-bold transition"
                   >
-                    Download White Paper
+                    Read White Paper
                   </button>
                 </div>
               </div>
+
             </div>
           </div>
         )}
@@ -646,6 +681,195 @@ export default function Home(): JSX.Element {
         </footer>
 
       </div>
+
+      {/* ========================================================= */}
+      {/* MODAL 1: INSTITUTIONAL API EVALUATION FORM                */}
+      {/* ========================================================= */}
+      {showApiModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                  Request Institutional API Feed
+                </h3>
+                <p className="text-xs text-[#94a3b8]">
+                  Fill out the evaluation form. Submission generates direct contact with our underwriting desk.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowApiModal(false)}
+                className="text-[#94a3b8] hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleApiSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Full Name / Contact Person</label>
+                <input
+                  type="text"
+                  required
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  placeholder="e.g., Alex Reed"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Entity / Fund / Syndicate Name</label>
+                <input
+                  type="text"
+                  required
+                  value={formEntity}
+                  onChange={(e) => setFormEntity(e.target.value)}
+                  placeholder="e.g., Apex Quantitative Trading Group"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Corporate or Contact Email</label>
+                <input
+                  type="email"
+                  required
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
+                  placeholder="name@fund.com"
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Requested Data Pipeline Format</label>
+                <select
+                  value={formFormat}
+                  onChange={(e) => setFormFormat(e.target.value)}
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                >
+                  <option value="Live JSON REST Feed (/data/slate_verdict.json)">
+                    Live JSON REST Feed (/data/slate_verdict.json)
+                  </option>
+                  <option value="Daily Batch CSV Export (/data/tpi_touchdown_board.csv)">
+                    Daily Batch CSV Export (/data/tpi_touchdown_board.csv)
+                  </option>
+                  <option value="Both JSON REST & Batch CSV Feed">
+                    Both JSON REST & Batch CSV Feed
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[#94a3b8] mb-1">Intended Use Case / Trading Volume</label>
+                <textarea
+                  rows={3}
+                  value={formNotes}
+                  onChange={(e) => setFormNotes(e.target.value)}
+                  placeholder="e.g., Automated Kalshi liquidity provision, cross-exchange market making..."
+                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowApiModal(false)}
+                  className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded bg-[#38bdf8] text-black font-bold hover:bg-[#0284c7] transition"
+                >
+                  Submit Application &rarr;
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* MODAL 2: TPI QUANTITATIVE WHITE PAPER (NO PROPRIETARY CODE) */}
+      {/* ========================================================= */}
+      {showWhitePaperModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
+              <div>
+                <h3 className="text-base font-bold text-white uppercase tracking-wider">
+                  Touchdown Projection Index (TPI)
+                </h3>
+                <p className="text-xs text-[#38bdf8]">
+                  Quantitative White Paper & Statistical Calibration Architecture
+                </p>
+              </div>
+              <button
+                onClick={() => setShowWhitePaperModal(false)}
+                className="text-[#94a3b8] hover:text-white text-lg font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs text-[#94a3b8] leading-relaxed">
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">1. Executive Overview</h4>
+                <p>
+                  The Touchdown Projection Index (TPI) is an automated mathematical engine pricing binary event contracts traded across CFTC-regulated exchanges (Kalshi) and Web3 prediction markets (Polymarket). Standard sportsbooks set lines using public handle heuristics. TPI derives synthetic fair value exclusively through physical touch proximity, opportunity concentration, and scheme-specific defensive drag.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">2. High-Value Touch (HVT) Filtering</h4>
+                <p>
+                  Between-the-twenties rushing and target volume exhibits weak correlation with binary touchdown probability ($R^2 &lt; 0.12$). TPI isolates sub-3-yard rushing equity, goal-to-go carry share ($\ge 75\%$), and red zone target per route run (TPRR) to construct a Poisson lambda ($\lambda$) calibrated strictly on high-leverage scoring events.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">3. Defensive Scheme Friction ($C_{DEF}$)</h4>
+                <p>
+                  Traditional defensive rankings rely on raw yards surrendered. TPI quantifies opponent friction through coordinator blitz profiles, box-count frequencies inside the 10-yard line, and secondary cluster injuries. When $C_{DEF} &gt; 1.0$, opponent scheme vulnerability elevates baseline expectancy; when $C_{DEF} &lt; 1.0$, negative friction adjusts fair value downward regardless of historical volume.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">4. Statistical Calibration & Hurdle Verification</h4>
+                <p>
+                  Backtested across 2022–2026 nflverse settlement data (518 graded trades), TPI demonstrates a <strong>0.182 Brier Score</strong> (outperforming the 0.224 market benchmark) with hypothesis significance of <strong>p &lt; 0.001</strong>. All trade signals are gated by a mandatory +5.0% net hurdle after full exchange taker fees to guarantee resilience against order-book spread decay.
+                </p>
+              </section>
+
+              <section className="space-y-1">
+                <h4 className="text-white font-bold text-sm">5. Delivery & Ingestion Specifications</h4>
+                <p>
+                  Production feeds are published weekly via automated pipelines in two primary formats:
+                </p>
+                <ul className="list-disc pl-5 space-y-0.5 text-white">
+                  <li><strong>REST JSON:</strong> <code>/data/slate_verdict.json</code> (Continuous updates)</li>
+                  <li><strong>Delimited CSV:</strong> <code>/data/tpi_touchdown_board_full_slate.csv</code> (Batch institutional audit)</li>
+                </ul>
+              </section>
+            </div>
+
+            <div className="pt-3 border-t border-[#1e293b] flex justify-between items-center">
+              <span className="text-[10px] text-[#64748b]">© 2026 Moneyfootball.ai • Proprietary Mathematical Model</span>
+              <button
+                type="button"
+                onClick={() => setShowWhitePaperModal(false)}
+                className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition text-xs font-bold"
+              >
+                Close White Paper
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </main>
   );
 }
