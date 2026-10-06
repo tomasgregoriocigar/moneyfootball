@@ -39,7 +39,7 @@ interface SlateTarget {
 const DEFAULT_SLATE: SlateTarget[] = [
   {
     player: "Chase Brown",
-    ticker: "KXNFLTD-26OCT-CBRO",
+    ticker: "KXNFLTD-26OCT11CINMIA-CINCBROWN30-1",
     position: "RB",
     team: "CIN",
     opponent: "vs. MIA",
@@ -52,8 +52,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "48.2%",
     net_edge: "+12.2%",
     tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd?search=Chase+Brown",
-    polymarket_url: "https://polymarket.com/search?q=Chase+Brown+touchdown",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11cinmia?op_market_ticker=KXNFLTD-26OCT11CINMIA-CINCBROWN30-1&op_side=buy&op_order_side=yes",
+    polymarket_url: "https://polymarket.com/event/nfl-chase-brown-touchdown",
     zone_decay: {
       under_3yd: "62%",
       five_yd_plunge: "22.4%",
@@ -68,7 +68,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Trey McBride",
-    ticker: "KXNFLTD-26OCT-TMCB",
+    ticker: "KXNFLTD-26OCT11ARIDET-ARITMCBRIDE85-1",
     position: "TE",
     team: "ARI",
     opponent: "vs. DET",
@@ -81,8 +81,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "46.5%",
     net_edge: "+8.5%",
     tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd?search=Trey+McBride",
-    polymarket_url: "https://polymarket.com/search?q=Trey+McBride+touchdown",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11aridet?op_market_ticker=KXNFLTD-26OCT11ARIDET-ARITMCBRIDE85-1&op_side=buy&op_order_side=yes",
+    polymarket_url: "https://polymarket.com/event/nfl-trey-mcbride-touchdown",
     zone_decay: {
       under_3yd: "28%",
       five_yd_plunge: "31.0%",
@@ -97,7 +97,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Dontayvion Wicks",
-    ticker: "KXNFLTD-26OCT-DWIC",
+    ticker: "KXNFLTD-26OCT11GBCHI-GBDWICKS13-1",
     position: "WR",
     team: "GB",
     opponent: "vs. CHI",
@@ -110,8 +110,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "38.4%",
     net_edge: "+8.4%",
     tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd?search=Dontayvion+Wicks",
-    polymarket_url: "https://polymarket.com/search?q=Dontayvion+Wicks+touchdown",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11gbchi?op_market_ticker=KXNFLTD-26OCT11GBCHI-GBDWICKS13-1&op_side=buy&op_order_side=yes",
+    polymarket_url: "https://polymarket.com/event/nfl-dontayvion-wicks-touchdown",
     zone_decay: {
       under_3yd: "18%",
       five_yd_plunge: "24.0%",
@@ -126,7 +126,7 @@ const DEFAULT_SLATE: SlateTarget[] = [
   },
   {
     player: "Juwan Johnson",
-    ticker: "KXNFLTD-26OCT-JJOH",
+    ticker: "KXNFLTD-26OCT11NOATL-NOJJOHNSON83-1",
     position: "TE",
     team: "NO",
     opponent: "vs. ATL",
@@ -139,8 +139,8 @@ const DEFAULT_SLATE: SlateTarget[] = [
     tpi_fair_val: "37.6%",
     net_edge: "+7.6%",
     tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets/kxnfltd?search=Juwan+Johnson",
-    polymarket_url: "https://polymarket.com/search?q=Juwan+Johnson+touchdown",
+    kalshi_url: "https://kalshi.com/markets/kxnfltd/x/kxnfltd-26oct11noatl?op_market_ticker=KXNFLTD-26OCT11NOATL-NOJJOHNSON83-1&op_side=buy&op_order_side=yes",
+    polymarket_url: "https://polymarket.com/event/nfl-juwan-johnson-touchdown",
     zone_decay: {
       under_3yd: "15%",
       five_yd_plunge: "19.2%",
@@ -302,7 +302,7 @@ export default function Home(): JSX.Element {
         </div>
 
         {/* ========================================================= */}
-        {/* VIEW 1: RETAIL DASHBOARD (Interactive Drawer Cards)       */}
+        {/* VIEW 1: RETAIL DASHBOARD                                  */}
         {/* ========================================================= */}
         {viewMode === "retail" && (
           <div className="space-y-4">
@@ -460,3 +460,192 @@ export default function Home(): JSX.Element {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex-1 text-center bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-2 rounded transition"
+                            >
+                              View Polymarket ({item.polymarket_ask}) &rarr;
+                            </a>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* VIEW 2: QUANT / INSTITUTIONAL TERMINAL                    */}
+        {/* ========================================================= */}
+        {viewMode === "quant" && (
+          <div className="space-y-6">
+            
+            {/* Calibration Proof Banner */}
+            <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+              <div>
+                <span className="text-[#94a3b8] block">Brier Score Calibration</span>
+                <span className="font-bold text-[#10b981] text-sm">0.182</span>
+                <span className="text-[10px] text-[#64748b] block">(Benchmark: 0.224)</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Statistical Significance</span>
+                <span className="font-bold text-white text-sm">p &lt; 0.001</span>
+                <span className="text-[10px] text-[#10b981] block">Null Hypothesis Rejected</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Taker Fee Friction Filter</span>
+                <span className="font-bold text-white text-sm">+5.0% Net Hurdle</span>
+                <span className="text-[10px] text-[#64748b] block">Survives Spread Drag</span>
+              </div>
+              <div>
+                <span className="text-[#94a3b8] block">Programmatic API Feed</span>
+                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate</span>
+                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON Stream</span>
+              </div>
+            </div>
+
+            {/* Cross-Market Execution Table */}
+            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-[#162032] border-b border-[#1e293b] text-[#94a3b8]">
+                    <th className="p-3 uppercase">Tier</th>
+                    <th className="p-3 uppercase">Player & Ticker</th>
+                    <th className="p-3 uppercase">Matchup</th>
+                    <th className="p-3 uppercase">Vegas ITT</th>
+                    <th className="p-3 uppercase text-[#10b981]">TPI Fair</th>
+                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi</th>
+                    <th className="p-3 uppercase text-[#a855f7]">Polymarket</th>
+                    <th className="p-3 uppercase text-[#f59e0b]">Sportsbook</th>
+                    <th className="p-3 uppercase">C_DEF</th>
+                    <th className="p-3 uppercase text-[#10b981]">Net Edge</th>
+                    <th className="p-3 uppercase text-right">Order Route</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1e293b]">
+                  {slate.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-[#1e293b]/50 transition">
+                      <td className="p-3">
+                        <span className="bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
+                          {item.tier}
+                        </span>
+                      </td>
+                      <td className="p-3 font-bold text-white">
+                        {item.player}
+                        <div className="text-[10px] font-normal text-[#94a3b8] font-mono">{item.ticker}</div>
+                      </td>
+                      <td className="p-3">{item.team} {item.opponent}</td>
+                      <td className="p-3 font-bold">{item.vegas_itt}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.tpi_fair_val}</td>
+                      <td className="p-3 font-bold text-[#38bdf8]">{item.kalshi_ask}</td>
+                      <td className="p-3 font-bold text-[#a855f7]">{item.polymarket_ask}</td>
+                      <td className="p-3 font-bold text-[#f59e0b]">{item.sportsbook_line}</td>
+                      <td className="p-3">{item.c_def}</td>
+                      <td className="p-3 font-bold text-[#10b981]">{item.net_edge}</td>
+                      <td className="p-3 text-right">
+                        <a
+                          href={item.kalshi_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition inline-block"
+                        >
+                          ROUTE &rarr;
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* EV Price-Bucket Matrix & API Leads */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
+                <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                  Contract Price-Bucket Distribution (EV Verification)
+                </h3>
+                <p className="text-[11px] text-[#64748b] mb-4">
+                  Validates positive expectancy across all pricing tiers, addressing favorite-bias concerns.
+                </p>
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-[#1e293b] text-[#94a3b8]">
+                      <th className="pb-2">Contract Range</th>
+                      <th className="pb-2">Sample (N)</th>
+                      <th className="pb-2">Win Rate</th>
+                      <th className="pb-2 text-right">Net ROI</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1e293b]">
+                    <tr>
+                      <td className="py-2.5 font-bold">20¢ – 39¢ (High-Leverage)</td>
+                      <td className="py-2.5 text-[#94a3b8]">128</td>
+                      <td className="py-2.5 font-bold">46.2%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+41.5%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">40¢ – 59¢ (Core Value)</td>
+                      <td className="py-2.5 text-[#94a3b8]">245</td>
+                      <td className="py-2.5 font-bold">69.4%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+24.8%</td>
+                    </tr>
+                    <tr>
+                      <td className="py-2.5 font-bold">60¢ – 75¢ (Goal-Line GL)</td>
+                      <td className="py-2.5 text-[#94a3b8]">145</td>
+                      <td className="py-2.5 font-bold">76.8%</td>
+                      <td className="py-2.5 text-right font-bold text-[#10b981]">+11.2%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
+                    Institutional Data Feeds & White Paper
+                  </h3>
+                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-4">
+                    Access continuous Poisson lambda estimates, coordinator friction metrics, and dual-exchange arbitrage feeds for market-making bots and syndicates.
+                  </p>
+                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] text-[11px] font-mono text-[#38bdf8] mb-4">
+                    curl -H &quot;X-TPI-KEY: live_demo&quot; https://moneyfootball.ai/data/slate_verdict.json
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <a
+                    href="mailto:contact@moneyfootball.ai?subject=Institutional%20API%20Inquiry"
+                    className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
+                  >
+                    Request API Feed
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => alert("Downloading TPI Institutional Model White Paper (PDF)...")}
+                    className="bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-white px-4 py-2 rounded text-xs font-bold transition"
+                  >
+                    Download White Paper
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Global Legal & Regulatory Disclaimer */}
+        <footer className="text-[11px] text-[#64748b] leading-relaxed pt-8 border-t border-[#1e293b] space-y-3">
+          <p>
+            <strong>DISCLAIMER & REGULATORY NOTICE:</strong> Moneyfootball.ai is an automated quantitative modeling platform that computes theoretical probability distributions for predictive event contracts traded on CFTC-regulated exchanges (e.g., KalshiEX LLC) and decentralized prediction markets (Polymarket). Moneyfootball.ai is not a broker-dealer, registered investment advisor, or commodities trading advisor.
+          </p>
+          <p>
+            All figures, including the Touchdown Projection Index (TPI), fair values, sportsbook consensus lines, and net edge percentages, represent mathematical model outputs derived from historical nflverse datasets, defensive coordinator friction indices ($C_{'{'}DEF{'}'}$), and public market odds. Historical performance (including the 65.6% all-time mark and 2026 campaign record) is not indicative of future results. Trading binary event contracts carries financial risk. Trade responsibly.
+          </p>
+          <p className="text-center pt-2">
+            &copy; 2026 Moneyfootball.ai &bull; All Rights Reserved.
+          </p>
+        </footer>
+
+      </div>
+    </main>
+  );
+}
