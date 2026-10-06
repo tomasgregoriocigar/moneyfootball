@@ -163,7 +163,7 @@ export default function Home(): JSX.Element {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [slate, setSlate] = useState<SlateTarget[]>(DEFAULT_SLATE);
 
-  // Modal States
+  // Modal Popups
   const [showApiModal, setShowApiModal] = useState<boolean>(false);
   const [showWhitePaperModal, setShowWhitePaperModal] = useState<boolean>(false);
 
@@ -694,10 +694,11 @@ export default function Home(): JSX.Element {
                   Request Institutional API Feed
                 </h3>
                 <p className="text-xs text-[#94a3b8]">
-                  Fill out the evaluation form. Submission generates direct contact with our underwriting desk.
+                  Fill out the evaluation form. Submission routes directly to our desk.
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => setShowApiModal(false)}
                 className="text-[#94a3b8] hover:text-white text-lg font-bold"
               >
@@ -808,6 +809,7 @@ export default function Home(): JSX.Element {
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => setShowWhitePaperModal(false)}
                 className="text-[#94a3b8] hover:text-white text-lg font-bold"
               >
@@ -826,7 +828,7 @@ export default function Home(): JSX.Element {
               <section className="space-y-1">
                 <h4 className="text-white font-bold text-sm">2. High-Value Touch (HVT) Filtering</h4>
                 <p>
-                  Between-the-twenties rushing and target volume exhibits weak correlation with binary touchdown probability ($R^2 &lt; 0.12$). TPI isolates sub-3-yard rushing equity, goal-to-go carry share ($\ge 75\%$), and red zone target per route run (TPRR) to construct a Poisson lambda ($\lambda$) calibrated strictly on high-leverage scoring events.
+                  Between-the-twenties rushing and target volume exhibits weak correlation with binary touchdown probability ($R^2 &lt; 0.12$). TPI isolates sub-3-yard rushing equity, goal-to-go carry share (&ge; 75%), and red zone target per route run (TPRR) to construct a Poisson lambda (&lambda;) calibrated strictly on high-leverage scoring events.
                 </p>
               </section>
 
