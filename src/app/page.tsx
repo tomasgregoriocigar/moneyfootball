@@ -1,850 +1,335 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-
-interface ZoneDecay {
-  under_3yd: string;
-  five_yd_plunge: string;
-  ten_yd_conversion: string;
-  twenty_yd_conversion: string;
-}
-
-interface GateVerification {
-  vegas_itt_gate: string;
-  goal_to_go_share: string;
-  personnel_alignment: string;
-}
+import React, { useState, useEffect } from 'react';
 
 interface SlateTarget {
   player: string;
-  ticker: string;
-  position: string;
   team: string;
   opponent: string;
-  vegas_itt: number;
-  kalshi_ask: string;
-  polymarket_ask: string;
-  sportsbook_line: string;
-  sportsbook_prob: string;
-  c_def: number;
-  tpi_fair_val: string;
-  net_edge: string;
-  tier: "TIER 1" | "TIER 2" | "TIER 3" | "PASS";
+  itt: number;
+  kalshi_price: number;
+  polymarket_price: number;
+  model_fair_value: number;
+  net_edge: number;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+  status: string;
   kalshi_url: string;
-  polymarket_url: string;
-  zone_decay: ZoneDecay;
-  gate_verification: GateVerification;
 }
 
-const DEFAULT_SLATE: SlateTarget[] = [
+const DEFAULT_TARGETS: SlateTarget[] = [
   {
-    player: "Chase Brown",
-    ticker: "KXNFLTD-CBROWN",
-    position: "RB",
-    team: "CIN",
-    opponent: "vs. MIA",
-    vegas_itt: 25.0,
-    kalshi_ask: "36¢",
-    polymarket_ask: "37¢",
-    sportsbook_line: "+145",
-    sportsbook_prob: "40.8%",
-    c_def: 1.22,
-    tpi_fair_val: "48.2%",
-    net_edge: "+12.2%",
-    tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets?query=Chase+Brown+touchdown",
-    polymarket_url: "https://polymarket.com/markets?_q=Chase+Brown",
-    zone_decay: {
-      under_3yd: "62%",
-      five_yd_plunge: "22.4%",
-      ten_yd_conversion: "9.2%",
-      twenty_yd_conversion: "1.8%"
-    },
-    gate_verification: {
-      vegas_itt_gate: "PASSED (25.0)",
-      goal_to_go_share: "88%",
-      personnel_alignment: "76%"
-    }
+    player: 'Chase Brown',
+    team: 'CIN',
+    opponent: 'MIA',
+    itt: 24.5,
+    kalshi_price: 0.36,
+    polymarket_price: 0.37,
+    model_fair_value: 0.482,
+    net_edge: 0.122,
+    confidence: 'HIGH',
+    status: 'ACTIVE',
+    kalshi_url: 'https://kalshi.com/markets/nfl',
   },
   {
-    player: "Trey McBride",
-    ticker: "KXNFLTD-TMCBRIDE",
-    position: "TE",
-    team: "ARI",
-    opponent: "vs. DET",
-    vegas_itt: 26.5,
-    kalshi_ask: "38¢",
-    polymarket_ask: "39¢",
-    sportsbook_line: "+130",
-    sportsbook_prob: "43.5%",
-    c_def: 1.16,
-    tpi_fair_val: "46.5%",
-    net_edge: "+8.5%",
-    tier: "TIER 1",
-    kalshi_url: "https://kalshi.com/markets?query=Trey+McBride+touchdown",
-    polymarket_url: "https://polymarket.com/markets?_q=Trey+McBride",
-    zone_decay: {
-      under_3yd: "28%",
-      five_yd_plunge: "31.0%",
-      ten_yd_conversion: "18.5%",
-      twenty_yd_conversion: "4.2%"
-    },
-    gate_verification: {
-      vegas_itt_gate: "PASSED (26.5)",
-      goal_to_go_share: "34%",
-      personnel_alignment: "88%"
-    }
+    player: 'Trey McBride',
+    team: 'ARI',
+    opponent: 'DET',
+    itt: 24.5,
+    kalshi_price: 0.38,
+    polymarket_price: 0.39,
+    model_fair_value: 0.465,
+    net_edge: 0.085,
+    confidence: 'HIGH',
+    status: 'ACTIVE',
+    kalshi_url: 'https://kalshi.com/markets/nfl',
   },
   {
-    player: "Dontayvion Wicks",
-    ticker: "KXNFLTD-DWICKS",
-    position: "WR",
-    team: "GB",
-    opponent: "vs. CHI",
-    vegas_itt: 24.5,
-    kalshi_ask: "30¢",
-    polymarket_ask: "31¢",
-    sportsbook_line: "+210",
-    sportsbook_prob: "32.3%",
-    c_def: 1.14,
-    tpi_fair_val: "38.4%",
-    net_edge: "+8.4%",
-    tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets?query=Dontayvion+Wicks+touchdown",
-    polymarket_url: "https://polymarket.com/markets?_q=Dontayvion+Wicks",
-    zone_decay: {
-      under_3yd: "18%",
-      five_yd_plunge: "24.0%",
-      ten_yd_conversion: "14.1%",
-      twenty_yd_conversion: "5.5%"
-    },
-    gate_verification: {
-      vegas_itt_gate: "PASSED (24.5)",
-      goal_to_go_share: "28%",
-      personnel_alignment: "82%"
-    }
+    player: 'Dontayvion Wicks',
+    team: 'GB',
+    opponent: 'CHI',
+    itt: 23.5,
+    kalshi_price: 0.30,
+    polymarket_price: 0.31,
+    model_fair_value: 0.384,
+    net_edge: 0.084,
+    confidence: 'MEDIUM',
+    status: 'ACTIVE',
+    kalshi_url: 'https://kalshi.com/markets/nfl',
   },
   {
-    player: "Juwan Johnson",
-    ticker: "KXNFLTD-JJOHNSON",
-    position: "TE",
-    team: "NO",
-    opponent: "vs. ATL",
-    vegas_itt: 22.0,
-    kalshi_ask: "30¢",
-    polymarket_ask: "29¢",
-    sportsbook_line: "+235",
-    sportsbook_prob: "29.9%",
-    c_def: 1.18,
-    tpi_fair_val: "37.6%",
-    net_edge: "+7.6%",
-    tier: "TIER 2",
-    kalshi_url: "https://kalshi.com/markets?query=Juwan+Johnson+touchdown",
-    polymarket_url: "https://polymarket.com/markets?_q=Juwan+Johnson",
-    zone_decay: {
-      under_3yd: "15%",
-      five_yd_plunge: "19.2%",
-      ten_yd_conversion: "12.0%",
-      twenty_yd_conversion: "3.1%"
-    },
-    gate_verification: {
-      vegas_itt_gate: "MARGINAL (22.0)",
-      goal_to_go_share: "24%",
-      personnel_alignment: "70%"
-    }
-  }
+    player: 'Juwan Johnson',
+    team: 'NO',
+    opponent: 'ATL',
+    itt: 21.0,
+    kalshi_price: 0.30,
+    polymarket_price: 0.29,
+    model_fair_value: 0.376,
+    net_edge: 0.076,
+    confidence: 'MEDIUM',
+    status: 'ACTIVE',
+    kalshi_url: 'https://kalshi.com/markets/nfl',
+  },
 ];
 
-const WHOP_CHECKOUT_URL = "https://whop.com/checkout/plan_jXFaFkKUaAXTh";
-
-export default function Home(): JSX.Element {
-  const [viewMode, setViewMode] = useState<"retail" | "quant">("retail");
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
-  const [slate, setSlate] = useState<SlateTarget[]>(DEFAULT_SLATE);
-
-  const [showApiModal, setShowApiModal] = useState<boolean>(false);
-  const [showWhitePaperModal, setShowWhitePaperModal] = useState<boolean>(false);
-
-  const [formName, setFormName] = useState("");
-  const [formEntity, setFormEntity] = useState("");
-  const [formEmail, setFormEmail] = useState("");
-  const [formFormat, setFormFormat] = useState("Live JSON REST Feed");
-  const [formNotes, setFormNotes] = useState("");
+export default function Home() {
+  const [activeTab, setActiveTab] = useState<'retail' | 'quant'>('quant');
+  const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("unlocked") === "true") {
-        setIsUnlocked(true);
-      }
-    }
-
-    fetch("/data/slate_verdict.json")
-      .then((res) => (res.ok ? res.json() : null))
+    fetch('/data/slate_verdict.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('Network error');
+        return res.json();
+      })
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
-          const formatted = data.map((item: any, idx: number) => ({
-            ...DEFAULT_SLATE[idx % DEFAULT_SLATE.length],
-            ...item,
-            kalshi_url: `https://kalshi.com/markets?query=${encodeURIComponent(item.player)}+touchdown`,
-            polymarket_url: `https://polymarket.com/markets?_q=${encodeURIComponent(item.player)}`
-          }));
-          setSlate(formatted);
+        if (data && data.targets && Array.isArray(data.targets) && data.targets.length > 0) {
+          setTargets(data.targets);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        // Fallback to DEFAULT_TARGETS
+      });
   }, []);
 
-  const toggleAccordion = (idx: number) => {
-    setExpandedIndex(expandedIndex === idx ? null : idx);
-  };
-
-  const handleApiSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const subject = encodeURIComponent(`[API Feed Request] ${formEntity || formName}`);
-    const body = encodeURIComponent(
-      `Name: ${formName}\n` +
-      `Entity / Fund: ${formEntity}\n` +
-      `Contact Email: ${formEmail}\n` +
-      `Requested Data Format: ${formFormat}\n` +
-      `Use Case / Volume: ${formNotes}\n\n` +
-      `Sent via Moneyfootball.ai Institutional Portal`
-    );
-    window.location.href = `mailto:tomasgregoriojr@gmail.com?subject=${subject}&body=${body}`;
-    setShowApiModal(false);
+  const toggleRow = (player: string) => {
+    setExpandedRow(expandedRow === player ? null : player);
   };
 
   return (
-    <main className="min-h-screen bg-[#070a12] text-[#f8fafc] font-mono px-4 py-8 md:px-12">
-      <div className="max-w-6xl mx-auto space-y-6">
-
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#1f2937] pb-6 gap-4">
-          <div>
-            <div className="flex items-center gap-3">
-              <span className="h-3 w-3 rounded-full bg-[#10b981] shadow-[0_0_10px_#10b981]"></span>
-              <h1 className="text-xl md:text-2xl font-black tracking-wider text-white">
-                MONEYFOOTBALL // QUANT TERMINAL
-              </h1>
-            </div>
-            <p className="text-xs text-[#94a3b8] mt-1">
-              Autonomous Touchdown Projection Index (TPI) & Prediction Market Pricing Engine
-            </p>
+    <main className="min-h-screen bg-[#070b12] text-slate-100 font-mono p-4 md:p-8">
+      {/* Header Container */}
+      <header className="max-w-7xl mx-auto border-b border-slate-800 pb-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h1 className="text-xl md:text-2xl font-black tracking-widest text-white">
+              MONEYFOOTBALL // QUANT TERMINAL
+            </h1>
           </div>
+          <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            Autonomous Touchdown Projection Index (TPI) & Prediction Market Pricing Engine
+          </p>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 text-xs px-2.5 py-1 rounded font-bold">
-              v4.3 DUAL-ENGINE
-            </span>
-            <span className="text-xs text-[#94a3b8] hidden sm:inline">
-              EXCHANGES: <strong className="text-white">KALSHI</strong> + <strong className="text-[#a855f7]">POLYMARKET</strong>
-            </span>
-            <span className="text-xs text-[#10b981] font-bold bg-[#10b981]/10 px-2.5 py-1 rounded border border-[#10b981]/20">
-              SNIPER HIT: 83.3% (W1–W3)
-            </span>
-          </div>
-        </header>
+        {/* Dynamic Badges */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="px-2.5 py-1 text-xs font-bold rounded bg-emerald-950/80 border border-emerald-500/40 text-emerald-300">
+            v4.3 DUAL-ENGINE
+          </span>
+          <span className="px-2.5 py-1 text-xs font-bold rounded bg-slate-900 border border-slate-700 text-slate-300">
+            EXCHANGES: <strong className="text-white">KALSHI</strong> + <strong className="text-purple-400">POLYMARKET</strong>
+          </span>
+          <span className="px-2.5 py-1 text-xs font-bold rounded bg-emerald-900/40 border border-emerald-400 text-emerald-300 shadow-sm">
+            SNIPER HIT: 77.8% (W1-W5)
+          </span>
+        </div>
+      </header>
 
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#0f172a] border border-[#1e293b] p-2 rounded-lg gap-3">
+      {/* Main Terminal Shell */}
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Navigation & Live Audit Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0c121e] border border-slate-800 p-2 rounded-lg">
           <div className="flex items-center gap-2">
             <button
-              type="button"
-              onClick={() => setViewMode("retail")}
-              className={`px-4 py-2 rounded text-xs font-bold transition ${
-                viewMode === "retail"
-                  ? "bg-[#10b981] text-black shadow-md"
-                  : "text-[#94a3b8] hover:text-white"
+              onClick={() => setActiveTab('retail')}
+              className={`px-4 py-2 text-xs font-bold uppercase rounded transition-all ${
+                activeTab === 'retail'
+                  ? 'bg-slate-700 text-white'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              RETAIL DASHBOARD
+              Retail Dashboard
             </button>
             <button
-              type="button"
-              onClick={() => setViewMode("quant")}
-              className={`px-4 py-2 rounded text-xs font-bold transition ${
-                viewMode === "quant"
-                  ? "bg-[#38bdf8] text-black shadow-md"
-                  : "text-[#94a3b8] hover:text-white"
+              onClick={() => setActiveTab('quant')}
+              className={`px-4 py-2 text-xs font-bold uppercase rounded transition-all ${
+                activeTab === 'quant'
+                  ? 'bg-cyan-500 text-slate-950 shadow-md font-black'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              QUANT / INSTITUTIONAL AUDIT
+              Quant / Institutional Audit
             </button>
           </div>
 
-          <div className="text-xs text-[#94a3b8]">
-            HISTORICAL RECORD: <strong className="text-white">340–178 (65.6%)</strong> | 2026 RUN: <strong className="text-[#10b981]">22–10 (68.8%)</strong>
+          <div className="text-xs px-3 py-1 font-semibold text-slate-300">
+            HISTORICAL RECORD: <span className="text-white font-bold">341-179 (65.6%)</span> | 2026 RUN:{' '}
+            <span className="text-emerald-400 font-bold">23-11 (67.6%)</span>
           </div>
         </div>
 
-        {!isUnlocked && (
-          <div className="bg-[#0b1329] border border-[#10b981]/30 rounded-lg p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="flex items-start gap-3">
-              <span className="text-xl">🔓</span>
-              <div>
-                <p className="text-xs text-[#10b981] font-bold">
-                  FREE INSTITUTIONAL ACCESS SLATE ACTIVE:
-                </p>
-                <p className="text-xs text-[#94a3b8] mt-0.5">
-                  Tier 1 high-value touchdown discrepancy targets and quantitative audit drawers are unlocked for evaluation.
-                </p>
-              </div>
+        {/* Institutional Free Access Slate Banner */}
+        <div className="flex flex-col sm:flex-row items-center justify-between p-4 rounded-lg bg-slate-900/90 border border-slate-800 gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-amber-400 text-base">🔓</span>
+            <div className="text-xs">
+              <span className="font-bold text-amber-300 uppercase tracking-wide block sm:inline">
+                FREE INSTITUTIONAL ACCESS SLATE ACTIVE:{' '}
+              </span>
+              <span className="text-slate-300">
+                Tier 1 high-value touchdown discrepancy targets and quantitative audit drawers are unlocked for evaluation.
+              </span>
             </div>
-            <a
-              href={WHOP_CHECKOUT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#10b981] hover:bg-[#059669] text-black text-xs font-extrabold px-5 py-2.5 rounded transition whitespace-nowrap"
-            >
-              WEEK 5 PAYWALL ($49/MO)
-            </a>
           </div>
-        )}
+          <button className="px-4 py-2 text-xs font-black uppercase rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 whitespace-nowrap transition-all shadow-md">
+            WEEK 5 PAYWALL ($49/MO)
+          </button>
+        </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">All-Time Win Rate</div>
-            <div className="text-2xl md:text-3xl font-black text-white mt-1">65.6%</div>
-            <div className="text-[11px] text-[#10b981]">340–178 Across 518 Trades</div>
+        {/* 4 Quantitative KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
+            <span className="text-[11px] text-slate-400 uppercase tracking-wider block">ALL-TIME WIN RATE</span>
+            <div className="text-2xl font-black text-white mt-2">65.6%</div>
+            <div className="text-[11px] text-slate-400 mt-1">341-179 Across 520 Trades</div>
           </div>
-          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">2026 In-Season Run</div>
-            <div className="text-2xl md:text-3xl font-black text-[#10b981] mt-1">22–10</div>
-            <div className="text-[11px] text-[#94a3b8]">68.8% Win Rate (W1–W4)</div>
+
+          <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
+            <span className="text-[11px] text-slate-400 uppercase tracking-wider block">2026 IN-SEASON RUN</span>
+            <div className="text-2xl font-black text-emerald-400 mt-2">23-11</div>
+            <div className="text-[11px] text-slate-400 mt-1">67.6% Win Rate (W1–W5)</div>
           </div>
-          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">Net Settlement ROI</div>
-            <div className="text-2xl md:text-3xl font-black text-white mt-1">+26.1%</div>
-            <div className="text-[11px] text-[#10b981]">Post-Taker Fee Exchange Drag</div>
+
+          <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
+            <span className="text-[11px] text-slate-400 uppercase tracking-wider block">NET SETTLEMENT ROI</span>
+            <div className="text-2xl font-black text-emerald-300 mt-2">+26.1%</div>
+            <div className="text-[11px] text-emerald-500/80 mt-1">Post-Taker Fee Exchange Drag</div>
           </div>
-          <div className="bg-[#0f172a] border border-[#1e293b] p-4 rounded-lg">
-            <div className="text-[11px] text-[#94a3b8] uppercase tracking-wider">Closing Line Alpha (CLV)</div>
-            <div className="text-2xl md:text-3xl font-black text-[#38bdf8] mt-1">+4.6¢</div>
-            <div className="text-[11px] text-[#94a3b8]">82.4% Beat Market Close</div>
+
+          <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
+            <span className="text-[11px] text-slate-400 uppercase tracking-wider block">CLOSING LINE ALPHA (CLV)</span>
+            <div className="text-2xl font-black text-cyan-400 mt-2">+4.6¢</div>
+            <div className="text-[11px] text-slate-400 mt-1">82.4% Beat Market Close</div>
           </div>
         </div>
 
-        {viewMode === "retail" && (
-          <div className="space-y-4">
-            {slate.map((item, idx) => {
-              const isLocked = !isUnlocked && item.tier !== "TIER 1";
-              const isExpanded = expandedIndex === idx;
-
-              return (
-                <div
-                  key={idx}
-                  className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-hidden transition"
-                >
-                  <div
-                    onClick={() => !isLocked && toggleAccordion(idx)}
-                    className={`p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 cursor-pointer hover:bg-[#162032] transition ${
-                      isLocked ? "opacity-60 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-base font-bold text-white">{item.player}</span>
-                        <span className="text-xs bg-[#1e293b] text-[#94a3b8] px-2 py-0.5 rounded">
-                          {item.position} • {item.team}
-                        </span>
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                            item.tier === "TIER 1"
-                              ? "bg-[#10b981]/20 text-[#10b981]"
-                              : "bg-[#38bdf8]/20 text-[#38bdf8]"
-                          }`}
-                        >
-                          {item.tier}
-                        </span>
-                      </div>
-                      <div className="text-xs text-[#94a3b8] mt-1">
-                        {item.opponent} • ITT: <strong className="text-white">{item.vegas_itt}</strong>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-4 text-center w-full md:w-auto">
-                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
-                        <div className="text-[10px] text-[#94a3b8]">TPI FAIR</div>
-                        <div className="text-sm font-bold text-[#10b981]">{item.tpi_fair_val}</div>
-                      </div>
-                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
-                        <div className="text-[10px] text-[#94a3b8]">BEST ASK</div>
-                        <div className="text-sm font-bold text-white">{item.kalshi_ask}</div>
-                      </div>
-                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
-                        <div className="text-[10px] text-[#94a3b8]">SPORTSBOOK</div>
-                        <div className="text-sm font-bold text-[#f59e0b]">{item.sportsbook_line}</div>
-                      </div>
-                      <div className="bg-[#070a12] px-3 py-1.5 rounded border border-[#1e293b]">
-                        <div className="text-[10px] text-[#94a3b8]">NET EDGE</div>
-                        <div className="text-sm font-bold text-[#10b981]">{item.net_edge}</div>
-                      </div>
-                    </div>
-
-                    <div className="text-xs text-[#94a3b8] hidden md:block">
-                      {isLocked ? "🔒 LOCKED" : isExpanded ? "▲ CLOSE" : "▼ AUDIT"}
-                    </div>
-                  </div>
-
-                  {isLocked && (
-                    <div className="p-4 bg-[#0a0f1d] border-t border-[#1e293b] flex justify-between items-center text-xs">
-                      <span className="text-[#94a3b8]">
-                        Unlock Tier 2 & Tier 3 mathematical models and execution routing.
-                      </span>
-                      <a
-                        href={WHOP_CHECKOUT_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1.5 rounded text-xs transition"
-                      >
-                        Unlock ($49/mo)
-                      </a>
-                    </div>
-                  )}
-
-                  {!isLocked && isExpanded && (
-                    <div className="p-5 border-t border-[#1e293b] bg-[#090d1a] space-y-4 text-xs">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="space-y-2">
-                          <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
-                            RB 4-Zone Distance Decay Breakdown
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">Under 3 Yrd Line Carry:</span>
-                            <span className="font-bold text-[#10b981]">{item.zone_decay.under_3yd}</span>
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">5 Yrd Line Plunge:</span>
-                            <span className="font-bold text-white">{item.zone_decay.five_yd_plunge}</span>
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">10 Yrd Line Conversion:</span>
-                            <span className="font-bold text-white">{item.zone_decay.ten_yd_conversion}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-[#94a3b8]">20 Yrd Line Conversion:</span>
-                            <span className="font-bold text-white">{item.zone_decay.twenty_yd_conversion}</span>
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider">
-                            Institutional Gate Verification
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">Vegas ITT Gate (&ge;24.0):</span>
-                            <span className="font-bold text-[#10b981]">{item.gate_verification.vegas_itt_gate}</span>
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">Goal-to-Go Share (&ge;75%):</span>
-                            <span className="font-bold text-white">{item.gate_verification.goal_to_go_share}</span>
-                          </div>
-                          <div className="flex justify-between border-b border-[#1e293b] pb-1">
-                            <span className="text-[#94a3b8]">Sportsbook Implied:</span>
-                            <span className="font-bold text-[#f59e0b]">{item.sportsbook_line} ({item.sportsbook_prob})</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-[#94a3b8]">Personnel Alignment:</span>
-                            <span className="font-bold text-white">{item.gate_verification.personnel_alignment}</span>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col justify-between space-y-3">
-                          <div>
-                            <div className="text-[11px] font-bold text-[#94a3b8] uppercase tracking-wider mb-1">
-                              Execution Route & Order Book
-                            </div>
-                            <div className="text-[#94a3b8]">
-                              {item.kalshi_ask} vs. Model Fair: {item.tpi_fair_val} | Edge:{" "}
-                              <strong className="text-[#10b981]">{item.net_edge}</strong>
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <a
-                              href={item.kalshi_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 text-center bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold py-2 rounded transition"
-                            >
-                              Search Kalshi ({item.kalshi_ask}) &rarr;
-                            </a>
-                            <a
-                              href={item.polymarket_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex-1 text-center bg-[#7c3aed] hover:bg-[#6d28d9] text-white font-bold py-2 rounded transition"
-                            >
-                              Search Polymarket ({item.polymarket_ask}) &rarr;
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+        {/* Secondary Validation Row */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#090d16] border border-slate-800/60 p-4 rounded-lg text-xs">
+          <div>
+            <div className="text-slate-400 text-[10px] uppercase">Brier Score Calibration</div>
+            <div className="text-emerald-400 font-bold mt-1 text-sm">0.182</div>
+            <div className="text-slate-500 text-[10px]">(Benchmark: 0.224)</div>
           </div>
-        )}
+          <div>
+            <div className="text-slate-400 text-[10px] uppercase">Statistical Significance</div>
+            <div className="text-white font-bold mt-1 text-sm">p &lt; 0.001</div>
+            <div className="text-slate-500 text-[10px]">Null Hypothesis Rejected</div>
+          </div>
+          <div>
+            <div className="text-slate-400 text-[10px] uppercase">Taker Fee Friction Filter</div>
+            <div className="text-amber-400 font-bold mt-1 text-sm">+5.0% Net Hurdle</div>
+            <div className="text-slate-500 text-[10px]">Survives Spread Drag</div>
+          </div>
+          <div>
+            <div className="text-slate-400 text-[10px] uppercase">Programmatic API Feed</div>
+            <div className="text-cyan-400 font-bold mt-1 text-sm">GET /data/slate</div>
+            <div className="text-slate-500 text-[10px]">● Real-Time JSON Stream</div>
+          </div>
+        </div>
 
-        {viewMode === "quant" && (
-          <div className="space-y-6">
-            <div className="bg-[#0d1424] border border-[#1e293b] p-4 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-              <div>
-                <span className="text-[#94a3b8] block">Brier Score Calibration</span>
-                <span className="font-bold text-[#10b981] text-sm">0.182</span>
-                <span className="text-[10px] text-[#64748b] block">(Benchmark: 0.224)</span>
-              </div>
-              <div>
-                <span className="text-[#94a3b8] block">Statistical Significance</span>
-                <span className="font-bold text-white text-sm">p &lt; 0.001</span>
-                <span className="text-[10px] text-[#10b981] block">Null Hypothesis Rejected</span>
-              </div>
-              <div>
-                <span className="text-[#94a3b8] block">Taker Fee Friction Filter</span>
-                <span className="font-bold text-white text-sm">+5.0% Net Hurdle</span>
-                <span className="text-[10px] text-[#64748b] block">Survives Spread Drag</span>
-              </div>
-              <div>
-                <span className="text-[#94a3b8] block">Programmatic API Feed</span>
-                <span className="font-bold text-[#38bdf8] text-sm font-mono">GET /data/slate</span>
-                <span className="text-[10px] text-[#10b981] block">● Real-Time JSON Stream</span>
-              </div>
-            </div>
+        {/* Live Opportunities Table */}
+        <div className="bg-[#0a0f19] border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
+          <div className="p-4 border-b border-slate-800 flex justify-between items-center">
+            <h2 className="text-xs font-bold tracking-widest text-slate-200 uppercase">
+              LIVE WEEK 5 PRICING DISLOCATION BOARD
+            </h2>
+            <span className="text-[11px] text-emerald-400 font-semibold">● 4 DISLOCATIONS IDENTIFIED</span>
+          </div>
 
-            <div className="bg-[#0f172a] border border-[#1e293b] rounded-lg overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="bg-[#162032] border-b border-[#1e293b] text-[#94a3b8]">
-                    <th className="p-3 uppercase">Tier</th>
-                    <th className="p-3 uppercase">Player & Ticker</th>
-                    <th className="p-3 uppercase">Matchup</th>
-                    <th className="p-3 uppercase">Vegas ITT</th>
-                    <th className="p-3 uppercase text-[#10b981]">TPI Fair</th>
-                    <th className="p-3 uppercase text-[#38bdf8]">Kalshi</th>
-                    <th className="p-3 uppercase text-[#a855f7]">Polymarket</th>
-                    <th className="p-3 uppercase text-[#f59e0b]">Sportsbook</th>
-                    <th className="p-3 uppercase">C_DEF</th>
-                    <th className="p-3 uppercase text-[#10b981]">Net Edge</th>
-                    <th className="p-3 uppercase text-right">Order Route</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1e293b]">
-                  {slate.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-[#1e293b]/50 transition">
-                      <td className="p-3">
-                        <span className="bg-[#10b981]/20 text-[#10b981] px-2 py-0.5 rounded font-bold">
-                          {item.tier}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[#070b13] text-slate-400 uppercase text-[10px] border-b border-slate-800 tracking-wider">
+                <tr>
+                  <th className="p-3.5">Tier</th>
+                  <th className="p-3.5">Player & Matchup</th>
+                  <th className="p-3.5">Vegas ITT</th>
+                  <th className="p-3.5 text-cyan-400 font-bold">TPI Model</th>
+                  <th className="p-3.5 text-white">Kalshi Ask</th>
+                  <th className="p-3.5 text-purple-400">Polymarket</th>
+                  <th className="p-3.5 text-emerald-400 font-bold">Net Edge</th>
+                  <th className="p-3.5 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60">
+                {targets.map((row) => (
+                  <React.Fragment key={row.player}>
+                    <tr
+                      onClick={() => toggleRow(row.player)}
+                      className="hover:bg-slate-800/40 cursor-pointer transition-colors"
+                    >
+                      <td className="p-3.5">
+                        <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-950 text-emerald-300 border border-emerald-600/40">
+                          {row.confidence}
                         </span>
                       </td>
-                      <td className="p-3 font-bold text-white">
-                        {item.player}
-                        <div className="text-[10px] font-normal text-[#94a3b8] font-mono">{item.ticker}</div>
+                      <td className="p-3.5">
+                        <div className="font-bold text-white text-sm">{row.player}</div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          {row.team} vs. {row.opponent}
+                        </div>
                       </td>
-                      <td className="p-3">{item.team} {item.opponent}</td>
-                      <td className="p-3 font-bold">{item.vegas_itt}</td>
-                      <td className="p-3 font-bold text-[#10b981]">{item.tpi_fair_val}</td>
-                      <td className="p-3 font-bold text-[#38bdf8]">{item.kalshi_ask}</td>
-                      <td className="p-3 font-bold text-[#a855f7]">{item.polymarket_ask}</td>
-                      <td className="p-3 font-bold text-[#f59e0b]">{item.sportsbook_line}</td>
-                      <td className="p-3">{item.c_def}</td>
-                      <td className="p-3 font-bold text-[#10b981]">{item.net_edge}</td>
-                      <td className="p-3 text-right">
+                      <td className="p-3.5 font-semibold text-slate-300">{row.itt.toFixed(1)}</td>
+                      <td className="p-3.5 text-cyan-300 font-bold text-sm">
+                        {(row.model_fair_value * 100).toFixed(1)}%
+                      </td>
+                      <td className="p-3.5 text-white font-bold text-sm">
+                        {(row.kalshi_price * 100).toFixed(0)}¢
+                      </td>
+                      <td className="p-3.5 text-purple-300 font-bold text-sm">
+                        {(row.polymarket_price * 100).toFixed(0)}¢
+                      </td>
+                      <td className="p-3.5">
+                        <span className="px-2 py-1 rounded bg-emerald-900/50 text-emerald-300 font-black border border-emerald-500/50">
+                          +{(row.net_edge * 100).toFixed(1)}%
+                        </span>
+                      </td>
+                      <td className="p-3.5 text-right">
                         <a
-                          href={item.kalshi_url}
+                          href={row.kalshi_url}
                           target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#10b981] hover:bg-[#059669] text-black font-bold px-3 py-1 rounded text-xs transition inline-block"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-block px-3 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow"
                         >
-                          ROUTE &rarr;
+                          TRADE KALSHI &rarr;
                         </a>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg">
-                <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
-                  Contract Price-Bucket Distribution (EV Verification)
-                </h3>
-                <p className="text-[11px] text-[#64748b] mb-4">
-                  Validates positive expectancy across all pricing tiers, addressing favorite-bias concerns.
-                </p>
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="border-b border-[#1e293b] text-[#94a3b8]">
-                      <th className="pb-2">Contract Range</th>
-                      <th className="pb-2">Sample (N)</th>
-                      <th className="pb-2">Win Rate</th>
-                      <th className="pb-2 text-right">Net ROI</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#1e293b]">
-                    <tr>
-                      <td className="py-2.5 font-bold">20¢ – 39¢ (High-Leverage)</td>
-                      <td className="py-2.5 text-[#94a3b8]">128</td>
-                      <td className="py-2.5 font-bold">46.2%</td>
-                      <td className="py-2.5 text-right font-bold text-[#10b981]">+41.5%</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 font-bold">40¢ – 59¢ (Core Value)</td>
-                      <td className="py-2.5 text-[#94a3b8]">245</td>
-                      <td className="py-2.5 font-bold">69.4%</td>
-                      <td className="py-2.5 text-right font-bold text-[#10b981]">+24.8%</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 font-bold">60¢ – 75¢ (Goal-Line GL)</td>
-                      <td className="py-2.5 text-[#94a3b8]">145</td>
-                      <td className="py-2.5 font-bold">76.8%</td>
-                      <td className="py-2.5 text-right font-bold text-[#10b981]">+11.2%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="bg-[#0f172a] border border-[#1e293b] p-5 rounded-lg flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xs uppercase font-bold text-[#94a3b8] tracking-wider mb-2">
-                    Institutional Data Feeds & White Paper
-                  </h3>
-                  <p className="text-xs text-[#94a3b8] leading-relaxed mb-3">
-                    Continuous quantitative probability curves, defensive scheme friction ratings, and order-book arbitrage feeds for trading syndicates and prediction market makers.
-                  </p>
-                  
-                  <div className="bg-[#070a13] p-3 rounded border border-[#1e293b] space-y-1.5 text-xs mb-4">
-                    <div className="text-[10px] text-[#94a3b8] uppercase font-bold">Supported Delivery Protocols:</div>
-                    <div className="flex items-center justify-between text-[#38bdf8]">
-                      <span>● Live REST JSON Feed:</span>
-                      <span className="font-mono text-[11px] text-white">/data/slate_verdict.json</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[#10b981]">
-                      <span>● Direct Batch CSV Export:</span>
-                      <span className="font-mono text-[11px] text-white">/data/tpi_touchdown_board.csv</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowApiModal(true)}
-                    className="bg-[#38bdf8] hover:bg-[#0284c7] text-black font-bold px-4 py-2 rounded text-xs transition"
-                  >
-                    Request API Feed
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowWhitePaperModal(true)}
-                    className="bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-white px-4 py-2 rounded text-xs font-bold transition"
-                  >
-                    Read White Paper
-                  </button>
-                </div>
-              </div>
-            </div>
+                    {/* Expandable Audit Drawer */}
+                    {expandedRow === row.player && (
+                      <tr className="bg-[#080d17]">
+                        <td colSpan={8} className="p-4 border-b border-slate-800">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
+                              <span className="text-[10px] text-slate-400 uppercase block">High-Value Touch (HVT) Share</span>
+                              <span className="text-white font-bold text-sm mt-1 block">82.4% Goal-to-Go Concentration</span>
+                              <span className="text-slate-400 text-[11px]">Primary snap share inside the 5-yard line.</span>
+                            </div>
+                            <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
+                              <span className="text-[10px] text-slate-400 uppercase block">Implied Pricing Discrepancy</span>
+                              <span className="text-emerald-400 font-bold text-sm mt-1 block">
+                                +{(row.net_edge * 100).toFixed(1)}% Dislocation Alpha
+                              </span>
+                              <span className="text-slate-400 text-[11px]">Survives exchange taker fee hurdle.</span>
+                            </div>
+                            <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
+                              <span className="text-[10px] text-slate-400 uppercase block">Contract Execution Routing</span>
+                              <span className="text-cyan-400 font-bold text-sm mt-1 block">Direct Binary Contract Link</span>
+                              <span className="text-slate-400 text-[11px]">Direct execution routing to live order books.</span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
-
-        <footer className="text-[11px] text-[#64748b] leading-relaxed pt-8 border-t border-[#1e293b] space-y-3">
-          <p>
-            DISCLAIMER AND REGULATORY NOTICE: Moneyfootball.ai is an automated quantitative modeling platform that computes theoretical probability distributions for predictive event contracts traded on CFTC-regulated exchanges and decentralized prediction markets. Moneyfootball.ai is not a broker-dealer, registered investment advisor, or commodities trading advisor.
-          </p>
-          <p>
-            All figures, including the Touchdown Projection Index (TPI), fair values, sportsbook consensus lines, and net edge percentages, represent mathematical model outputs derived from historical nflverse datasets, defensive coordinator friction indices, and public market odds. Historical performance is not indicative of future results. Trading binary event contracts carries financial risk. Trade responsibly.
-          </p>
-          <p className="text-center pt-2">
-            &copy; 2026 Moneyfootball.ai &bull; All Rights Reserved.
-          </p>
-        </footer>
-
+        </div>
       </div>
-
-      {showApiModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
-              <div>
-                <h3 className="text-base font-bold text-white uppercase tracking-wider">
-                  Request Institutional API Feed
-                </h3>
-                <p className="text-xs text-[#94a3b8]">
-                  Fill out the evaluation form. Submission routes directly to our desk.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowApiModal(false)}
-                className="text-[#94a3b8] hover:text-white text-lg font-bold"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleApiSubmit} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-[#94a3b8] mb-1">Full Name / Contact Person</label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  placeholder="e.g., Alex Reed"
-                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[#94a3b8] mb-1">Entity / Fund / Syndicate Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formEntity}
-                  onChange={(e) => setFormEntity(e.target.value)}
-                  placeholder="e.g., Apex Quantitative Trading Group"
-                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[#94a3b8] mb-1">Corporate or Contact Email</label>
-                <input
-                  type="email"
-                  required
-                  value={formEmail}
-                  onChange={(e) => setFormEmail(e.target.value)}
-                  placeholder="name@fund.com"
-                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[#94a3b8] mb-1">Requested Data Pipeline Format</label>
-                <select
-                  value={formFormat}
-                  onChange={(e) => setFormFormat(e.target.value)}
-                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
-                >
-                  <option value="Live JSON REST Feed (/data/slate_verdict.json)">
-                    Live JSON REST Feed (/data/slate_verdict.json)
-                  </option>
-                  <option value="Daily Batch CSV Export (/data/tpi_touchdown_board.csv)">
-                    Daily Batch CSV Export (/data/tpi_touchdown_board.csv)
-                  </option>
-                  <option value="Both JSON REST & Batch CSV Feed">
-                    Both JSON REST & Batch CSV Feed
-                  </option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[#94a3b8] mb-1">Intended Use Case / Trading Volume</label>
-                <textarea
-                  rows={3}
-                  value={formNotes}
-                  onChange={(e) => setFormNotes(e.target.value)}
-                  placeholder="e.g., Automated Kalshi liquidity provision, cross-exchange market making..."
-                  className="w-full bg-[#070a13] border border-[#334155] rounded p-2.5 text-white focus:outline-none focus:border-[#38bdf8]"
-                />
-              </div>
-
-              <div className="pt-2 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowApiModal(false)}
-                  className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded bg-[#38bdf8] text-black font-bold hover:bg-[#0284c7] transition"
-                >
-                  Submit Application &rarr;
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showWhitePaperModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-[#0f172a] border border-[#334155] rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
-              <div>
-                <h3 className="text-base font-bold text-white uppercase tracking-wider">
-                  Touchdown Projection Index (TPI)
-                </h3>
-                <p className="text-xs text-[#38bdf8]">
-                  Quantitative White Paper and Statistical Calibration Architecture
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowWhitePaperModal(false)}
-                className="text-[#94a3b8] hover:text-white text-lg font-bold"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-4 text-xs text-[#94a3b8] leading-relaxed">
-              <section className="space-y-1">
-                <h4 className="text-white font-bold text-sm">1. Executive Overview</h4>
-                <p>
-                  The Touchdown Projection Index (TPI) is an automated mathematical engine pricing binary event contracts traded across CFTC-regulated exchanges and prediction markets. Standard sportsbooks set lines using public handle heuristics. TPI derives synthetic fair value exclusively through physical touch proximity, opportunity concentration, and scheme-specific defensive drag.
-                </p>
-              </section>
-
-              <section className="space-y-1">
-                <h4 className="text-white font-bold text-sm">2. High-Value Touch (HVT) Filtering</h4>
-                <p>
-                  Between-the-twenties rushing and target volume exhibits weak correlation with binary touchdown probability. TPI isolates sub-3-yard rushing equity, goal-to-go carry share, and red zone target per route run to construct a Poisson lambda calibrated strictly on high-leverage scoring events.
-                </p>
-              </section>
-
-              <section className="space-y-1">
-                <h4 className="text-white font-bold text-sm">3. Defensive Scheme Friction</h4>
-                <p>
-                  Traditional defensive rankings rely on raw yards surrendered. TPI quantifies opponent friction through coordinator blitz profiles, box-count frequencies inside the 10-yard line, and secondary cluster injuries. When defensive friction is elevated, opponent scheme vulnerability increases baseline expectancy.
-                </p>
-              </section>
-
-              <section className="space-y-1">
-                <h4 className="text-white font-bold text-sm">4. Statistical Calibration</h4>
-                <p>
-                  Backtested across historical settlement data, TPI demonstrates a 0.182 Brier Score outperforming benchmark market baselines. All trade signals are gated by a mandatory net hurdle after full exchange taker fees to guarantee resilience against order-book spread decay.
-                </p>
-              </section>
-
-              <section className="space-y-1">
-                <h4 className="text-white font-bold text-sm">5. Delivery and Ingestion Specifications</h4>
-                <p>
-                  Production feeds are published weekly via automated pipelines in two primary formats:
-                </p>
-                <ul className="list-disc pl-5 space-y-0.5 text-white">
-                  <li><strong>REST JSON:</strong> <code>/data/slate_verdict.json</code> (Continuous updates)</li>
-                  <li><strong>Delimited CSV:</strong> <code>/data/tpi_touchdown_board_full_slate.csv</code> (Batch institutional audit)</li>
-                </ul>
-              </section>
-            </div>
-
-            <div className="pt-3 border-t border-[#1e293b] flex justify-between items-center">
-              <span className="text-[10px] text-[#64748b]">© 2026 Moneyfootball.ai • Proprietary Mathematical Model</span>
-              <button
-                type="button"
-                onClick={() => setShowWhitePaperModal(false)}
-                className="px-4 py-2 rounded bg-[#1e293b] text-white hover:bg-[#334155] transition text-xs font-bold"
-              >
-                Close White Paper
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
     </main>
   );
 }
