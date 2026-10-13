@@ -28,7 +28,7 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     net_edge: 0.122,
     confidence: 'HIGH',
     status: 'ACTIVE',
-    kalshi_url: 'https://kalshi.com/markets/nfl',
+    kalshi_url: 'https://kalshi.com/hubs/nfl',
   },
   {
     player: 'Trey McBride',
@@ -41,7 +41,7 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     net_edge: 0.085,
     confidence: 'HIGH',
     status: 'ACTIVE',
-    kalshi_url: 'https://kalshi.com/markets/nfl',
+    kalshi_url: 'https://kalshi.com/hubs/nfl',
   },
   {
     player: 'Dontayvion Wicks',
@@ -54,7 +54,7 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     net_edge: 0.084,
     confidence: 'MEDIUM',
     status: 'ACTIVE',
-    kalshi_url: 'https://kalshi.com/markets/nfl',
+    kalshi_url: 'https://kalshi.com/hubs/nfl',
   },
   {
     player: 'Juwan Johnson',
@@ -67,7 +67,7 @@ const DEFAULT_TARGETS: SlateTarget[] = [
     net_edge: 0.076,
     confidence: 'MEDIUM',
     status: 'ACTIVE',
-    kalshi_url: 'https://kalshi.com/markets/nfl',
+    kalshi_url: 'https://kalshi.com/hubs/nfl',
   },
 ];
 
