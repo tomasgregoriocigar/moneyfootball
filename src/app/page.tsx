@@ -178,9 +178,9 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <button className="px-4 py-2 text-xs font-black uppercase rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 whitespace-nowrap transition-all shadow-md">
-            {paywallLabel}
-          </button>
+          
+            
+
         </div>
 
         {/* 4 Quantitative KPI Cards */}
