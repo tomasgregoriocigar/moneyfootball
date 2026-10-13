@@ -93,7 +93,8 @@ def main():
     slate_results = build_active_board(injury_clusters)
 
     # Save outputs to JSON for frontend or automated alerts
-    output_path = "slate_verdict.json"
+    output_path = "public/data/tpi_defensive_audit.json"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w") as f:
         json.dump(slate_results, f, indent=2)
 
