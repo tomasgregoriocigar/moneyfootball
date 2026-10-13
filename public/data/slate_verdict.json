@@ -59,6 +59,13 @@
     "season_record": "23-11",
     "win_rate": "67.6%",
     "all_time_record": "341-179",
-    "all_time_win_rate": "65.6%"
-  }
+    "all_time_win_rate": "65.6%",
+    "net_settlement_roi": "+26.1%",
+    "closing_line_alpha": "+4.6¢",
+    "closing_line_beat_rate": "82.4%",
+    "brier_score": "0.182",
+    "brier_benchmark": "0.224"
+  },
+  "sniper_hit": "77.8% (W1-W5)",
+  "paywall_label": "WEEK 5 PAYWALL ($49/MO)"
 }
