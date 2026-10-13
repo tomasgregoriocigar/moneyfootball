@@ -32,6 +32,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add slate_verdict.json
-          git diff-index --quiet HEAD || git commit -m "auto: update TPI defensive slate verdicts"
+          git add public/data/tpi_defensive_audit.json
+          git diff-index --quiet HEAD || git commit -m "auto: update TPI defensive audit"
           git push
