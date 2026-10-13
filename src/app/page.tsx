@@ -74,6 +74,7 @@ const DEFAULT_TARGETS: SlateTarget[] = [
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'retail' | 'quant'>('quant');
   const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
+  const [verdict, setVerdict] = useState<any>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
   useEffect(() => {
@@ -86,6 +87,7 @@ export default function Home() {
         if (data && data.targets && Array.isArray(data.targets) && data.targets.length > 0) {
           setTargets(data.targets);
         }
+        setVerdict(data);
       })
       .catch(() => {
         // Fallback to DEFAULT_TARGETS
@@ -95,6 +97,10 @@ export default function Home() {
   const toggleRow = (player: string) => {
     setExpandedRow(expandedRow === player ? null : player);
   };
+
+  const perf = (verdict as any)?.performance ?? {};
+  const sniperHit = (verdict as any)?.sniper_hit ?? '77.8% (W1-W5)';
+  const paywallLabel = (verdict as any)?.paywall_label ?? 'WEEK 5 PAYWALL ($49/MO)';
 
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-100 font-mono p-4 md:p-8">
@@ -121,7 +127,7 @@ export default function Home() {
             EXCHANGES: <strong className="text-white">KALSHI</strong> + <strong className="text-purple-400">POLYMARKET</strong>
           </span>
           <span className="px-2.5 py-1 text-xs font-bold rounded bg-emerald-900/40 border border-emerald-400 text-emerald-300 shadow-sm">
-            SNIPER HIT: 77.8% (W1-W5)
+            SNIPER HIT: {sniperHit}
           </span>
         </div>
       </header>
@@ -154,8 +160,8 @@ export default function Home() {
           </div>
 
           <div className="text-xs px-3 py-1 font-semibold text-slate-300">
-            HISTORICAL RECORD: <span className="text-white font-bold">341-179 (65.6%)</span> | 2026 RUN:{' '}
-            <span className="text-emerald-400 font-bold">23-11 (67.6%)</span>
+            HISTORICAL RECORD: <span className="text-white font-bold">{perf.all_time_record ?? '341-179'} ({perf.all_time_win_rate ?? '65.6%'})</span> | 2026 RUN:{' '}
+            <span className="text-emerald-400 font-bold">{perf.season_record ?? '23-11'} ({perf.win_rate ?? '67.6%'})</span>
           </div>
         </div>
 
@@ -173,7 +179,7 @@ export default function Home() {
             </div>
           </div>
           <button className="px-4 py-2 text-xs font-black uppercase rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 whitespace-nowrap transition-all shadow-md">
-            WEEK 5 PAYWALL ($49/MO)
+            {paywallLabel}
           </button>
         </div>
 
@@ -181,26 +187,26 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
             <span className="text-[11px] text-slate-400 uppercase tracking-wider block">ALL-TIME WIN RATE</span>
-            <div className="text-2xl font-black text-white mt-2">65.6%</div>
-            <div className="text-[11px] text-slate-400 mt-1">341-179 Across 520 Trades</div>
+            <div className="text-2xl font-black text-white mt-2">{perf.all_time_win_rate ?? '65.6%'}</div>
+            <div className="text-[11px] text-slate-400 mt-1">{perf.all_time_record ?? '341-179'} Across 520 Trades</div>
           </div>
 
           <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
             <span className="text-[11px] text-slate-400 uppercase tracking-wider block">2026 IN-SEASON RUN</span>
-            <div className="text-2xl font-black text-emerald-400 mt-2">23-11</div>
-            <div className="text-[11px] text-slate-400 mt-1">67.6% Win Rate (W1–W5)</div>
+            <div className="text-2xl font-black text-emerald-400 mt-2">{perf.season_record ?? '23-11'}</div>
+            <div className="text-[11px] text-slate-400 mt-1">{perf.win_rate ?? '67.6%'} Win Rate (W1–W5)</div>
           </div>
 
           <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
             <span className="text-[11px] text-slate-400 uppercase tracking-wider block">NET SETTLEMENT ROI</span>
-            <div className="text-2xl font-black text-emerald-300 mt-2">+26.1%</div>
+            <div className="text-2xl font-black text-emerald-300 mt-2">{perf.net_settlement_roi ?? '+26.1%'}</div>
             <div className="text-[11px] text-emerald-500/80 mt-1">Post-Taker Fee Exchange Drag</div>
           </div>
 
           <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
             <span className="text-[11px] text-slate-400 uppercase tracking-wider block">CLOSING LINE ALPHA (CLV)</span>
-            <div className="text-2xl font-black text-cyan-400 mt-2">+4.6¢</div>
-            <div className="text-[11px] text-slate-400 mt-1">82.4% Beat Market Close</div>
+            <div className="text-2xl font-black text-cyan-400 mt-2">{perf.closing_line_alpha ?? '+4.6¢'}</div>
+            <div className="text-[11px] text-slate-400 mt-1">{perf.closing_line_beat_rate ?? '82.4%'} Beat Market Close</div>
           </div>
         </div>
 
@@ -208,8 +214,8 @@ export default function Home() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-[#090d16] border border-slate-800/60 p-4 rounded-lg text-xs">
           <div>
             <div className="text-slate-400 text-[10px] uppercase">Brier Score Calibration</div>
-            <div className="text-emerald-400 font-bold mt-1 text-sm">0.182</div>
-            <div className="text-slate-500 text-[10px]">(Benchmark: 0.224)</div>
+            <div className="text-emerald-400 font-bold mt-1 text-sm">{perf.brier_score ?? '0.182'}</div>
+            <div className="text-slate-500 text-[10px]">(Benchmark: {perf.brier_benchmark ?? '0.224'})</div>
           </div>
           <div>
             <div className="text-slate-400 text-[10px] uppercase">Statistical Significance</div>
