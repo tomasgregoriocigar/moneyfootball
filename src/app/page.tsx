@@ -336,6 +336,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </main>
+{/* Risk Disclaimer Footer */} <footer className="max-w-7xl mx-auto mt-8 border-t border-slate-800/80 pt-6"><p className="text-[11px] text-slate-500 leading-relaxed">DISCLAIMER — MoneyFootball is an independent analytics terminal. Nothing on this site is financial advice. Trading on prediction markets involves substantial risk of loss. Past model performance does not guarantee future results. Prices shown are indicative and may differ from live market quotes. Not affiliated with Kalshi or Polymarket. Trade at your own risk.</p></footer> </main>
   );
 }
