@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'Moneyfootball.ai | NFL Event Derivatives & TPI Terminal',
@@ -12,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-zinc-200 antialiased">{children}</body>
+      <body className="bg-black text-zinc-200 antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
