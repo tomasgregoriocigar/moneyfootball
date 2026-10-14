@@ -274,7 +274,7 @@ function ReferralSection({ referrals }: { referrals: ReferralInfo }) {
               rel="noreferrer"
               className="inline-block px-4 py-2 rounded bg-purple-500 hover:bg-purple-400 text-slate-950 font-black text-xs transition-all"
             >
-              Claim Polymarket bonus &rarr;
+              Trade on Polymarket &rarr;
             </a>
           ) : (
             <span className="inline-block px-4 py-2 rounded bg-slate-800 text-slate-500 font-bold text-xs cursor-not-allowed">
