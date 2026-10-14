@@ -61,8 +61,50 @@
       "status": "ACTIVE",
       "team": "IND",
       "verdict": "BUY"
+    },
+    {
+      "player": "Kyren Williams",
+      "team": "LAR",
+      "opponent": "ARI",
+      "itt": 32.5,
+      "kalshi_price": 0.67,
+      "polymarket_price": null,
+      "model_fair_value": 0.885,
+      "net_edge": 0.215,
+      "confidence": "HIGH",
+      "verdict": "BUY",
+      "status": "ACTIVE",
+      "kalshi_url": "https://kalshi.com/markets/kxnfltdprot/pro-football-touchdowns-protected/kxnfltdprot-26oct18arilar?op_market_ticker=KXNFLTDPROT-26OCT18ARILAR-LARKWILLIAMS23-1&op_order_side=yes&op_order_type=dollars"
+    },
+    {
+      "player": "Javonte Williams",
+      "team": "DAL",
+      "opponent": "GB",
+      "itt": 25.5,
+      "kalshi_price": 0.66,
+      "polymarket_price": null,
+      "model_fair_value": 0.814,
+      "net_edge": 0.154,
+      "confidence": "HIGH",
+      "verdict": "BUY",
+      "status": "ACTIVE",
+      "kalshi_url": "https://kalshi.com/markets/kxnfltdprot/pro-football-touchdowns-protected/kxnfltdprot-26oct18dalgb?op_market_ticker=KXNFLTDPROT-26OCT18DALGB-DALJWILLIAMS33-1&op_order_side=yes&op_order_type=dollars"
+    },
+    {
+      "player": "MarShawn Lloyd",
+      "team": "GB",
+      "opponent": "DAL",
+      "itt": 27.0,
+      "kalshi_price": 0.58,
+      "polymarket_price": null,
+      "model_fair_value": 0.745,
+      "net_edge": 0.165,
+      "confidence": "HIGH",
+      "verdict": "PASS",
+      "status": "ACTIVE",
+      "kalshi_url": "https://kalshi.com/markets/kxnfltdprot/pro-football-touchdowns-protected/kxnfltdprot-26oct18dalgb?op_market_ticker=KXNFLTDPROT-26OCT18DALGB-GBMLLOYD32-1&op_order_side=yes&op_order_type=dollars"
     }
   ],
-  "updated_at": "2026-10-14T20:09:24Z",
+  "updated_at": "2026-10-14T20:39:21Z",
   "week_label": "WEEK 6"
 }
