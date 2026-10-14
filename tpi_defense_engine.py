@@ -74,7 +74,7 @@ def run_target_audit(target: TargetEvaluation, defense: DefenseProfile) -> Dict[
         reject_reason = "WR Ask exceeds 42¢ cap without opposing secondary cluster injury"
 
     net_edge = adjusted_prob - target.kalshi_market_ask
-    recommendation = "BUY" if (net_edge >= 0.08 and not hard_reject) else "PASS"
+    recommendation = "BUY" if (net_edge >= 0.05 and not hard_reject) else "PASS"
 
     return {
         "player": target.player_name,
