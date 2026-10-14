@@ -57,3 +57,16 @@ def test_steamed_market_triggers_steam_breaker():
     # Ask far above fair value must never be a BUY (Steam Breaker rule).
     res = run_target_audit(_rb(ask=0.95, prob=0.45), _neutral_def())
     assert res["decision"] == "PASS"
+
+
+def test_spec_hurdle_six_percent_edge_is_buy():
+    # TPI spec: execute longs when gross dislocation >= +5.0%.
+    # A +6% edge must BUY (it was PASS under the old 8% engine hurdle).
+    res = run_target_audit(_rb(ask=0.50, prob=0.56), _neutral_def())
+    assert res["net_edge"] == "+6.0%"
+    assert res["decision"] == "BUY"
+
+
+def test_below_spec_hurdle_is_pass():
+    res = run_target_audit(_rb(ask=0.52, prob=0.56), _neutral_def())
+    assert res["decision"] == "PASS"
