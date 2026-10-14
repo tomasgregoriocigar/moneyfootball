@@ -13,6 +13,7 @@ interface SlateTarget {
   net_edge: number;
   confidence: 'HIGH' | 'MEDIUM' | 'LOW';
   status: string;
+  verdict?: 'BUY' | 'PASS';
   kalshi_url: string;
 }
 
@@ -144,6 +145,7 @@ function BoardTable({
               <th className="p-3.5 text-white">Kalshi Ask</th>
               <th className="p-3.5 text-purple-400">Polymarket</th>
               <th className="p-3.5 text-emerald-400 font-bold">Net Edge</th>
+              <th className="p-3.5">Verdict</th>
               <th className="p-3.5 text-right">Action</th>
             </tr>
           </thead>
@@ -180,6 +182,17 @@ function BoardTable({
                       +{(row.net_edge * 100).toFixed(1)}%
                     </span>
                   </td>
+                  <td className="p-3.5">
+                    {(row.verdict ?? 'BUY') === 'BUY' ? (
+                      <span className="px-2.5 py-1 rounded bg-emerald-500 text-slate-950 font-black text-[11px]">
+                        YES
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-1 rounded bg-red-500 text-white font-black text-[11px]">
+                        NO
+                      </span>
+                    )}
+                  </td>
                   <td className="p-3.5 text-right">
                     <a
                       href={row.kalshi_url}
@@ -194,7 +207,7 @@ function BoardTable({
                 </tr>
                 {expandedRow === row.player && (
                   <tr className="bg-[#080d17]">
-                    <td colSpan={8} className="p-4 border-b border-slate-800">
+                    <td colSpan={9} className="p-4 border-b border-slate-800">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                         <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
                           <span className="text-[10px] text-slate-400 uppercase block">High-Value Touch (HVT) Share</span>
