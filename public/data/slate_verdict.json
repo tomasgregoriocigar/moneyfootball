@@ -67,5 +67,12 @@
     "brier_benchmark": "0.224"
   },
   "sniper_hit": "77.8% (W1-W5)",
-  "paywall_label": "WEEK 5 PAYWALL ($49/MO)"
+  "paywall_label": "WEEK 5 PAYWALL ($49/MO)",
+  "week_label": "WEEK 5",
+  "referrals": {
+    "kalshi_url": null,
+    "kalshi_headline": "New to Kalshi? Get $25 in bonus credit when you sign up through our link and trade $25.",
+    "polymarket_url": null,
+    "polymarket_headline": "Polymarket account setup in progress — signup link coming soon."
+  }
 }

@@ -49,4 +49,16 @@ describe('slate_verdict.json (Schema A — frontend data contract)', () => {
     expect(data.performance.closing_line_alpha).toBeDefined();
     expect(data.performance.brier_score).toBeDefined();
   });
+
+  it('referrals block carries the signup-link contract', () => {
+    const r = data.referrals;
+    expect(r).toBeDefined();
+    for (const k of ['kalshi_url', 'kalshi_headline', 'polymarket_url', 'polymarket_headline']) {
+      expect(k in r).toBe(true);
+    }
+    for (const u of [r.kalshi_url, r.polymarket_url]) {
+      expect(u === null || (typeof u === 'string' && u.startsWith('https://'))).toBe(true);
+    }
+    expect(typeof data.week_label).toBe('string');
+  });
 });
