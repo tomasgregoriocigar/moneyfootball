@@ -68,7 +68,7 @@ def run_target_audit(target: TargetEvaluation, defense: DefenseProfile) -> Dict[
 
     # Hard Cap Rule: Reject WR contracts priced >= $0.42 unless secondary cluster injury exists
     hard_reject = False
-    reject_reason = "None"
+    reject_reason = None
     if target.position == "WR" and target.kalshi_market_ask >= 0.42 and not defense.cluster_injury_secondary:
         hard_reject = True
         reject_reason = "WR Ask exceeds 42¢ cap without opposing secondary cluster injury"
