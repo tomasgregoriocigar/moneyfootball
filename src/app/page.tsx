@@ -175,7 +175,7 @@ function BoardTable({
                     {(row.kalshi_price * 100).toFixed(0)}¢
                   </td>
                   <td className="p-3.5 text-purple-300 font-bold text-sm">
-                    {(row.polymarket_price * 100).toFixed(0)}¢
+                    {row.polymarket_price == null ? '—' : `${(row.polymarket_price * 100).toFixed(0)}¢`}
                   </td>
                   <td className="p-3.5">
                     <span className="px-2 py-1 rounded bg-emerald-900/50 text-emerald-300 font-black border border-emerald-500/50">
