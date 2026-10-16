@@ -24,6 +24,11 @@ interface ReferralInfo {
   polymarket_headline: string | null;
 }
 
+interface NewsletterInfo {
+  url: string | null;
+  headline: string | null;
+}
+
 const DEFAULT_TARGETS: SlateTarget[] = [
   {
     player: 'Chase Brown',
@@ -84,6 +89,11 @@ const DEFAULT_REFERRALS: ReferralInfo = {
   kalshi_headline: null,
   polymarket_url: null,
   polymarket_headline: null,
+};
+
+const DEFAULT_NEWSLETTER: NewsletterInfo = {
+  url: null,
+  headline: null,
 };
 
 function KpiCards({ perf }: { perf: any }) {
@@ -300,6 +310,37 @@ function ReferralSection({ referrals }: { referrals: ReferralInfo }) {
   );
 }
 
+function NewsletterSection({ newsletter }: { newsletter: NewsletterInfo }) {
+  const live = !!newsletter.url;
+  return (
+    <div className="bg-[#0a0f19] border border-slate-800 rounded-lg p-5">
+      <h2 className="text-xs font-bold tracking-widest text-slate-200 uppercase mb-1">
+        Get the board by email
+      </h2>
+      <p className="text-[11px] text-slate-400 mb-4">
+        {newsletter.headline ?? 'The weekly TPI board and full settlement results by email — free for the 2026 season.'}
+      </p>
+      {live ? (
+        <a
+          href={newsletter.url as string}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all"
+        >
+          Subscribe free &rarr;
+        </a>
+      ) : (
+        <span className="inline-block px-4 py-2 rounded bg-slate-800 text-slate-500 font-bold text-xs cursor-not-allowed">
+          Newsletter coming soon
+        </span>
+      )}
+      <p className="text-[10px] text-slate-500 mt-3">
+        One email per board drop, plus a settlement recap. Unsubscribe anytime. Not financial advice.
+      </p>
+    </div>
+  );
+}
+
 function MethodologySection() {
   const weights: Array<[string, string]> = [
     ['Goal-line rush ≤ 3 yds', '0.542'],
@@ -450,6 +491,7 @@ export default function Home() {
   const perf = (verdict as any)?.performance ?? {};
   const sniperHit = (verdict as any)?.sniper_hit ?? '77.8% (W1-W5)';
   const referrals: ReferralInfo = (verdict as any)?.referrals ?? DEFAULT_REFERRALS;
+  const newsletter: NewsletterInfo = (verdict as any)?.newsletter ?? DEFAULT_NEWSLETTER;
   const weekLabel = (verdict as any)?.week_label ?? 'WEEK 5';
 
   return (
@@ -527,6 +569,7 @@ export default function Home() {
             <KpiCards perf={perf} />
             <BoardTable targets={targets} weekLabel={weekLabel} expandedRow={expandedRow} toggleRow={toggleRow} />
             <ReferralSection referrals={referrals} />
+            <NewsletterSection newsletter={newsletter} />
           </>
         ) : (
           <>
