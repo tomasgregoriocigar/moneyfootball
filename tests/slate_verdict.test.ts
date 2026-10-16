@@ -61,4 +61,15 @@ describe('slate_verdict.json (Schema A — frontend data contract)', () => {
     }
     expect(typeof data.week_label).toBe('string');
   });
+
+  it('newsletter block carries the subscribe-link contract', () => {
+    const n = data.newsletter;
+    expect(n).toBeDefined();
+    for (const k of ['url', 'headline']) {
+      expect(k in n).toBe(true);
+    }
+    expect(
+      n.url === null || (typeof n.url === 'string' && n.url.startsWith('https://'))
+    ).toBe(true);
+  });
 });
