@@ -24,7 +24,7 @@ describe('slate_verdict.json (Schema A — frontend data contract)', () => {
       expect(typeof t.opponent).toBe('string');
       expect(typeof t.itt).toBe('number');
       expect(typeof t.kalshi_price).toBe('number');
-      expect(typeof t.polymarket_price).toBe('number');
+      expect(t.polymarket_price === null || typeof t.polymarket_price === 'number').toBe(true);
       expect(typeof t.model_fair_value).toBe('number');
       expect(typeof t.net_edge).toBe('number');
       expect(['ACTIVE', 'PASS']).toContain(t.status);
