@@ -1,15 +1,15 @@
 {
   "newsletter": {
-    "headline": "The weekly TPI board and full settlement results by email — free for the 2026 season. Season record 28-16 (63.6%), with every result posted, wins and losses.",
+    "headline": "The weekly TPI board and full settlement results by email \u2014 free for the 2026 season. Season record 28-16 (63.6%), with every result posted, wins and losses.",
     "url": "https://toms-newsletter-75cd86.beehiiv.com/"
   },
-  "paywall_label": "WEEK 6 PAYWALL ($49/MO)",
+  "paywall_label": "WEEK 7 PAYWALL ($49/MO)",
   "performance": {
     "all_time_record": "341-179",
     "all_time_win_rate": "65.6%",
     "brier_benchmark": "0.224",
     "brier_score": "0.182",
-    "closing_line_alpha": "+4.6¢",
+    "closing_line_alpha": "+4.6\u00a2",
     "closing_line_beat_rate": "82.4%",
     "net_settlement_roi": "+26.1%",
     "season_record": "28-16",
@@ -18,7 +18,7 @@
   "referrals": {
     "kalshi_headline": "New to Kalshi? Get $25 in bonus credit when you sign up through our link and trade $25.",
     "kalshi_url": "https://kalshi.com/r/346071dd-bafa-4eca-93c2-13b1e0886a1a",
-    "polymarket_headline": "Polymarket US has no referral program, so there's no signup bonus to share — but every board pick trades there.",
+    "polymarket_headline": "Polymarket US has no referral program, so there's no signup bonus to share \u2014 but every board pick trades there.",
     "polymarket_url": "https://polymarket.us/"
   },
   "slate": "NFL 2026 Week 7 Main Slate",
@@ -123,6 +123,6 @@
       "kalshi_url": "https://kalshi.com/markets/kxnfltdprot/pro-football-touchdowns-protected/kxnfltdprot-26oct25indmin?op_market_ticker=KXNFLTDPROT-26OCT25INDMIN-MINAJONES33-1&op_order_side=yes&op_order_type=dollars"
     }
   ],
-  "updated_at": "2026-10-21T14:22:45Z",
+  "updated_at": "2026-10-21T16:11:52Z",
   "week_label": "WEEK 7"
 }
