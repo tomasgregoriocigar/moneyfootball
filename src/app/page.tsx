@@ -177,6 +177,13 @@ function BoardTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60">
+            {targets.length === 0 && (
+              <tr>
+                <td colSpan={9} className="p-6 text-center text-slate-400 text-sm font-semibold tracking-wide">
+                  LOADING THE CURRENT BOARD…
+                </td>
+              </tr>
+            )}
             {targets.map((row) => {
               const ticker = tickerFromUrl(row.kalshi_url);
               const liveAsk = ticker ? livePrices[ticker] : undefined;
@@ -528,7 +535,7 @@ function SettlementSection({ perf, sniperHit }: { perf: any; sniperHit: string }
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'retail' | 'quant'>('retail');
-  const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
+  const [targets, setTargets] = useState<SlateTarget[]>([]);
   const [verdict, setVerdict] = useState<any>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [livePrices, setLivePrices] = useState<Record<string, number>>({});
@@ -580,7 +587,7 @@ export default function Home() {
   const sniperHit = (verdict as any)?.sniper_hit ?? '77.8% (W1-W5)';
   const referrals: ReferralInfo = (verdict as any)?.referrals ?? DEFAULT_REFERRALS;
   const newsletter: NewsletterInfo = (verdict as any)?.newsletter ?? DEFAULT_NEWSLETTER;
-  const weekLabel = (verdict as any)?.week_label ?? 'WEEK 5';
+  const weekLabel = (verdict as any)?.week_label ?? 'LOADING';
 
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-100 font-mono p-4 md:p-8">
