@@ -201,6 +201,18 @@ function BoardTable({
                     <div className="text-[11px] text-slate-400 mt-0.5">
                       {row.team} vs. {row.opponent}
                     </div>
+                    {liveAsk != null && liveEdge != null && (
+                      <div className="text-[11px] font-semibold mt-1 whitespace-nowrap">
+                        <span className="text-cyan-300">LIVE {(liveAsk * 100).toFixed(0)}¢</span>{' '}
+                        <span className={deltaC === 0 ? 'text-slate-400' : favorable ? 'text-emerald-400' : 'text-red-400'}>
+                          ({deltaC > 0 ? `+${deltaC}¢` : deltaC < 0 ? `${deltaC}¢` : '±0¢'})
+                        </span>{' '}
+                        <span className="text-slate-400">
+                          · edge {liveEdge >= 0 ? '+' : ''}{(liveEdge * 100).toFixed(1)}%
+                        </span>
+                        {steamBreaker && <span className="text-red-400 font-black"> · STEAM BREAKER</span>}
+                      </div>
+                    )}
                   </td>
                   <td className="p-3.5 font-semibold text-slate-300">{row.itt.toFixed(1)}</td>
                   <td className="p-3.5 text-cyan-300 font-bold text-sm">
