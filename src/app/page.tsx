@@ -123,16 +123,28 @@ function KpiCards({ perf }: { perf: any }) {
   );
 }
 
+function tickerFromUrl(url: string): string | null {
+  try {
+    return new URL(url).searchParams.get('op_market_ticker');
+  } catch {
+    return null;
+  }
+}
+
 function BoardTable({
   targets,
   weekLabel,
   expandedRow,
   toggleRow,
+  livePrices,
+  liveAt,
 }: {
   targets: SlateTarget[];
   weekLabel: string;
   expandedRow: string | null;
   toggleRow: (player: string) => void;
+  livePrices: Record<string, number>;
+  liveAt: string | null;
 }) {
   return (
     <div className="bg-[#0a0f19] border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
@@ -142,6 +154,11 @@ function BoardTable({
         </h2>
         <span className="text-[11px] text-emerald-400 font-semibold">
           ● {targets.length} DISLOCATIONS IDENTIFIED
+          {liveAt && (
+            <span className="text-cyan-300 ml-2">
+              · LIVE KALSHI {new Date(liveAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })} ET
+            </span>
+          )}
         </span>
       </div>
       <div className="overflow-x-auto">
@@ -160,7 +177,15 @@ function BoardTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/60">
-            {targets.map((row) => (
+            {targets.map((row) => {
+              const ticker = tickerFromUrl(row.kalshi_url);
+              const liveAsk = ticker ? livePrices[ticker] : undefined;
+              const liveEdge = liveAsk != null ? row.model_fair_value - liveAsk : null;
+              const deltaC = liveAsk != null ? Math.round((liveAsk - row.kalshi_price) * 100) : 0;
+              const isBuy = (row.verdict ?? 'BUY') === 'BUY';
+              const favorable = deltaC !== 0 && (isBuy ? deltaC < 0 : deltaC > 0);
+              const steamBreaker = isBuy && liveAsk != null && liveAsk >= row.model_fair_value;
+              return (
               <React.Fragment key={row.player}>
                 <tr
                   onClick={() => toggleRow(row.player)}
@@ -182,15 +207,42 @@ function BoardTable({
                     {(row.model_fair_value * 100).toFixed(1)}%
                   </td>
                   <td className="p-3.5 text-white font-bold text-sm">
-                    {(row.kalshi_price * 100).toFixed(0)}¢
+                    {liveAsk != null ? (
+                      <>
+                        {(liveAsk * 100).toFixed(0)}¢
+                        <div className="text-[10px] font-semibold text-slate-400 mt-0.5">
+                          board {(row.kalshi_price * 100).toFixed(0)}¢{' '}
+                          <span className={deltaC === 0 ? 'text-slate-400' : favorable ? 'text-emerald-400' : 'text-red-400'}>
+                            {deltaC > 0 ? `+${deltaC}¢` : deltaC < 0 ? `${deltaC}¢` : '±0¢'}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <>{(row.kalshi_price * 100).toFixed(0)}¢</>
+                    )}
                   </td>
                   <td className="p-3.5 text-purple-300 font-bold text-sm">
                     {row.polymarket_price == null ? '—' : `${(row.polymarket_price * 100).toFixed(0)}¢`}
                   </td>
                   <td className="p-3.5">
-                    <span className="px-2 py-1 rounded bg-emerald-900/50 text-emerald-300 font-black border border-emerald-500/50">
-                      +{(row.net_edge * 100).toFixed(1)}%
-                    </span>
+                    {steamBreaker ? (
+                      <span className="px-2 py-1 rounded bg-red-900/60 text-red-300 font-black border border-red-500/60">
+                        STEAM BREAKER
+                      </span>
+                    ) : liveEdge != null ? (
+                      <>
+                        <span className={`px-2 py-1 rounded font-black border ${liveEdge >= 0.05 ? 'bg-emerald-900/50 text-emerald-300 border-emerald-500/50' : 'bg-amber-900/50 text-amber-300 border-amber-500/50'}`}>
+                          {liveEdge >= 0 ? '+' : ''}{(liveEdge * 100).toFixed(1)}%
+                        </span>
+                        <div className="text-[10px] font-semibold text-slate-400 mt-1">
+                          live · board +{(row.net_edge * 100).toFixed(1)}%
+                        </div>
+                      </>
+                    ) : (
+                      <span className="px-2 py-1 rounded bg-emerald-900/50 text-emerald-300 font-black border border-emerald-500/50">
+                        +{(row.net_edge * 100).toFixed(1)}%
+                      </span>
+                    )}
                   </td>
                   <td className="p-3.5">
                     {(row.verdict ?? 'BUY') === 'BUY' ? (
@@ -241,7 +293,8 @@ function BoardTable({
                   </tr>
                 )}
               </React.Fragment>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -466,6 +519,29 @@ export default function Home() {
   const [targets, setTargets] = useState<SlateTarget[]>(DEFAULT_TARGETS);
   const [verdict, setVerdict] = useState<any>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [livePrices, setLivePrices] = useState<Record<string, number>>({});
+  const [liveAt, setLiveAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    let stop = false;
+    const load = () => {
+      fetch('/api/kalshi-prices')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (!stop && data && data.prices) {
+            setLivePrices(data.prices);
+            setLiveAt(data.fetched_at ?? new Date().toISOString());
+          }
+        })
+        .catch(() => {});
+    };
+    load();
+    const id = setInterval(load, 60000);
+    return () => {
+      stop = true;
+      clearInterval(id);
+    };
+  }, []);
 
   useEffect(() => {
     fetch('/data/slate_verdict.json')
@@ -567,7 +643,7 @@ export default function Home() {
               </div>
             </div>
             <KpiCards perf={perf} />
-            <BoardTable targets={targets} weekLabel={weekLabel} expandedRow={expandedRow} toggleRow={toggleRow} />
+            <BoardTable targets={targets} weekLabel={weekLabel} expandedRow={expandedRow} toggleRow={toggleRow} livePrices={livePrices} liveAt={liveAt} />
             <ReferralSection referrals={referrals} />
             <NewsletterSection newsletter={newsletter} />
           </>
@@ -589,7 +665,7 @@ export default function Home() {
             <MethodologySection />
             <KpiCards perf={perf} />
             <CalibrationSection perf={perf} />
-            <BoardTable targets={targets} weekLabel={weekLabel} expandedRow={expandedRow} toggleRow={toggleRow} />
+            <BoardTable targets={targets} weekLabel={weekLabel} expandedRow={expandedRow} toggleRow={toggleRow} livePrices={livePrices} liveAt={liveAt} />
             <SettlementSection perf={perf} sniperHit={sniperHit} />
           </>
         )}
