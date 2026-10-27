@@ -1,6 +1,5 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
-import Script from 'next/script';
 
 export const metadata = {
   title: 'Moneyfootball.ai | NFL Event Derivatives & TPI Terminal',
@@ -15,15 +14,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-C9DCVRPNQB" strategy="afterInteractive" />
-        <Script id="ga4-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-C9DCVRPNQB');
-          `}
-        </Script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-C9DCVRPNQB" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-C9DCVRPNQB');
+            `,
+          }}
+        />
       </head>
       <body className="bg-black text-zinc-200 antialiased">
         {children}
