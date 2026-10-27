@@ -14,9 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-black text-zinc-200 antialiased">
-        {children}
-        <Analytics />
+      <head>
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-C9DCVRPNQB" strategy="afterInteractive" />
         <Script id="ga4-init" strategy="afterInteractive">
           {`
@@ -26,6 +24,10 @@ export default function RootLayout({
             gtag('config', 'G-C9DCVRPNQB');
           `}
         </Script>
+      </head>
+      <body className="bg-black text-zinc-200 antialiased">
+        {children}
+        <Analytics />
       </body>
     </html>
   );
