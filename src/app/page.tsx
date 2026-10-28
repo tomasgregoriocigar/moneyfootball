@@ -254,12 +254,12 @@ function BoardTable({
                           {liveEdge >= 0 ? '+' : ''}{(liveEdge * 100).toFixed(1)}%
                         </span>
                         <div className="text-[10px] font-semibold text-slate-400 mt-1">
-                          live · board +{(row.net_edge * 100).toFixed(1)}%
+                          live · board {row.net_edge >= 0 ? '+' : ''}{(row.net_edge * 100).toFixed(1)}%
                         </div>
                       </>
                     ) : (
-                      <span className="px-2 py-1 rounded bg-emerald-900/50 text-emerald-300 font-black border border-emerald-500/50">
-                        +{(row.net_edge * 100).toFixed(1)}%
+                      <span className={`px-2 py-1 rounded font-black border ${row.net_edge >= 0.05 ? 'bg-emerald-900/50 text-emerald-300 border-emerald-500/50' : 'bg-amber-900/50 text-amber-300 border-amber-500/50'}`}>
+                        {row.net_edge >= 0 ? '+' : ''}{(row.net_edge * 100).toFixed(1)}%
                       </span>
                     )}
                   </td>
@@ -275,15 +275,17 @@ function BoardTable({
                     )}
                   </td>
                   <td className="p-3.5 text-right">
-                    <a
-                      href={row.kalshi_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="inline-block px-3 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow"
-                    >
-                      TRADE KALSHI &rarr;
-                    </a>
+                    {isBuy && (
+                      <a
+                        href={row.kalshi_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-block px-3 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all shadow"
+                      >
+                        TRADE KALSHI &rarr;
+                      </a>
+                    )}
                   </td>
                 </tr>
                 {expandedRow === row.player && (
@@ -297,8 +299,8 @@ function BoardTable({
                         </div>
                         <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
                           <span className="text-[10px] text-slate-400 uppercase block">Implied Pricing Discrepancy</span>
-                          <span className="text-emerald-400 font-bold text-sm mt-1 block">
-                            +{(row.net_edge * 100).toFixed(1)}% Dislocation Alpha
+                          <span className={`${row.net_edge >= 0.05 ? 'text-emerald-400' : 'text-amber-400'} font-bold text-sm mt-1 block`}>
+                            {row.net_edge >= 0 ? '+' : ''}{(row.net_edge * 100).toFixed(1)}% Dislocation Alpha
                           </span>
                           <span className="text-slate-400 text-[11px]">Survives exchange taker fee hurdle.</span>
                         </div>
