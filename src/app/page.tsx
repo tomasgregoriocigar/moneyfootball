@@ -101,13 +101,13 @@ function KpiCards({ perf }: { perf: any }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
         <span className="text-[11px] text-slate-400 uppercase tracking-wider block">ALL-TIME WIN RATE</span>
-        <div className="text-2xl font-black text-white mt-2">{perf.all_time_win_rate ?? '65.6%'}</div>
-        <div className="text-[11px] text-slate-400 mt-1">{perf.all_time_record ?? '341-179'} Across 520 Trades</div>
+        <div className="text-2xl font-black text-white mt-2">{perf.all_time_win_rate ?? '65.3%'}</div>
+        <div className="text-[11px] text-slate-400 mt-1">{perf.all_time_record ?? '344-183'} Across 527 Trades</div>
       </div>
       <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
         <span className="text-[11px] text-slate-400 uppercase tracking-wider block">2026 IN-SEASON RUN</span>
-        <div className="text-2xl font-black text-emerald-400 mt-2">{perf.season_record ?? '23-11'}</div>
-        <div className="text-[11px] text-slate-400 mt-1">{perf.win_rate ?? '67.6%'} Win Rate (W1–W5)</div>
+        <div className="text-2xl font-black text-emerald-400 mt-2">{perf.season_record ?? '31-20'}</div>
+        <div className="text-[11px] text-slate-400 mt-1">{perf.win_rate ?? '60.8%'} Win Rate (W1–W7)</div>
       </div>
       <div className="bg-[#0b101a] border border-slate-800/80 rounded-lg p-5">
         <span className="text-[11px] text-slate-400 uppercase tracking-wider block">NET SETTLEMENT ROI</span>
@@ -434,7 +434,7 @@ function MethodologySection() {
       <p className="text-[11px] text-slate-400 mb-4 leading-relaxed">
         The Touchdown Projection Index prices P(anytime TD) with a Poisson kernel anchored to Vegas implied team totals:
         λ team = (ITT − 1.25 × FG Exp) / 7, then λ player = λ team × weighted
-        high-value-touch shares, and P(TD ≥ 1) = 1 − e^(−λ). Weights below are calibrated on 520 settled contracts.
+        high-value-touch shares, and P(TD ≥ 1) = 1 − e^(−λ). Weights below are calibrated on 527 settled contracts.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -509,14 +509,14 @@ function SettlementSection({ perf, sniperHit }: { perf: any; sniperHit: string }
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
         <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
-          <span className="text-[10px] text-slate-400 uppercase block">All-time (520 contracts)</span>
-          <span className="text-white font-black text-lg mt-1 block">{perf.all_time_record ?? '341-179'}</span>
-          <span className="text-slate-400 text-[11px]">{perf.all_time_win_rate ?? '65.6%'} win rate</span>
+          <span className="text-[10px] text-slate-400 uppercase block">All-time (527 contracts)</span>
+          <span className="text-white font-black text-lg mt-1 block">{perf.all_time_record ?? '344-183'}</span>
+          <span className="text-slate-400 text-[11px]">{perf.all_time_win_rate ?? '65.3%'} win rate</span>
         </div>
         <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
           <span className="text-[10px] text-slate-400 uppercase block">2026 season</span>
-          <span className="text-emerald-400 font-black text-lg mt-1 block">{perf.season_record ?? '23-11'}</span>
-          <span className="text-slate-400 text-[11px]">{perf.win_rate ?? '67.6%'} win rate (W1–W5)</span>
+          <span className="text-emerald-400 font-black text-lg mt-1 block">{perf.season_record ?? '31-20'}</span>
+          <span className="text-slate-400 text-[11px]">{perf.win_rate ?? '60.8%'} win rate (W1–W7)</span>
         </div>
         <div className="bg-slate-900/60 p-3 rounded border border-slate-800">
           <span className="text-[10px] text-slate-400 uppercase block">Sniper Hit rate</span>
@@ -584,7 +584,7 @@ export default function Home() {
   };
 
   const perf = (verdict as any)?.performance ?? {};
-  const sniperHit = (verdict as any)?.sniper_hit ?? '77.8% (W1-W5)';
+  const sniperHit = (verdict as any)?.sniper_hit ?? '60.9% (W1-W7)';
   const referrals: ReferralInfo = (verdict as any)?.referrals ?? DEFAULT_REFERRALS;
   const newsletter: NewsletterInfo = (verdict as any)?.newsletter ?? DEFAULT_NEWSLETTER;
   const weekLabel = (verdict as any)?.week_label ?? 'LOADING';
@@ -641,8 +641,8 @@ export default function Home() {
             </button>
           </div>
           <div className="text-xs px-3 py-1 font-semibold text-slate-300">
-            HISTORICAL RECORD: <span className="text-white font-bold">{perf.all_time_record ?? '341-179'} ({perf.all_time_win_rate ?? '65.6%'})</span> | 2026 RUN:{' '}
-            <span className="text-emerald-400 font-bold">{perf.season_record ?? '23-11'} ({perf.win_rate ?? '67.6%'})</span>
+            HISTORICAL RECORD: <span className="text-white font-bold">{perf.all_time_record ?? '344-183'} ({perf.all_time_win_rate ?? '65.3%'})</span> | 2026 RUN:{' '}
+            <span className="text-emerald-400 font-bold">{perf.season_record ?? '31-20'} ({perf.win_rate ?? '60.8%'})</span>
           </div>
         </div>
 
