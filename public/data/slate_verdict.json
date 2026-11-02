@@ -3,16 +3,16 @@
  "slate": "NFL 2026 Week 8 Main Slate",
  "paywall_label": "WEEK 8 — FREE OPEN BETA",
  "updated_at": "2026-10-28T18:46:21Z",
- "sniper_hit": "60.9% HIGH-confidence (W1-W7)",
+ "sniper_hit": "54.3% HIGH-confidence (W1-W8)",
  "newsletter": {
-  "headline": "The weekly TPI board and full settlement results by email — free for the 2026 season. Season record 31-20 (60.8%), with every result posted, wins and losses.",
+  "headline": "The weekly TPI board and full settlement results by email — free for the 2026 season. Season record 37-27 (57.8%), with every result posted, wins and losses.",
   "url": "https://toms-newsletter-75cd86.beehiiv.com/"
  },
  "performance": {
-  "season_record": "31-20",
-  "win_rate": "60.8%",
-  "all_time_record": "344-183",
-  "all_time_win_rate": "65.3%",
+  "season_record": "37-27",
+  "win_rate": "57.8%",
+  "all_time_record": "350-190",
+  "all_time_win_rate": "64.8%",
   "brier_score": "0.182",
   "brier_benchmark": "0.224",
   "closing_line_alpha": "+4.6¢",
