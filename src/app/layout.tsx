@@ -14,6 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="google-site-verification" content="CPHKrZiQzeb28ieNqGLSpY6T8oMO2tPxlZMgOLoKt00" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-C9DCVRPNQB" />
         <script
           dangerouslySetInnerHTML={{
