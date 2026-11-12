@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og';
-import { LOGO_FACE_LG_DATA_URI } from '../data/logo';
+import { LOGO_FACE_OG_DATA_URI } from '../data/og-face';
 
-export const runtime = 'edge';
 export const alt = 'MoneyFootball.ai — Tito the Football Quant';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -23,7 +22,7 @@ export default function OpengraphImage() {
         {/* Tito's face mark: a crop of the locked avatar identity, never regenerated. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={LOGO_FACE_LG_DATA_URI}
+          src={LOGO_FACE_OG_DATA_URI}
           width={380}
           height={380}
           alt=""
