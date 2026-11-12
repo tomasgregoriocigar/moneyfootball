@@ -1,9 +1,15 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
+import { LOGO_FACE_DATA_URI } from '../data/logo';
+
 export const metadata = {
   title: 'Moneyfootball.ai | NFL Event Derivatives & TPI Terminal',
   description: 'Quantitative NFL prediction market edge analytics for Kalshi and Polymarket.',
+  icons: {
+    icon: LOGO_FACE_DATA_URI,
+    apple: LOGO_FACE_DATA_URI,
+  },
 };
 
 export default function RootLayout({
