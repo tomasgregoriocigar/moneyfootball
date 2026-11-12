@@ -23,12 +23,12 @@ export default function OpengraphImage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={LOGO_FACE_OG_DATA_URI}
-          width={380}
-          height={380}
+          width={340}
+          height={340}
           alt=""
-          style={{ borderRadius: '50%', marginRight: '56px' }}
+          style={{ borderRadius: '50%', marginRight: '48px' }}
         />
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '660px' }}>
           <div
             style={{
               display: 'flex',
@@ -50,14 +50,14 @@ export default function OpengraphImage() {
             />
             TITO THE FOOTBALL QUANT
           </div>
-          <div style={{ color: '#ffffff', fontSize: 76, fontWeight: 900, lineHeight: 1.05 }}>
+          <div style={{ color: '#ffffff', fontSize: 56, fontWeight: 900, lineHeight: 1.05 }}>
             MONEYFOOTBALL.AI
           </div>
-          <div style={{ color: '#94a3b8', fontSize: 32, marginTop: '22px', lineHeight: 1.35 }}>
+          <div style={{ color: '#94a3b8', fontSize: 27, marginTop: '20px', lineHeight: 1.35 }}>
             Anytime touchdown picks, priced by the TPI model — and every settlement posted, wins
             and losses.
           </div>
-          <div style={{ color: '#e2e8f0', fontSize: 28, marginTop: '30px' }}>
+          <div style={{ color: '#e2e8f0', fontSize: 25, marginTop: '26px' }}>
             All-time 356-206 · 2026 run 43-43
           </div>
         </div>
