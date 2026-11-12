@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { LOGO_FACE_DATA_URI } from '../data/logo';
 
 interface SlateTarget {
   player: string;
@@ -596,6 +597,12 @@ export default function Home() {
       <header className="max-w-7xl mx-auto border-b border-slate-800 pb-6 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={LOGO_FACE_DATA_URI}
+              alt="Tito the Football Quant"
+              className="w-11 h-11 md:w-12 md:h-12 rounded-full ring-1 ring-slate-700 object-cover"
+            />
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <h1 className="text-xl md:text-2xl font-black tracking-widest text-white">
               MONEYFOOTBALL // QUANT TERMINAL
@@ -693,6 +700,12 @@ export default function Home() {
       </div>
 
       <footer className="max-w-7xl mx-auto mt-8 border-t border-slate-800/80 pt-6">
+        <p className="text-[11px] text-slate-400 mb-3">
+          BOARD ARCHIVE —{' '}
+          <a href="/weeks" className="text-emerald-400 underline">
+            every week&apos;s anytime touchdown picks and settled results (Weeks 1-9)
+          </a>
+        </p>
         <p className="text-[11px] text-slate-500 leading-relaxed">
           DISCLAIMER — MoneyFootball is an independent analytics terminal. Nothing on this site is financial advice.
           Trading on prediction markets involves substantial risk of loss. Past model performance does not guarantee
