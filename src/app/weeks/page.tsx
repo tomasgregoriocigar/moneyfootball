@@ -4,7 +4,7 @@ import { WEEKS } from '../../data/weeks';
 export const metadata: Metadata = {
   title: 'MoneyFootball Archive — NFL Anytime Touchdown Picks & Results by Week | Tito the Football Quant',
   description:
-    'Every MoneyFootball board and settlement, on the record: weekly anytime touchdown picks with the prices and fair values as published, and the settled results — wins and losses — for Weeks 1-9 of the 2026 NFL season.',
+    'Every MoneyFootball board and settlement, on the record: weekly anytime touchdown picks with the prices and fair values as published, and the settled results — wins and losses — for Weeks 1-9 of the 2026 NFL season, plus the Week 10 board as published (settlement pending).',
   alternates: { canonical: 'https://www.moneyfootball.ai/weeks' },
 };
 
@@ -42,9 +42,11 @@ export default function WeeksIndexPage() {
                 <a className="text-emerald-400 underline mr-6" href={`/weeks/week-${w.week}-board`}>
                   Week {w.week} board — the picks as published
                 </a>
-                <a className="text-emerald-400 underline" href={`/weeks/week-${w.week}-results`}>
-                  Week {w.week} results — the settlement
-                </a>
+                {!w.boardOnly && (
+                  <a className="text-emerald-400 underline" href={`/weeks/week-${w.week}-results`}>
+                    Week {w.week} results — the settlement
+                  </a>
+                )}
               </p>
             </section>
           ))}
