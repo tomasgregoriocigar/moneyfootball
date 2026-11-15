@@ -86,15 +86,15 @@ const DEFAULT_TARGETS: SlateTarget[] = [
 ];
 
 const DEFAULT_REFERRALS: ReferralInfo = {
-  kalshi_url: null,
-  kalshi_headline: null,
-  polymarket_url: null,
-  polymarket_headline: null,
+  kalshi_url: 'https://kalshi.com/r/346071dd-bafa-4eca-93c2-13b1e0886a1a',
+  kalshi_headline: 'New to Kalshi? Get $25 in bonus credit when you sign up through our link and trade $25.',
+  polymarket_url: 'https://polymarket.us/',
+  polymarket_headline: "Polymarket US has no referral program, so there's no signup bonus to share — but every board pick trades there.",
 };
 
 const DEFAULT_NEWSLETTER: NewsletterInfo = {
-  url: null,
-  headline: null,
+  url: 'https://toms-newsletter-75cd86.beehiiv.com/',
+  headline: 'The weekly TPI board and full settlement results by email — free for the 2026 season. Season record 43-43 (50.0%), with every result posted, wins and losses.',
 };
 
 function KpiCards({ perf }: { perf: any }) {
@@ -353,9 +353,14 @@ function ReferralSection({ referrals }: { referrals: ReferralInfo }) {
               Claim Kalshi bonus &rarr;
             </a>
           ) : (
-            <span className="inline-block px-4 py-2 rounded bg-slate-800 text-slate-500 font-bold text-xs cursor-not-allowed">
-              Referral link coming soon
-            </span>
+            <a
+              href={DEFAULT_REFERRALS.kalshi_url as string}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all"
+            >
+              Claim Kalshi bonus &rarr;
+            </a>
           )}
         </div>
         <div className="bg-slate-900/60 border border-slate-800 rounded-lg p-4">
@@ -363,7 +368,7 @@ function ReferralSection({ referrals }: { referrals: ReferralInfo }) {
             POLYMARKET <span className="text-[10px] font-bold text-purple-400">— widest NFL prop menu</span>
           </div>
           <p className="text-[11px] text-slate-400 mb-3">
-            {referrals.polymarket_headline ?? 'Polymarket signup link coming soon.'}
+            {referrals.polymarket_headline ?? "Polymarket US has no referral program, so there's no signup bonus to share — but every board pick trades there."}
           </p>
           {polyLive ? (
             <a
@@ -375,9 +380,14 @@ function ReferralSection({ referrals }: { referrals: ReferralInfo }) {
               Trade on Polymarket &rarr;
             </a>
           ) : (
-            <span className="inline-block px-4 py-2 rounded bg-slate-800 text-slate-500 font-bold text-xs cursor-not-allowed">
-              Referral link coming soon
-            </span>
+            <a
+              href={DEFAULT_REFERRALS.polymarket_url as string}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-block px-4 py-2 rounded bg-purple-500 hover:bg-purple-400 text-slate-950 font-black text-xs transition-all"
+            >
+              Trade on Polymarket &rarr;
+            </a>
           )}
         </div>
       </div>
@@ -405,9 +415,14 @@ function NewsletterSection({ newsletter }: { newsletter: NewsletterInfo }) {
           Subscribe free &rarr;
         </a>
       ) : (
-        <span className="inline-block px-4 py-2 rounded bg-slate-800 text-slate-500 font-bold text-xs cursor-not-allowed">
-          Newsletter coming soon
-        </span>
+        <a
+          href={DEFAULT_NEWSLETTER.url as string}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs transition-all"
+        >
+          Subscribe free &rarr;
+        </a>
       )}
       <p className="text-[10px] text-slate-500 mt-3">
         One email per board drop, plus a settlement recap. Unsubscribe anytime. Not financial advice.
