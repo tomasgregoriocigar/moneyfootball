@@ -22,13 +22,15 @@ function buildDefs(): PageDef[] {
       week: w,
       kind: 'board',
     });
-    defs.push({
-      slug: `week-${w.week}-results`,
-      title: `${w.resultsTitle} | Tito the Football Quant`,
-      description: `MoneyFootball Week ${w.week} anytime touchdown picks, settled: ${w.weekLine} ${w.seasonLine} Every hit and miss from the Week ${w.week} board, on the record.`,
-      week: w,
-      kind: 'results',
-    });
+    if (!w.boardOnly) {
+      defs.push({
+        slug: `week-${w.week}-results`,
+        title: `${w.resultsTitle} | Tito the Football Quant`,
+        description: `MoneyFootball Week ${w.week} anytime touchdown picks, settled: ${w.weekLine} ${w.seasonLine} Every hit and miss from the Week ${w.week} board, on the record.`,
+        week: w,
+        kind: 'results',
+      });
+    }
   }
   defs.push({
     slug: 'weeks-1-4-results',
@@ -220,9 +222,11 @@ export default function WeekArchivePage({ params }: { params: { slug: string } }
         )}
 
         <p className="text-sm space-x-6">
-          <a className="text-emerald-400 underline" href={`/weeks/week-${w.week}-${otherKind}`}>
-            {otherLabel}
-          </a>
+          {!w.boardOnly && (
+            <a className="text-emerald-400 underline" href={`/weeks/week-${w.week}-${otherKind}`}>
+              {otherLabel}
+            </a>
+          )}
           <a className="text-emerald-400 underline" href="/weeks">
             Archive index
           </a>
