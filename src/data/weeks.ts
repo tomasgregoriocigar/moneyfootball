@@ -26,6 +26,7 @@ export interface ResultRow {
 
 export interface WeekArchive {
   week: number;
+  boardOnly?: boolean;
   board: BoardRow[];
   results: ResultRow[] | null;
   boardTitle: string;
@@ -218,6 +219,26 @@ export const WEEKS: WeekArchive[] = [
     allTimeLine: 'All-time record: 350-190 → 356-206 (562 settled) after Week 9.',
     sniperLine: 'Sniper HIGH through Week 9: 24/55 = 43.6% (HIGH-confidence verdicts only, including PASS verdicts).',
     bandNote: 'Split by published fair value, computed from the published board and the settled outcomes: fair value .75 and up went 4-1; .60 to .75 went 1-8; under .60 went 1-6. By position (from the settlement record): RBs 4-5, WRs 1-2, TEs 1-6, QBs 0-2. Five misses carried last watch prints of 86 cents or higher (Shough 93¢, Gordon II 92¢, Loveland 91¢, Taylor 87¢, Hubbard 86¢) — the market chased scores that never came; settlement follows the box score.',
+  },
+  {
+    week: 10,
+    boardOnly: true,
+    board: [
+    { player: 'Jahmyr Gibbs', team: 'DET', opponent: 'NE', verdict: 'BUY', tier: 'HIGH', ask: 0.71, fv: 0.855, edge: 0.145, itt: 26.75 },
+    { player: 'Kenneth Walker III', team: 'KC', opponent: 'ATL', verdict: 'BUY', tier: 'HIGH', ask: 0.7, fv: 0.838, edge: 0.138, itt: 24.5 },
+    { player: 'Christian McCaffrey', team: 'SF', opponent: 'DAL', verdict: 'BUY', tier: 'HIGH', ask: 0.72, fv: 0.813, edge: 0.093, itt: 29.75 },
+    { player: 'Bijan Robinson', team: 'ATL', opponent: 'KC', verdict: 'BUY', tier: 'HIGH', ask: 0.65, fv: 0.752, edge: 0.102, itt: 21.0 },
+    ],
+    results: null,
+    boardTitle: 'NFL Week 10 Anytime Touchdown Picks — MoneyFootball Board',
+    boardIntro: 'The MoneyFootball Week 10 board, published Thursday, November 12, 2026: 4 anytime touchdown targets, all BUY and all HIGH confidence, with the Kalshi price and published fair value shown for each pick as published. Fair values are published post-shrinkage (FV_pub = ask + 0.70 × (model FV − ask)). This was the first board run under the publish gate adopted after the Week 9 post-mortem: only the top published-fair-value band makes the board, so there are no PASS rows. The Thursday night Washington at New York game carried no board name — its best published fair values (Malik Nabers .607, Isaiah Likely .598) never reached the band. One flag carried at publish: Jared Goff (chest) was limited in Wednesday practice and listed questionable, expected to start the Sunday 9:30 AM ET Munich game.',
+    resultsTitle: 'NFL Week 10 Anytime TD Picks Results — MoneyFootball Settlement',
+    resultsIntro: 'Week 10 settles after the games of Sunday, November 15, 2026. The settlement is posted here once the board is settled from final box scores.',
+    weekLine: 'Week 10 board: 4 targets, all BUY, all HIGH confidence — the first board under the post-Week-9 publish gate (top published-fair-value band only, no PASS rows). Settlement follows the games of Sunday, November 15, 2026.',
+    seasonLine: 'Season record at publish: 43-43 (50.0%) after Week 9 — 86 settled verdicts on the season.',
+    allTimeLine: 'All-time record at publish: 356-206 (562 settled, 63.3%).',
+    sniperLine: 'Sniper HIGH (W1-W9): 24/55 = 43.6% (HIGH-confidence verdicts only, including PASS verdicts).',
+    bandNote: null,
   },
 ];
 
