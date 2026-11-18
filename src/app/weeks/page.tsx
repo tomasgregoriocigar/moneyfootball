@@ -4,7 +4,7 @@ import { WEEKS } from '../../data/weeks';
 export const metadata: Metadata = {
   title: 'MoneyFootball Archive — NFL Anytime Touchdown Picks & Results by Week | Tito the Football Quant',
   description:
-    'Every MoneyFootball board and settlement, on the record: weekly anytime touchdown picks with the prices and fair values as published, and the settled results — wins and losses — for Weeks 1-9 of the 2026 NFL season, plus the Week 10 board as published (settlement pending).',
+    'Every MoneyFootball board and settlement, on the record: weekly anytime touchdown picks with the prices and fair values as published, and the settled results — wins and losses — for Weeks 1-10 of the 2026 NFL season.',
   alternates: { canonical: 'https://www.moneyfootball.ai/weeks' },
 };
 
@@ -27,9 +27,9 @@ export default function WeeksIndexPage() {
           the whole point of an archive.
         </p>
         <p className="text-sm text-slate-300 border border-slate-800 bg-slate-900/60 rounded px-4 py-3 mb-8">
-          HISTORICAL RECORD: <span className="text-white font-bold">356-206 (63.3%)</span> | 2026
-          RUN: <span className="text-white font-bold">43-43 (50.0%)</span> | SNIPER HIGH (W1-W9):{' '}
-          <span className="text-white font-bold">43.6%</span>
+          HISTORICAL RECORD: <span className="text-white font-bold">359-207 (63.4%)</span> | 2026
+          RUN: <span className="text-white font-bold">46-44 (51.1%)</span> | SNIPER HIGH (W1-W10):{' '}
+          <span className="text-white font-bold">45.8%</span>
         </p>
 
         <div className="space-y-4">
