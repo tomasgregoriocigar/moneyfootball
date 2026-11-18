@@ -18,6 +18,7 @@ const ARCHIVE: { path: string; lastModified: string; priority: number }[] = [
   { path: '/weeks/week-9-board', lastModified: '2026-11-06', priority: 0.8 },
   { path: '/weeks/week-9-results', lastModified: '2026-11-10', priority: 0.8 },
   { path: '/weeks/week-10-board', lastModified: '2026-11-12', priority: 0.8 },
+  { path: '/weeks/week-10-results', lastModified: '2026-11-17', priority: 0.8 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
