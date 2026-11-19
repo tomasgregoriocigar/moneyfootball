@@ -715,6 +715,14 @@ export default function Home() {
       </div>
 
       <footer className="max-w-7xl mx-auto mt-8 border-t border-slate-800/80 pt-6">
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold tracking-widest text-slate-200 uppercase mb-1">
+            About Tito
+          </h2>
+          <p className="text-[11px] text-slate-400 leading-relaxed">
+            Tito the Football Genius. Ask him any NFL rules question and he rules on it straight from the official rulebook, every call checked against the book itself, with the citation to prove it. And because he&apos;s a quant, he works from thousands of data points, the same engine behind his moneyfootball.ai board, to get you the answer.
+          </p>
+        </div>
         <p className="text-[11px] text-slate-400 mb-3">
           BOARD ARCHIVE —{' '}
           <a href="/weeks" className="text-emerald-400 underline">
