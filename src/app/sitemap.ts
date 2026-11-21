@@ -24,7 +24,7 @@ const ARCHIVE: { path: string; lastModified: string; priority: number }[] = [
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://moneyfootball.ai',
+      url: `${BASE}/`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
