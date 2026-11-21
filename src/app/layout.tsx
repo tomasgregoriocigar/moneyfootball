@@ -4,8 +4,12 @@ import { Analytics } from '@vercel/analytics/react';
 import { LOGO_FACE_DATA_URI } from '../data/logo';
 
 export const metadata = {
+  metadataBase: new URL('https://www.moneyfootball.ai'),
   title: 'Moneyfootball.ai | NFL Event Derivatives & TPI Terminal',
   description: 'Quantitative NFL prediction market edge analytics for Kalshi and Polymarket.',
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: LOGO_FACE_DATA_URI,
     apple: LOGO_FACE_DATA_URI,
